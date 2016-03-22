@@ -20,7 +20,7 @@
   <body>
     <div class="site-wrapper">
       <div class="site-wrapper-inner">
-        <div class="cover-container">
+        <div class="cover-container background-box">
           <div class="masthead clearfix">
             <div class="inner">
               <h3 class="masthead-brand">PostIt</h3>
@@ -36,19 +36,38 @@
 
           <div class="inner cover">
             <h1 class="cover-heading">PostIt!</h1>
-            <p class="lead">O mais nova Rede Social imitadora do Twitter!</p>
-            <p class="lead">
-              <a href="#" class="btn btn-lg btn-default">Faça seu login!</a>
-            </p>
-            <p class="lead">ou</p>
-            <p class="lead">
-              <a href="signup.html" class="btn btn-lg btn-primary btn-block signup-btn">Crie sua conta!</a>
-            </p>
-            
-            
-            
+            <p class="lead">A mais nova Rede Social imitadora do Twitter!</p>
+            <div class="panel-heading">
+              <h3 class="panel-title">Seja bem-vindo! Faça seu login abaixo!</h3>
+            </div>
+            <div class="panel-body">
+              <form accept-charset="UTF-8" role="form">
+                <fieldset>
+                  <div class="col-xs-6 col-md-6">
+                  <div class="form-group">
+                    <input class="form-control" placeholder="yourmail@example.com" name="email" type="text">
+                  </div>
+                  </div>
+                  <div class="col-xs-6 col-md-6">
+                  <div class="form-group">
+                    <input class="form-control" placeholder="senha" name="password" type="password" value="">
+                  </div>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="remember" type="checkbox" value="Remember Me"> Remember Me
+                    </label>
+                  </div>
+                </fieldset>
+              </form>
+              <input class="btn btn-lg btn-success btn-block" type="submit" value="Entrar">
+              <hr/>
+              <center><h4>ou</h4></center>
+              <p class="lead">
+                <a href="signup.html" class="btn btn-lg btn-primary btn-block signup-btn">Crie sua conta!</a>
+              </p>
+            </div> 
           </div>
-
           <div class="mastfoot">
             <div class="inner">
               <p>Trabalho da Disciplina <a href="#">SCC0219</a>, by <a href="#">@Grupo 02</a>.</p>

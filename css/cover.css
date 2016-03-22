@@ -200,3 +200,21 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.background-box{
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}
+input{
+  margin-bottom: 5px;
+}
+legend, .help-block{
+  color: rgb(240, 240, 240);
+}
+label{
+  font-size: 18px;
+}
+.white{
+  color:#000;
+  background-color:#fff;
+}
