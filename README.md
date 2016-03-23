@@ -1,10 +1,15 @@
-# Projeto-Web
-first commit
+# PostIT
 
-Projeto da Disciplina SCC0219
-Professor Rudinei
+This project is a simple (and lighter) twitter clone, which uses MVC pattern and modern web design tools such as jquery, bootstrap, nodejs, and angularjs.
 
-Grupo 02:
-Cláudio Domene
-Emanuel Valente
-Leonardo Miguel
+###Requirements
+- Jquery
+- Node.js
+- Angular.js
+- Bootstrap
+- SQL Database (e.g., PostgreSQL, MySQL)
+
+####Files
+- **login.html:** login page
+- **signup.html:** signup page
+
