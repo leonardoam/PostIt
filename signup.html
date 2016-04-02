@@ -15,13 +15,19 @@
 
     <!-- Custom styles for this template -->
     <link href="css/cover.css" rel="stylesheet">
+
+    <!-- AngularJS -->
+       <script src="js/angular.min.js"></script>
+    <!-- Controller: using AngularJS -->
+    <script src="js/controller_postit.js"></script>
   </head>
 
   <body>
+  	<div ng-app="my-App" ng-controller="Postit-Controller">
 		<div class="site-wrapper">
       <div class="site-wrapper-inner">
         <div class="cover-container background-box">
-					<div class="masthead clearfix">
+			<div class="masthead clearfix">
             <div class="inner">
               <h3 class="masthead-brand">PostIt</h3>
               <nav>
@@ -34,6 +40,7 @@
             </div>
           </div>
 
+          <div class="inner cover">
           <form action="r" method="post" accept-charset="utf-8" class="form" role="form">
           	<legend>Cadastre-se</legend>
             <h4>É grátis e sempre será grátis!</h4>
@@ -202,11 +209,13 @@
               <label class="radio-inline">
                 <input type="radio" name="gender" value="F" id=female />Feminino
               </label>
-              <br />
-              <span class="help-block">Clicando em Criar minha conta, você está aceitando nossos termos de Política de 
-              Dados do Usuário, incluindo a utililização de Cookies.</span>
-              <button class="btn btn-lg btn-primary btn-block signup-btn" type="submit">Criar minha conta</button>
+              <br/>
+              <br/>
+              <p class="lead">
+                <a href={{pickImage}} class="btn btn-lg btn-primary btn-block signup-btn">Prosseguir</a>
+              </p>
            	</form>
+           	</div>
 					<div class="mastfoot">
           	<div class="inner">
              	<p>Trabalho da Disciplina <a href="#">SCC0219</a>, by <a href="#">@Grupo 02</a>.</p>
@@ -214,6 +223,7 @@
           </div>
         </div>
 			</div>
+		</div>
 		</div>
 	</body>
 </html>

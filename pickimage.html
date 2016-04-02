@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <link rel="icon" href="images/postit-icon.png">
+
+    <title>PostIt</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/cover.css" rel="stylesheet">
+  </head>
+
+  <body>
+		<div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container background-box">
+			<div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">PostIt</h3>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li class="active"><a href="#">Home</a></li>
+                  <li><a href="#">Saiba Mais</a></li>
+                  <li><a href="#">Contato</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="inner cover">
+          <form action="r" method="post" accept-charset="utf-8" class="form" role="form">
+          	<legend>Escolha sua foto de perfil</legend>
+
+
+
+<div class="form-group">
+        <label>Upload Image</label>
+        <div class="input-group">
+            <span class="input-group-btn">
+                <span class="btn btn-default btn-file">
+                    Browse… <input type="file" id="imgInp">
+                </span>
+            </span>
+            <input type="text" class="form-control" readonly>
+        </div>
+        <img id='img-upload'/>
+    </div>
+
+
+
+
+          	
+              <span class="help-block">Clicando em Criar minha conta, você está aceitando nossos termos de Política de 
+              Dados do Usuário, incluindo a utililização de Cookies.</span>
+              <p class="lead">
+                <a href={{pickImage}} class="btn btn-lg btn-primary btn-block signup-btn">Prosseguir</a>
+              </p>
+           	</form>
+           	</div>
+					<div class="mastfoot">
+          	<div class="inner">
+             	<p>Trabalho da Disciplina <a href="#">SCC0219</a>, by <a href="#">@Grupo 02</a>.</p>
+           	</div>
+          </div>
+        </div>
+			</div>
+		</div>
+	</body>
+</html>
