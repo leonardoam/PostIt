@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+
+    <title>PostIt</title>
+    <link rel="icon" href="images/postit-icon.png">
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.js"></script>
+
+    <!--agr e isso ae-->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="css/cover.css" rel="stylesheet">
+    <link href="css/postit.css" rel="stylesheet">
+
+    <!-- AngularJS -->
+    <script src="js/angular.min.js"></script>
+
+    <!-- Controller: using AngularJS -->
+    <script src="js/controller_postit.js"></script>
+
+</head>
+
+<body>
+
+<!-- Barra de navegacao -->
+<div class="container-fluid">
+    <div class="row">
+        <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header"><a class="navbar-brand" href=""><img src="images/postit-icon.png" height="20px" width="20px"></a></div>
+                <div id="navbar" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav">
+                        <li><a href="initial"> Início </a></li>
+                        <li><a href="notifications"> Notificações </a></li>
+                        <li><a href="profile"> Perfil </a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="index"> Sair </a></li>
+                    </ul>
+
+                    <form class="navbar-form navbar-right" >
+                        <input type="text" class="form-control" placeholder="Buscar...">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+	<div class="row">
+
+				<!-- COLUNA DA ESQUERDA-->
+		<div class="col-md-3">
+
+			<!--CAMPO DE DADOS PESSOAIS-->
+			<div class="row row-top" id="persdata-summarized">
+				<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
+				<p align="left"><strong>Madruga</strong></br></p>
+				<p align="left" style=""><a href="">@seumadruga</a></br></p>
+				<table>
+					<tr>
+						<td align="left" >SEGUINDO: </td>
+						<td align="right">67 </td>
+					</tr>
+					<tr>
+						<td align="left" >SEGUIDORES: </td>
+						<td align="right">32</td>
+					</tr>
+					<tr>
+						<td align="left" >NOTAS: </td>
+						<td align="right">27</td>
+					</tr>
+				</table>
+			</div>
+
+			<!--CAMPO COM OS GRUPOS QUE PARTICIPA-->
+			<div class="row row-bottom" id="groups">
+				<p align="left"><strong>GRUPOS</strong></p>
+				<p align="left"><a href="group"> @Vila </a></br></p>
+				<p align="left"><a href=""> @CAASO </a></br></p>
+				<p align="left"><a href=""> @Comp012 </a></br></p>
+			</div>
+		</div>
+
+		<!-- COLUNA DO MEIO -->
+		<div class="col-md-6">
+			<div class="row row-top">
+	            <form accept-charset="UTF-8" action="" method="POST">
+	            	<div><textarea placeholder="O que está acontecendo?" rows="3"></textarea></div>
+
+	                <button class="btn btn-info" type="submit">Postar</button>
+	            </form>
+			</div>
+
+			<div class="row row-middle">
+
+				<img class="img-rounded" src="images/chaves.jpeg" width="40", height="40">
+				<p align="left"><strong><a href="">@Chaves</a></strong></p>
+				<p align="left"> 09/04/201 - 16:04h </p>
+				<p align="left"> <a href="">@Kiko</a> Estou tomando um suco de tamarindo. <a href="">#sucodetamarindo</a> <a href="">#cordelimao</a> <a href="">#gostodegroselha</a></p>
+
+			</div>
+
+			<div class="row row-middle">
+
+				<img class="img-rounded" src="images/nhonho.jpeg" width="40", height="40" >
+				<p align="left"><strong><a href="">@Nhonho</a></strong></p>
+				<p align="left"> 09/04/2016 - 15:59h</p>
+				<p align="left"> Queee fomeeeeee!!! <a href="">#sanchuichedepresunto</a> <a href="">#gordice</a> <a href="">#quero</a>  </br><iframe width="448" height="252" src="https://www.youtube.com/embed/lCYS8tKRJMc" frameborder="0" allowfullscreen></iframe> </p>
+
+			</div>
+
+			<div class="row row-middle">
+
+				<img class="img-rounded" src="images/barriga.jpg" width="40", height="40" >
+				<p align="left"><strong><a href="" >@SeuBarriga</a></strong></p>
+				<p align="left"> 09/04/2016 - 15:44h</p>
+				<p align="left"> <a href="">@seumadruga</a> pague o aluguel. <a href="">#madrugaCalotero</a></p>
+
+			</div>
+
+			<div class="row row-middle">
+
+				<img class="img-rounded" src="images/kiko.jpg" width="40", height="40" >
+				<p align="left"><strong><a href="" >@Kiko</a></strong></p>
+				<p align="left"> 09/04/2016 - 15:23h</p>
+				<p align="left"> Ei <a href="">@chaves</a> vamos brincar com a minha bola quadrada?</p>
+
+			</div>
+
+			<div class="row" style="">
+				<form action="" method="POST">
+					<button class="btn btn-link" type="submit">Carregar mais postagens</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer align="right">
+	<div class="container"> Postit © 2016 </div>
+</footer>
+
+</body>
+</html>

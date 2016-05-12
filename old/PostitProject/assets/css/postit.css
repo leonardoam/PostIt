@@ -1,0 +1,149 @@
+body {
+	background-color: #F5F8FA;
+	color:#292F33;
+}
+
+#navbar {
+	margin-bottom: 4px;
+	background-color: white;
+	border-radius: 0px;
+}
+
+.collapse, .collapse > *{
+	margin-bottom: 0px;
+}
+
+.navbar-right {
+	padding-right: 20px;
+}
+
+#navbar > .container{
+	padding: 0px;
+}
+
+.row-middle, .row-top, .row-bottom, .row-unique{
+	background-color: white;
+	border: solid 2px;
+	border-color: #E1E8ED;
+}
+
+.row-top, .row-unique{
+	margin-top: 60px;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+}
+
+#persdata-summarized > .img-thumbnail{
+	width: 100px;
+	height: 100px;
+	float: left;
+	margin: 10px;
+}
+
+#persdata-summarized :nth-child(2){
+	margin-top: 10px;
+	margin-bottom: 0px;
+}
+
+#persdata-summarized :nth-child(3){
+	margin-top: 0px;
+	font-size: 12px;
+}
+
+#persdata-summarized > table :first-child, #persdata-summarized > table :last-child {
+	padding-right: 20px;
+	font-size: 14px;
+}
+
+#groups, .row-bottom,.row-unique {
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+#groups :first-child{
+	margin: 10px 0px 5px 10px;
+}
+#groups :nth-child(1n+2) {
+	margin-left: 25px;
+}
+
+#groups :nth-child(2n+0){
+	color: red;
+}
+
+#groups :nth-child(3n+0){
+	color: green;
+}
+
+.row-middle > .img-rounded, .row-top > .img-rounded {
+	float: left;
+	margin: 10px 10px 0px 10px;
+}
+
+.row-middle > p:nth-of-type(1), .row-top > p:nth-of-type(1), .row-bottom > p:nth-of-type(1){
+	margin: 10px 0px 0px 10px;
+}
+.row-middle > p:nth-of-type(1) >strong > a, .row-top > p:nth-of-type(1) >strong > a{
+	color: black;
+}
+.row-middle > p:nth-of-type(2), .row-top > p:nth-of-type(2){
+	margin: 0px 0px 10px 10px;
+	font-size: 12px;
+}
+.row-middle > p:nth-of-type(3), .row-top > p:nth-of-type(3){
+	font-size: 16px;
+	margin-left: 25px;
+	margin-right: 25px;
+}
+
+#group-data p:nth-of-type(1) {
+	margin: 10px 0px 10px 10px;
+	font-size: 20px;
+}
+
+.users-pictures {
+	margin-left: 10px;
+}
+
+.users-pictures > div :nth-child(n) {
+	float: left;
+	margin:1px 1px 1px 1px;
+} 
+
+/*Botoes*/
+.btn-info {
+	border-color: #0084B4;
+	background-color: #0084B4;
+	margin-bottom: 10px;
+}
+.btn-link {
+	margin-top: 10px;
+}
+
+#persdata-complete > .img-thumbnail{
+	width: 250px;
+	height: 250px;
+	margin: 10px 0px 10px 0px;
+}
+
+#persdata-complete > p:nth-child(n){
+	margin: 0px 0px 0px 10px;
+}
+#persdata-complete > p:nth-child(2){
+	font-size: 30px;
+}
+#persdata-complete > p:nth-child(3){
+	font-size: 12px;
+}
+#persdata-complete > p:last-child{
+	margin: 10px 10px 10px 10px;
+}
+
+textarea {
+	margin-top: 15px;
+	width:80%;
+}
+
+footer {
+	padding: 10px
+}
