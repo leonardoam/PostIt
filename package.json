@@ -20,7 +20,7 @@
     "grunt-sync": "0.2.4",
     "include-all": "~0.1.6",
     "rc": "1.0.1",
-    "sails": "~0.12.3",
+    "sails": "~0.12.1",
     "sails-disk": "~0.10.9"
   },
   "scripts": {
@@ -30,8 +30,8 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/anonymous node/sails user/PostIt.git"
+    "url": "git://github.com/emanuel/PostIt.git"
   },
-  "author": "anonymous node/sails user",
+  "author": "emanuel",
   "license": ""
 }

@@ -29,10 +29,14 @@
     -->
 
     <!--STYLES-->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/cover.css">
+    <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/styles/postit.css">
     <!--STYLES END-->
   </head>
 
-  <body>
+   <body ng-app="App">
     <%- body %>
 
 
@@ -59,6 +63,7 @@
     -->
 
     <!--TEMPLATES-->
+    <script type="text/javascript" src="/jst.js"></script>
     <!--TEMPLATES END-->
 
 
@@ -86,6 +91,12 @@
     -->
 
     <!--SCRIPTS-->
+    <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.min.js"></script>
+    <script src="/js/angular/app.js"></script>
     <!--SCRIPTS END-->
   </body>
 </html>

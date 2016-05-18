@@ -1,0 +1,24 @@
+{
+  "name": "assets",
+  "homepage": "https://github.com/leonardoam/PostIt",
+  "authors": [
+    "Emanuel de Alcântara Valente <emanuelvalente@gmail.com>"
+  ],
+  "description": "",
+  "main": "app.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+   "dependencies":{
+     "angular": "*",
+	 "angular-route": "*",
+	 "bootstrap": "*",
+	 "jquery": "*"
+  }
+}
