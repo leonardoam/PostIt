@@ -1,0 +1,164 @@
+<!-- Barra de navegacao -->
+<div class="container-fluid">
+    <div class="row">
+        <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header"><a class="navbar-brand" href=""><img src="images/postit-icon.png" height="20px" width="20px"></a></div>
+                <div id="navbar" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav">
+                        <li><a href="initial"> Início </a></li>
+                        <li><a href="notifications"> Notificações </a></li>
+                        <li><a href="profile"> Perfil </a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="index"> Sair </a></li>
+                    </ul>
+
+                    <form class="navbar-form navbar-right" >
+                        <input type="text" class="form-control" placeholder="Buscar...">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-controller="c2"> 
+<div class="container">
+	<div class="row">
+
+		<!-- Barra lateral esquerda-->
+		<div class="col-md-3">	
+
+			<!--Espaco com os dados pessoais-->
+			<div class="row row-top" id="persdata-complete">
+				<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
+
+				<p align="left"><strong>Seu Madruga</strong></br></p>
+				<p align="left"><a href="">@seumadruga</a></br></p>
+
+				<p align="left">E-mail: madruga@usp.br</br></p>
+				<p align="left">Aniversário: 10/10/10</br></p>
+				<p align="left">Sexo: masculino</br></p>
+
+				<p align="left">Homem trabalhador, pai, honesto e que gosta de um suco bem gelado de tamarindo!</br></p>
+			</div>
+		</div>
+
+		<!-- Barra de conteudo -->
+		<div class="col-md-6">
+
+			<div class="row row-top">
+
+				<img class="img-rounded" src="images/madruga.jpg" width="40" height="40">
+				<p align="left"><strong><a href="">@seumadruga</a></strong></br></p>
+				<p align="left"> 09/04/201 - 22:30h </p>
+				<p align="left"> Meu pai deixou o Postit aberto! rsrs aqui é a Chiquinha</p>
+
+			</div>
+
+			<div class="row row-middle">
+
+				<img class="img-rounded" src="images/madruga.jpg" width="40" height="40">
+				<p align="left"><strong><a href="">@seumadruga</a></strong></br></p>
+				<p align="left"> 09/04/201 - 22:04h </p>
+				<p align="left"> A vingança nunca é plena, mata a alma e envenena. Boa noite pessoal!</p>
+
+			</div>
+			<div class="row row-middle">
+
+				<img class="img-rounded" src="images/madruga.jpg" width="40" height="40">
+				<p align="left"><strong><a href="">@seumadruga</a></strong></br></p>
+				<p align="left"> 09/04/2016 - 15:59h</p>
+				<p align="left"> Para o nosso amigo. <a href="">@Chaves</a> <a href="">#filmeDoRei</a> </br><iframe width="448" height="252" src="https://www.youtube.com/embed/XAFZL_vtmrk" frameborder="0" allowfullscreen></iframe> </p>
+
+			</div>
+
+			<div class="row row-middle">
+
+				<img class="img-rounded" src="images/madruga.jpg" width="40" height="40">
+				<p align="left"><strong><a href="">@seumadruga</a></strong></br></p>
+				<p align="left"> 09/04/2016 - 15:59h</p>
+				<p align="left"> Para o nosso amigo. <a href="">@Chaves</a> <a href="">#filmeDoRei</a> </br><iframe width="448" height="252" src="https://www.youtube.com/embed/XAFZL_vtmrk" frameborder="0" allowfullscreen></iframe> </p>
+
+			</div>
+
+			<div class="row" style="">
+				<form action="" method="POST">
+					<button class="btn btn-link" type="submit" style="margin-top: 10px">Carregar mais postagens</button>
+				</form>
+			</div>
+		</div>
+
+		<div class="col-md-3">
+			<div class="row row-top">
+				<p align="left">SEGUINDO: 67</p>
+
+				<div class="user-pictures">
+
+					<div>
+					<a href=""><img class="img-rounded" src="images/chaves.jpeg" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="images/nhonho.jpeg" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="images/barriga.jpg" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="images/kiko.jpg" width="60", height="60"></a>
+					</div>
+
+					<div>
+					<a href=""><img class="img-rounded" src="images/madruga.jpg" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="images/girafales.jpg" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="" width="60", height="60"></a>
+					</div>
+
+					<div>
+					<a href=""><img class="img-rounded" src="" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="" width="60", height="60"></a>
+					</div>
+
+				</div>
+				<form action="" method="POST">
+					<button class="btn btn-link" type="submit">Carregar mais</button>
+				</form>
+			</div>
+
+			<div class="row row-bottom">
+				<p align="left">SEGUIDORES: 32</p>
+
+				<div class="user-pictures">
+
+					<div>
+					<a href=""><img class="img-rounded" src="images/chaves.jpeg" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="images/nhonho.jpeg" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="images/barriga.jpg" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="images/kiko.jpg" width="60", height="60"></a>
+					</div>
+
+					<div>
+					<a href=""><img class="img-rounded" src="images/madruga.jpg" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="images/girafales.jpg" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="" width="60", height="60"></a>
+					</div>
+
+					<div>
+					<a href=""><img class="img-rounded" src="" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="" width="60", height="60"></a>
+					<a href=""><img class="img-rounded" src="" width="60", height="60"></a>
+					</div>
+
+				</div>
+				<form action="" method="POST">
+					<button class="btn btn-link" type="submit">Carregar mais</button>
+				</form>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+</div>

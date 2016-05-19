@@ -4,8 +4,8 @@
 	// Os dados são definidos no serviço, assim, mais controladores interessados
     //	nos dados tem somente que declarar/registrar o serviço -> modularização.
 
-	myApp.config(['$routeProvider',
-	   function($routeProvider){
+	myApp.config(['$routeProvider', '$locationProvider',
+	   function($routeProvider, $locationProvider){
 	      $routeProvider.
 	      when('/',{
 		     templateUrl: 'templates/index.html',
@@ -19,9 +19,21 @@
 		    templateUrl: 'templates/content.html',
 		    controller: 'c2'
 		  }).
+	        when('/groups',{
+		    templateUrl: 'templates/groups.html',
+		    controller: 'c2'
+		  }).
+		 when('/profile',{
+		    templateUrl: 'templates/profile.html',
+		    controller: 'c2'
+		  }).
 	      otherwise({
 		     redirectTo: '/'
 		  });
+	      
+	       // use the HTML5 History API
+	      //fix url like /#/profile to just /profile (without hashtag)
+	      //$locationProvider.html5Mode(true).hashPrefix('!');
 	   }
 	   ]);
 	
