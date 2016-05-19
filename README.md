@@ -5,7 +5,7 @@ a [Sails](http://sailsjs.org) application
 Status do Projeto
 ---------------------
 Client: 
-- mapeamento disponíveis:
+- mapeamentos disponíveis:
  '/' ->pagina inicial:  login
     templateUrl: 'templates/index.html',
     controller: 'c1'
