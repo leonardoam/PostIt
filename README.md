@@ -30,7 +30,7 @@ Server: TODO
 
 Notas
 ---------
-1. Crie uma aplicao sails antes de copiar o conteudo desse projeto
+1. Crie uma aplicacaoo sails antes de copiar o conteudo desse projeto
 2. Instale as dependencias com o bower:
 - Dentro do diretorio assets, digite: bower init
 e insira as seguintes dependencias no arquivo, recem criado, bower.json:
