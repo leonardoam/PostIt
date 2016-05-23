@@ -26,7 +26,40 @@ Client:
     templateUrl: 'templates/profile.html',
     controller: 'c2'
 
-Server: TODO
+Server: 
+
+APIs disponíveis:
+
+/user/create_user
+/user/create_users  (apenas teste, cria direto do array)
+
+aceita os seguintes atributos:
+
+    nome: {
+      type: 'string'
+    },
+    login: {
+      type: 'string',
+      unique: true
+    },
+    password: {
+      type: 'string'
+    },
+    birthday: {
+      type: 'datetime'
+    },
+    bio: {
+      type: 'text'
+    },
+    email: {
+      type: 'string'
+    }
+
+  }
+
+  *Para criar usuario direto do terminal use:
+   curl -i -X POST -H "Content-Type: application/json" -d '{"nome": "Emanuel Valente", "login"ord": "emapass", "birthday": "1900-12-27T00:00:00Z", "bio": "ema bio", "email": "emanuelvalente@gmail.com"}' http://localhost:1337/user/create_user
+
 
 Notas
 ---------
@@ -46,18 +79,21 @@ Conteúdos de cada diretório que devem ser sobrepostos após criação da aplic
 -----------------------------------------------------------------------------------------
 
 /api:
-- NADA (por enquanto), pois é a aplicação do lado do servidor
+- controllers/ (tudo)
+- models/ (tudo)
 
 
 /assets:
-- images (tudo)
-- js/angular (tudo) -> AQUI ESTA TODA A APLICACAO (angular) DO CLIENTE
-- styles (tudo)
-- templates (tudo)  -> AQUI FICA TODO O CONTEUDO HTML (que chama os controllers angular) DO CLIENTE
+- images/ (tudo)
+- js/angular/ (tudo) -> AQUI ESTA TODA A APLICACAO (angular) DO CLIENTE
+- styles/ (tudo)
+- templates/ (tudo)  -> AQUI FICA TODO O CONTEUDO HTML (que chama os controllers angular) DO CLIENTE
 
 /config:
-- routes.js
+- routes.js    
 - views.js
+- connections.js  /*postgres*/
+- models.js /*escolhe o adaptador postgres*/
 
 /task:
 - pipeline.js
