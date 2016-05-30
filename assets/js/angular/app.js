@@ -27,6 +27,10 @@
 		    templateUrl: 'templates/profile.html',
 		    controller: 'c2'
 		  }).
+		 when('/statistic',{
+		    templateUrl: 'templates/statistic.html',
+		    controller: 'c2'
+		  }).
 	      otherwise({
 		     redirectTo: '/'
 		  });

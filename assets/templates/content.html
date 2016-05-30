@@ -7,13 +7,13 @@
                 <div id="navbar" class="navbar-collapse collapse">
 
                     <ul class="nav navbar-nav">
-                        <li><a href="initial"> Início </a></li>
-                        <li><a href="notifications"> Notificações </a></li>
-                        <li><a href="profile"> Perfil </a></li>
+                        <li><a href=""> Início </a></li>
+                        <li><a href=""> Perfil </a></li>
+                        <li><a href=""> Estatísticas </a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="index"> Sair </a></li>
+                        <li><a href=""> Sair </a></li>
                     </ul>
 
                     <form class="navbar-form navbar-right" >
@@ -31,7 +31,7 @@
 <div class="container">
 	<div class="row">
 
-				<!-- COLUNA DA ESQUERDA-->
+		<!-- COLUNA DA ESQUERDA-->
 		<div class="col-md-3">
 
 			<!--CAMPO DE DADOS PESSOAIS-->
@@ -49,7 +49,7 @@
 						<td align="right">32</td>
 					</tr>
 					<tr>
-						<td align="left" >NOTAS: </td>
+						<td align="left" >PUBLICAÇÕES: </td>
 						<td align="right">27</td>
 					</tr>
 				</table>
@@ -58,9 +58,17 @@
 			<!--CAMPO COM OS GRUPOS QUE PARTICIPA-->
 			<div class="row row-bottom" id="groups">
 				<p align="left"><strong>GRUPOS</strong></p>
-				<p align="left"><a href="group"> @Vila </a></br></p>
-				<p align="left"><a href=""> @CAASO </a></br></p>
-				<p align="left"><a href=""> @Comp012 </a></br></p>
+				<p align="left"><a href="/#/groups"> @Vila </a></br></p>
+				<p align="left"><a href="/#/groups"> @CAASO </a></br></p>
+				<p align="left"><a href="/#/groups"> @Comp012 </a></br></p>
+
+				<hr>
+				
+				<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
+		            <div style="margin: 0px"><textarea placeholder="Nome" rows="1" style="margin: 0px"></textarea></div>
+
+		            <button class="btn btn-info" type="submit"> Criar grupo </button>
+	            </form>
 			</div>
 		</div>
 
@@ -68,6 +76,8 @@
 		<div class="col-md-6">
 			<div class="row row-top">
 	            <form accept-charset="UTF-8" action="" method="POST">
+	            	<div><textarea placeholder="Título" rows="1"></textarea></div>
+
 	            	<div><textarea placeholder="O que está acontecendo?" rows="3"></textarea></div>
 
 	                <button class="btn btn-info" type="submit">Postar</button>
@@ -75,42 +85,154 @@
 			</div>
 
 			<div class="row row-middle">
+				<div class="row">
+					<div class="col-md-6">
+						<img class="img-rounded" src="images/kiko.jpg" width="40" height="40">
+						<p align="left"><strong><a href="">@Kiko</a></strong> republicou</p>
+						<p align="left"> 14/04/201 - 12:23h </p>
+					</div>
+				</div>
 
-				<img class="img-rounded" src="images/chaves.jpeg" width="40", height="40">
-				<p align="left"><strong><a href="">@Chaves</a></strong></p>
-				<p align="left"> 09/04/201 - 16:04h </p>
-				<p align="left"> <a href="">@Kiko</a> Estou tomando um suco de tamarindo. <a href="">#sucodetamarindo</a> <a href="">#cordelimao</a> <a href="">#gostodegroselha</a></p>
+				<div class="row row-middle">
+					<div class="row">
+						<div class="col-md-6">
+							<img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
+							<p align="left"><strong><a href="">@Chaves</a></strong></p>
+							<p align="left"> 09/04/201 - 16:04h </p>
+						</div>
+						<div class="col-md-6">
+							<button class="btn btn-default" type="submit"> Republicar</button>
+						</div>
+					</div>
 
+					<div class="row">
+						<p align="left"> Muito bom!</a></p>
+					</div>
+
+					<div class="row">
+						<p align="left"> <a href="">@Kiko</a> Estou tomando um suco de tamarindo. Muito bom! <a href="">#sucodetamarindo</a> <a href="">#cordelimao</a> <a href="">#gostodegroselha</a></p>
+					</div>
+
+					<div class="row">
+						<button type="submit"></button>
+						<p>233</p>
+						<button type="submit"></button>
+						<p>0</p>
+					</div>
+				</div>
 			</div>
 
 			<div class="row row-middle">
+				<div class="row">
+					<div class="col-md-6">
+						<img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
+						<p align="left"><strong><a href="">@Chaves</a></strong></p>
+						<p align="left"> 09/04/201 - 16:04h </p>
+					</div>
+					<div class="col-md-6">
+						<button class="btn btn-default" type="submit"> Republicar</button>
+					</div>
+				</div>
+				<div class="row">
+					<p align="left"> Muito bom!</a></p>
+				</div>
+				<div class="row">
+					<p align="left"> <a href="">@Kiko</a> Estou tomando um suco de tamarindo. Muito bom! <a href="">#sucodetamarindo</a> <a href="">#cordelimao</a> <a href="">#gostodegroselha</a></p>
+				</div>
 
-				<img class="img-rounded" src="images/nhonho.jpeg" width="40", height="40" >
-				<p align="left"><strong><a href="">@Nhonho</a></strong></p>
-				<p align="left"> 09/04/2016 - 15:59h</p>
-				<p align="left"> Queee fomeeeeee!!! <a href="">#sanchuichedepresunto</a> <a href="">#gordice</a> <a href="">#quero</a>  </br><iframe width="448" height="252" src="https://www.youtube.com/embed/lCYS8tKRJMc" frameborder="0" allowfullscreen></iframe> </p>
-
+				<div class="row">
+					<button type="submit"></button>
+					<p>233</p>
+					<button type="submit"></button>
+					<p>0</p>
+				</div>
 			</div>
+
+
 
 			<div class="row row-middle">
+				<div class="row">
+					<div class="col-md-6">
+						<img class="img-rounded" src="images/nhonho.jpeg" width="40" height="40">
+						<p align="left"><strong><a href="">@Nhonho</a></strong></p>
+						<p align="left"> 09/04/2016 - 15:59h </p>
+					</div>
+					<div class="col-md-6">
+						<button class="btn btn-default" type="submit"> Republicar</button>
+					</div>
+				</div>
+				<div class="row">
+					<p align="left"> Receita gourmet</a></p>
+				</div>
+				<div class="row">
+					<p align="left"> Queee fomeeeeee!!! <a href="">#sanchuichedepresunto</a> <a href="">#gordice</a> <a href="">#quero</a>  </br><iframe width="448" height="252" src="https://www.youtube.com/embed/lCYS8tKRJMc" frameborder="0" allowfullscreen></iframe> </p>
+				</div>
 
-				<img class="img-rounded" src="images/barriga.jpg" width="40", height="40" >
-				<p align="left"><strong><a href="" >@SeuBarriga</a></strong></p>
-				<p align="left"> 09/04/2016 - 15:44h</p>
-				<p align="left"> <a href="">@seumadruga</a> pague o aluguel. <a href="">#madrugaCalotero</a></p>
-
+				<div class="row">
+					<button type="submit"></button>
+					<p>345</p>
+					<button type="submit"></button>
+					<p>23</p>
+				</div>
 			</div>
+
 
 			<div class="row row-middle">
+				<div class="row">
+					<div class="col-md-6">
+						<img class="img-rounded" src="images/barriga.jpg" width="40" height="40">
+						<p align="left"><strong><a href="">@SeuBarriga</a></strong></p>
+						<p align="left"> 09/04/2016 - 15:44h </p>
+					</div>
+					<div class="col-md-6">
+						<button class="btn btn-default" type="submit"> Republicar</button>
+					</div>
+				</div>
+				<div class="row">
+					<p align="left"> Me pague!!!!! >:(</a></p>
+				</div>
+				<div class="row">
+					<p align="left"> <a href="">@seumadruga</a> pague o aluguel. <a href="">#madrugaCalotero</a></p>
+				</div>
 
-				<img class="img-rounded" src="images/kiko.jpg" width="40", height="40" >
-				<p align="left"><strong><a href="" >@Kiko</a></strong></p>
-				<p align="left"> 09/04/2016 - 15:23h</p>
-				<p align="left"> Ei <a href="">@chaves</a> vamos brincar com a minha bola quadrada?</p>
-
+				<div class="row">
+					<button type="submit"></button>
+					<p>0</p>
+					<button type="submit"></button>
+					<p>1</p>
+				</div>
 			</div>
 
-			<div class="row" style="">
+
+
+
+			<div class="row row-middle">
+				<div class="row">
+					<div class="col-md-6">
+						<img class="img-rounded" src="images/kiko.jpg" width="40" height="40">
+						<p align="left"><strong><a href="">@Kiko</a></strong></p>
+						<p align="left"> 09/04/2016 - 15:23h </p>
+					</div>
+					<div class="col-md-6">
+						<button class="btn btn-default" type="submit"> Republicar</button>
+					</div>
+				</div>
+				<div class="row">
+					<p align="left"> Bola quadrada</a></p>
+				</div>
+				<div class="row">
+					<p align="left"> Ei <a href="">@chaves</a> vamos brincar com a minha bola quadrada?</p>
+				</div>
+
+				<div class="row">
+					<button type="submit"></button>
+					<p>0</p>
+					<button type="submit"></button>
+					<p>0</p>
+				</div>
+			</div>
+
+			<div class="row row-bottom">
 				<form action="" method="POST">
 					<button class="btn btn-link" type="submit">Carregar mais postagens</button>
 				</form>
