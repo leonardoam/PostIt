@@ -1,5 +1,5 @@
 <!--<div ng-app="my-App" ng-controller="Postit-Controller"> -->
-<div ng-controller="c2"> 
+<div ng-controller="usercontroller"> 
 		<div class="site-wrapper">
     		<div class="site-wrapper-inner">
         		<div class="cover-container background-box">
@@ -17,41 +17,41 @@
           			</div>
 
           			<div class="inner cover">
-          				<form action="r" method="post" accept-charset="utf-8" class="form" role="form">
+          				<form  novalidate  accept-charset="utf-8" class="form" role="form">
           					<legend>Cadastre-se</legend>
             				<h4>É grátis e sempre será grátis!</h4>
             				<div class="row">
               					<div class="col-xs-6 col-md-6">
-               						<input type="text" name="firstname" value="" min="3" max="32" class="form-control input-lg" placeholder="Nome"  />
+               						<input type="text"  ng-model="user.firstname" value="" min="3" max="32" class="form-control input-lg" placeholder="Nome" required />
               					</div>
               					<div class="col-xs-6 col-md-6">
-                					<input type="text" name="lastname" min="3" max="128" value="" class="form-control input-lg" placeholder="Sobrenome"  />
+                					<input type="text" ng-model="user.lastname" min="3" max="128" value="" class="form-control input-lg" placeholder="Sobrenome" required />
               					</div>
             				</div>
-            				<input type="email" name="email" value="" class="form-control input-lg" placeholder="Seu Email"  />
+            				<input type="email" ng-model="user.email" value="" class="form-control input-lg" placeholder="Seu Email" required />
               				
 
              				<div class="row">
                 				<div class="col-md-6">
-                					<input type="text" name="user" min="3" max="15" value="" class="form-control input-lg" placeholder="@Usuário"  />
+                					<input type="text" ng-model="user.user"  min="3" max="15" value="" class="form-control input-lg" placeholder="@Usuário" required />
                 				</div>
                 				<div class="col-md-2">
                 					<label>Sexo:</label>
                 				</div>
                 				<div class="col-md-4">
-	                				<select name="Sexo" class = "form-control input-lg">
-										<option value="masculino">masculino</option>
-										<option value="feminino">feminino</option>
+	                				<select name="Sexo" class = "form-control input-lg" ng-model="user.gender">
+										<option value="m">masculino</option>
+										<option value="f">feminino</option>
 									</select>    
 								</div>
               				</div>
 
               				<div class="row">
                 				<div class="col-xs-6 col-md-6">
-                					<input type="password" name="password" value="" class="form-control input-lg" placeholder="Senha"  />
+                					<input type="password" ng-model="user.password" value="" class="form-control input-lg" placeholder="Senha" required />
                 				</div>
                 				<div class="col-xs-6 col-md-6">
-                					<input type="password" name="confirm_password" value="" class="form-control input-lg" placeholder="Confirme sua senha"  />                    
+                					<input type="password" name="confirm_password" value="" class="form-control input-lg" placeholder="Confirme sua senha" required />                    
                 				</div>
               				</div>
 
@@ -61,7 +61,7 @@
                 					<label>Data de Nascimento</label>
                 				</div>
               					<div class="col-xs-3 col-md-3">
-                					<select name="day" class = "form-control input-lg">
+                					<select name="day" ng-model="user.birthday" class = "form-control input-lg">
 										<option value="1">1</option>
 										<option value="2">2</option>
 										<option value="3">3</option>
@@ -96,7 +96,7 @@
 									</select>
 				                </div>
                 				<div class="col-xs-3 col-md-3">
-                  					<select name="month" class = "form-control input-lg">
+                  					<select name="month" ng-model="user.birthmonth" class = "form-control input-lg">
 										<option value="01">Jan</option>
 										<option value="02">Fev</option>
 										<option value="03">Mar</option>
@@ -112,7 +112,7 @@
 									</select>
 								</div>
                					<div class="col-xs-3 col-md-3">
-                  					<select name="year" class = "form-control input-lg">
+                  					<select name="year" ng-model="user.birthyear" class = "form-control input-lg">
 										<option value="1935">1935</option>
 										<option value="1936">1936</option>
 										<option value="1937">1937</option>
@@ -196,7 +196,7 @@
                 				</div>
             				</div>
             				
-            				<input type="textarea" rows="5" name="description" min="3" max="200" rows="5" value="" class="form-control input-lg" placeholder="Descrição"  />
+            				<input type="textarea" rows="5" ng-model="user.description"  min="3" max="200" rows="5" value="" class="form-control input-lg" placeholder="Descrição"  required />
 
             				<div class="row">
             					<div class="col-md-4">
@@ -212,7 +212,7 @@
               				<br/>
               				<br/>
               				<p class="lead">
-                				<a href="" class="btn btn-lg btn-primary btn-block signup-btn">Cadastrar</a>
+                				 <input type="submit" class="btn btn-lg btn-primary btn-block signup-btn" ng-click="sendNewUser(user)" value="Cadastrar" />
               				</p>
            				</form>
            			</div>

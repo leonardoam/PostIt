@@ -13,7 +13,7 @@
 		  }).
 	      when('/signup',{
 		    templateUrl: 'templates/signup.html',
-		    controller: 'c2'
+		    controller: 'usercontroller'
 		  }).
 	       when('/content',{
 		    templateUrl: 'templates/content.html',
@@ -73,8 +73,37 @@
 				'clean_tasks': function(){
 					tasks = [];
 					return tasks;
-				}
+				},
+
+				'createUser': function(user){
+					return $http.post('/user/create_user', user);
+					//return $http.post('/user/create_user_debug', user);
+				} 
 		}
+	});
+
+	
+	myApp.controller('usercontroller', function ($scope, Service) {
+		$scope.master = {};
+
+		$scope.sendNewUser = function(user) {
+        	$scope.master = angular.copy(user);
+        	console.log("user: " + $scope.master.firstname);
+        	console.log("user: " + $scope.master.lastname);
+        	console.log("user: " + $scope.master.user);
+        	console.log("user: " + $scope.master.password);
+        	console.log("user: " + $scope.master.email);
+        	console.log("user: " + $scope.master.birthday);
+        	console.log("user: " + $scope.master.birthmonth);
+        	console.log("user: " + $scope.master.birthyear);
+        	console.log("user: " + $scope.master.description);
+
+        	Service.createUser($scope.master);
+
+      };
+		
+		
+		
 	});
 
 	myApp.controller('c1', function ($scope, Service) {

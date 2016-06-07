@@ -31,13 +31,18 @@ module.exports = {
 		//var params = req.query;
 
 		var user_content = {
-		 nome: req.param('nome') || undefined,
-         login: req.param('login')  || undefined,
+		 nome: req.param('firstname') || undefined,
+         login: req.param('user')  || undefined,
          password: req.param('password') || undefined,
-         bio: req.param('bio') || undefined,
-         birthday: req.param('birthday') || undefined,
-         email: req.param('email') || undefined
+         bio: req.param('description') || undefined,
+         email: req.param('email') || undefined,
+         gender: req.param('gender') || undefined
 		};
+
+		var tmpDate = req.param('birthmonth') + "/" + req.param('birthday') + "/" + req.param('birthyear');
+		console.log("tmpDate: " + tmpDate);
+		user_content['birthday'] = new Date(tmpDate);
+		
 		
 		console.log("Printing request");
 		console.log("nome: " + user_content['nome']);
@@ -46,10 +51,12 @@ module.exports = {
 		console.log("birthday: " + user_content['birthday']);
 		console.log("bio: " + user_content['bio']);
 		console.log("email: " + user_content['email']);
+		console.log("gender: " + user_content['gender']);
 
 		if(user_content['nome'] != undefined && user_content['login'] != undefined &&
 		   user_content['password'] != undefined && user_content['birthday'] != undefined &&
-		   user_content['bio'] != undefined && user_content['email'] != undefined) {
+		   user_content['bio'] != undefined && user_content['email'] != undefined && 
+		   user_content['gender'] != undefined) {
 
 			User.create(user_content).exec(function callback(error, users_created) {
 				if(error) {
@@ -63,6 +70,31 @@ module.exports = {
 		}
 		else
 			return res.send("Error creating user!");
+	},
+
+	create_user_debug: function(req, res) {
+		//var params = req.params.all();
+		//var params = req.query;
+
+		var user_content = {
+		 nome: req.param('name') || undefined,
+         login: req.param('user')  || undefined,
+         password: req.param('password') || undefined,
+         bio: req.param('description') || undefined,
+         email: req.param('email') || undefined
+		};
+
+		var tmpDate = req.param('birthmonth') + "/" + req.param('birthday') + "/" + req.param('birthyear');
+		console.log("tmpDate: " + tmpDate);
+		user_content['birthday'] = new Date(tmpDate);
+		
+		console.log("Printing request");
+		console.log("nome: " + user_content['nome']);
+		console.log("login: " + user_content['login']);
+		console.log("password: " + user_content['password']);
+		console.log("birthday: " + user_content['birthday']);
+		console.log("bio: " + user_content['bio']);
+		console.log("email: " + user_content['email']);
 	}
 
 	

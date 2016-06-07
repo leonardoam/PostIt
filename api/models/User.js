@@ -30,7 +30,10 @@ module.exports = {
   	},
   	email: {
   		type: 'string'
-  	}
+  	},
+    gender: {
+      type: 'string'
+    }
 
   }
 };
