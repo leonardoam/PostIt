@@ -8,33 +8,56 @@
 /*all types of attributes:
 http://sailsjs.org/documentation/concepts/models-and-orm/attributes
 */
+/*
+user:
+    "id": inteiro, PK
+    "nome": string,
+    "login": string,
+    "password": string, "senha sem criptografia",
+    "birthday": "dd-mm-yyyy", string
+    "bio": string
+*/
 module.exports = {
-
   attributes: {
-
-  	nome: {
-  		type: 'string'
-  	},
-  	login: {
-  		type: 'string',
-  		unique: true
-  	},
-  	password: {
-  		type: 'string'
-  	},
-  	birthday: {
-  		type: 'datetime'
-  	},
-  	bio: {
-  		type: 'text'
-  	},
-  	email: {
-  		type: 'string'
-  	},
-    gender: {
-      type: 'string'
+    id: {
+      type: 'integer',
+      primaryKey: true,
+      autoIncremet: true
+    },
+    name: {
+      type: 'string',
+      required: true,
+      notNull: true
+    },
+    login: {
+      type: 'string',
+      required: true,
+      notNull: true,
+      unique: true
+    },
+    password: {
+      type: 'string',
+      required: true,
+      notNull: true
+    },
+    birthday: {
+      type: 'datetime',
+      required: true,
+      notNull: true
+    },
+    bio: {
+      type: 'text',
+      required: true,
+      notNull: true
+    },
+    email: {
+      type: 'string',
+      required: true,
+      notNull: true
+    },
+    groups: {
+      collection: 'group',
+      via: 'users'
     }
-
   }
 };
-
