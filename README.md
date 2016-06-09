@@ -59,13 +59,22 @@ aceita os seguintes atributos:
 
   *Para criar usuario direto do terminal use:
  
- curl -i -X POST -H "Content-Type: application/json" -d '{"firstname": "Emanueente", "user": "emanuel100", "password": "emapass", "birthday": "10", "birthmonth": "2", "birthyear": "1940", "description": "ema description", "email": "emanuelvalente@gmail.com", "gender": "m" }' http://localhost:1337/user/create_user
+ curl -i -X POST -H "Content-Type: application/json" -d '{"firstname": "Emanuel", "user": "emanuelvalente", "password": "emapass", "birthday": "10", "birthmonth": "2", "birthyear": "1940", "description": "ema description", "email": "emanuelvalente@gmail.com", "gender": "m" }' http://localhost:1337/user/create_user
  
  
 /user/login
  
 Comando curl para api login:
 curl -i -X POST -H "Content-Type: application/json" -d '{"user": "emanuelvalente", "password": "mypass"}' http://localhost:1337/user/login
+
+
+API para criacao de tweets:
+-------------------------------
+/tweet/create_tweet
+
+Comando curl: 
+curl -i -X POST -H "Content-Type: application/json" -d '{"user_id": "12" "tweet": "msg do tweet", "title": "mytitle"}' http://localhost:1337/tweet/create_tweet
+
 
 
 Notas

@@ -26,7 +26,7 @@
 </div>
 
 
-<div ng-controller="c2"> 
+<div ng-controller="contentcontroller"> 
 
 <div class="container">
 	<div class="row">
@@ -75,12 +75,12 @@
 		<!-- COLUNA DO MEIO -->
 		<div class="col-md-6">
 			<div class="row row-top">
-	            <form accept-charset="UTF-8" action="" method="POST">
-	            	<div><textarea placeholder="Título" rows="1"></textarea></div>
+	            <form accept-charset="UTF-8" novalidate>
+	            	<div><textarea placeholder="Título" rows="1" ng-model="tweetToPost.title"></textarea></div>
 
-	            	<div><textarea placeholder="O que está acontecendo?" rows="3"></textarea></div>
+	            	<div><textarea placeholder="O que está acontecendo?" rows="3" ng-model="tweetToPost.tweet"></textarea></div>
 
-	                <button class="btn btn-info" type="submit">Postar</button>
+	                <button class="btn btn-info"  ng-click="createTweet(tweetToPost)">Postar</button>
 	            </form>
 			</div>
 

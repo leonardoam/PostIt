@@ -6,23 +6,77 @@
  */
  
 module.exports = {
-	create_tweets: function(req, res) {
-		var tweets = [
-		{'user': '1', 'title': 'titulo1', 'text': 'text from tweet', 'timestamp': '1900-12-27T00:00:00Z'},
-		{'user': '2', 'title': 'titulo2', 'text': 'text from tweet', 'timestamp': '1912-12-27T00:00:00Z'}
-		
-		];
+	
+	create_tweet: function(req, res) {
+		var tweetToBD = {};
 
-		Tweets.create(tweets).exec(function callback(error, tweets_created) {
-			if(error) {
-				console.log("Error while creating tweets...");
-			}
+		var user_id = req.param('user_id') || undefined;
+		var tweet = req.param('tweet') || undefined;
+		var title = req.param('title') || undefined;
+		var timestamp =  new Date();
 
-			console.log("Tweets created successfully..");
+		sails.log("user and tweet " + user_id + tweet);
+	
+		if(user_id && tweet && title) {
+		User.findOne({
+  			id:user_id
+			}).exec(function (err, found_user){
+  				if (err) {
+    				return res.negotiate(err);
+  				}
+ 				 if (!found_user) {
+ 				 	sails.log('Could not find user ' +  user_id + ' sorry.');
+    				return res.json({reponse_msg: 'User ' + user_id + ' does not exist'});
+  				};
 
-			return res.json(tweets_created);
-		})
-	},
+  				sails.log('Found "%s"', found_user);
+
+  				tweetToBD = {'user': user_id, 'title': title, 'text': tweet, 'timestamp': timestamp};
+
+  				Tweet.create(tweetToBD).exec(function callback(error, tweets_created) {
+					if(error) {
+						console.log("Error while creating tweets...");
+						console.log(error);
+						return res.json({response_msg: 'error while creating tweet!'});
+					}
+
+					console.log("Tweets created successfully..");
+
+					return res.json({response_msg: 'ok'});
+				}); // create tweet exec
+
+			}); //find user exec
+		} //there are missing fields from client
+		 else 
+			return res.json({response_msg: 'invalid request!'});
+	}, 
+
+	get_tweets: function(req, res) {
+
+		var user_id = req.param('user_id') || undefined;
+
+	
+		if(user_id) {
+		Tweet.find({
+  			user:user_id
+			}).exec(function (err, found_tweets){
+  				if (err) {
+    				return res.negotiate(err);
+  				}
+ 				 if (!found_tweets) {
+ 				 	sails.log('Could not find user ' +  user_id + ' sorry.');
+    				return res.json({reponse_msg: 'there is no tweets for this user'});
+  				};
+
+  				sails.log('Found "%s"', found_tweets);
+
+  				return res.json(found_tweets);
+
+			}); //find user exec
+		} //there are missing fields from client
+		 else 
+			return res.json({response_msg: 'invalid request!'});
+	}
 	
 };
 

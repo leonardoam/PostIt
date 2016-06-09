@@ -18,7 +18,7 @@
 		  }).
 	       when('/content',{
 		    templateUrl: 'templates/content.html',
-		    controller: 'c2'
+		    controller: 'contentcontroller'
 		  }).
 	        when('/groups',{
 		    templateUrl: 'templates/groups.html',
@@ -85,6 +85,12 @@
 					//return $http.post('/user/login', auth_data);
 					//return $http.post('/user/create_user_debug', user);
 					return $http.post('/user/login', auth_data);
+					
+				},
+				'createTweet': function(tweet_data){
+					//return $http.post('/user/login', auth_data);
+					//return $http.post('/user/create_user_debug', user);
+					return $http.post('/tweet/create_tweet', tweet_data);
 					
 				}
 		}
@@ -179,6 +185,23 @@
 				}
 			);
 		}
+	});
+
+
+	myApp.controller('contentcontroller', function ($scope, Service) {
+		$scope.master = {};
+
+		$scope.createTweet = function(tweetToPost) {
+        	$scope.master = angular.copy(tweetToPost);
+        	console.log("title: " + $scope.master.title);
+        	console.log("tweet: " + $scope.master.tweet);
+        	
+        	/****** TODO verificar usuario atual *****/
+        	$scope.master['user_id'] = 1; //fix me 
+        	Service.createTweet($scope.master);
+
+      };	
+		
 	});
 
 	myApp.controller('c2', function ($scope, Service) {
