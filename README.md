@@ -58,8 +58,14 @@ aceita os seguintes atributos:
   }
 
   *Para criar usuario direto do terminal use:
-  
- curl -i -X POST -H "Content-Type: application/json" -d '{"nome": "Emanuel Valente", "login": "emanuel100", "password": "emapass", "birthday": "1900-12-27T00:00:00Z", "bio": "ema bio", "email": "emanuelvalente@gmail.com"}' http://localhost:1337/user/create_user
+ 
+ curl -i -X POST -H "Content-Type: application/json" -d '{"firstname": "Emanueente", "user": "emanuel100", "password": "emapass", "birthday": "10", "birthmonth": "2", "birthyear": "1940", "description": "ema description", "email": "emanuelvalente@gmail.com", "gender": "m" }' http://localhost:1337/user/create_user
+ 
+ 
+/user/login
+ 
+Comando curl para api login:
+curl -i -X POST -H "Content-Type: application/json" -d '{"user": "emanuelvalente", "password": "mypass"}' http://localhost:1337/user/login
 
 
 Notas

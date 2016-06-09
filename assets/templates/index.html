@@ -1,5 +1,5 @@
     <!--<div ng-app="my-App" ng-controller="Postit-Controller"> -->
-    <div ng-controller="c1">
+    <div ng-controller="userlogin">
         <div class="site-wrapper">
             <div class="site-wrapper-inner">
                 <div class="cover-container background-box">
@@ -23,16 +23,17 @@
                             <h3 class="panel-title">Seja bem-vindo! Faça seu login abaixo!</h3>
                         </div>
                         <div class="panel-body">
-                            <form accept-charset="UTF-8" role="form">
+                            <form name="loginForm" novalidate>
                                 <fieldset>
                                     <div class="col-xs-6 col-md-6">
                                         <div class="form-group">
-                                            <input class="form-control" placeholder="yourmail@example.com" name="email" type="text" value="">
+                                            <input class="form-control" ng-model="login_data.user" placeholder="yourmail@example.com"  type="text" value="">
+                                    
                                         </div>
                                     </div>
                                     <div class="col-xs-6 col-md-6">
                                         <div class="form-group">
-                                            <input class="form-control" placeholder="senha" name="password" type="password" value="">
+                                            <input class="form-control" ng-model="login_data.password" placeholder="senha" name="password" type="password" value="">
                                         </div>
                                     </div>
                                     <div class="checkbox">
@@ -43,12 +44,17 @@
                                 </fieldset>
                             </form>
                             <p class="lead">
-                                <a href="#/content" class="btn btn-lg btn-primary btn-block btn-success">Entrar</a>
+                                 <input type="submit" class="btn btn-lg btn-primary  btn-success" ng-click="doLogin(login_data)" value="Entrar" /> 
+                                <!--<input type="submit" ng-submit="doLogin(login_data)" class="btn btn-lg btn-primary  btn-success" value="Entrar" /> -->
+                                
                             </p>
+
+                            <p class="lead">Status de autenticacao: {{login_status}}<a>
                             <hr/>
                             <center><h4>ou</h4></center>
                             <p class="lead">
                                 <a href="#/signup" class="btn btn-lg btn-primary btn-block signup-btn">Crie sua conta!</a>
+
                             </p>
                         </div>
                     </div>

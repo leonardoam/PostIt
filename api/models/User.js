@@ -22,7 +22,7 @@ module.exports = {
     id: {
       type: 'integer',
       primaryKey: true,
-      autoIncremet: true
+      autoIncrement: true
     },
     name: {
       type: 'string',
@@ -54,6 +54,10 @@ module.exports = {
       type: 'string',
       required: true,
       notNull: true
+    },
+    /*opcional*/
+     gender: {
+      type: 'string'
     },
     groups: {
       collection: 'group',

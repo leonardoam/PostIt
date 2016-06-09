@@ -1,5 +1,6 @@
 ﻿
-	var myApp = angular.module('App', ['ngRoute']);
+	var myApp = angular.module('App',  ['ngRoute']);
+		
 	//retorna um objeto "template" para os controllers e o ng-model trabalharem
 	// Os dados são definidos no serviço, assim, mais controladores interessados
     //	nos dados tem somente que declarar/registrar o serviço -> modularização.
@@ -9,7 +10,7 @@
 	      $routeProvider.
 	      when('/',{
 		     templateUrl: 'templates/index.html',
-		      controller: 'c1'
+		      controller: 'userlogin'
 		  }).
 	      when('/signup',{
 		    templateUrl: 'templates/signup.html',
@@ -78,7 +79,14 @@
 				'createUser': function(user){
 					return $http.post('/user/create_user', user);
 					//return $http.post('/user/create_user_debug', user);
-				} 
+				},
+
+				'doLogin': function(auth_data){
+					//return $http.post('/user/login', auth_data);
+					//return $http.post('/user/create_user_debug', user);
+					return $http.post('/user/login', auth_data);
+					
+				}
 		}
 	});
 
@@ -100,9 +108,39 @@
 
         	Service.createUser($scope.master);
 
-      };
+      };	
 		
-		
+	});
+
+	myApp.controller('userlogin', function ($scope, Service) {
+		$scope.auth_data = {};
+		$scope.login_status = false;
+	
+
+		$scope.doLogin = function(login_data) {
+			$scope.isCollapsed = false;
+			console.log("login data:" );
+        	$scope.auth_data = angular.copy(login_data);
+        	console.log("user: " + $scope.auth_data.user);
+        	console.log("pass: " + $scope.auth_data.password);
+      
+      		//$scope.login_status = Service.doLogin($scope.auth_data);
+      		
+
+      		Service.doLogin($scope.auth_data).then(
+				//Success
+				function(respon){
+					//console.log("respon.data: " + respon.data['is_authenticated']);
+					/*carregar o modelo do usuario logado neste momento*/
+					$scope.login_status = respon.data['is_authenticated'];
+				
+				},
+				//error
+				function(respon){
+					console.log('Erro ao recuperar lista do servidor...');
+				}
+			);
+      };	
 		
 	});
 
@@ -152,3 +190,5 @@
 		}
 		//$scope.tasks = Service;
 	});
+
+	

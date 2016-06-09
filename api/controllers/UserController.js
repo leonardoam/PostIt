@@ -26,12 +26,55 @@ module.exports = {
 		})
 	},
 
+	login: function(req, res) {
+		var user = req.param('user') || undefined;
+		var pass = req.param('password') || undefined;
+
+		sails.log("user and pass " + user + pass);
+	
+		if(user && pass) {
+		User.findOne({
+  			login:user
+			}).exec(function (err, found_user){
+  				if (err) {
+    				return res.negotiate(err);
+  				}
+ 				 if (!found_user) {
+ 				 	sails.log('Could not find user ' +  user + ' sorry.');
+    				//return res.badRequest('Could not find user ' +  user + ' sorry.');
+    				return res.json({is_authenticated: 'false'});
+    				//return res.redirect('/signup');
+  				}
+
+  				sails.log('Found "%s"', found_user);
+  				if(found_user.password == pass) {
+  					sails.log("user " + user + " is authenticated");
+  					//res.send("user " + user + " is authenticated");
+  					return res.json({is_authenticated: 'true'});
+  					
+  				}
+  				else {
+  					sails.log("password incorrect for user " + user);
+  					//res.send("password incorrect for user " + user);
+  					return res.json({is_authenticated: 'false'});
+  					
+  				}
+			});
+		} else {
+			//return res.badRequest("Invalid Request!");
+			return res.json({is_authenticated: 'false'});
+
+		}
+	},
+
+		
+
 	create_user: function(req, res) {
 		//var params = req.params.all();
 		//var params = req.query;
 
 		var user_content = {
-		 nome: req.param('firstname') || undefined,
+		 name: req.param('firstname') || undefined,
          login: req.param('user')  || undefined,
          password: req.param('password') || undefined,
          bio: req.param('description') || undefined,
@@ -45,7 +88,7 @@ module.exports = {
 		
 		
 		console.log("Printing request");
-		console.log("nome: " + user_content['nome']);
+		console.log("name: " + user_content['name']);
 		console.log("login: " + user_content['login']);
 		console.log("password: " + user_content['password']);
 		console.log("birthday: " + user_content['birthday']);
@@ -53,7 +96,7 @@ module.exports = {
 		console.log("email: " + user_content['email']);
 		console.log("gender: " + user_content['gender']);
 
-		if(user_content['nome'] != undefined && user_content['login'] != undefined &&
+		if(user_content['name'] != undefined && user_content['login'] != undefined &&
 		   user_content['password'] != undefined && user_content['birthday'] != undefined &&
 		   user_content['bio'] != undefined && user_content['email'] != undefined && 
 		   user_content['gender'] != undefined) {
@@ -61,6 +104,8 @@ module.exports = {
 			User.create(user_content).exec(function callback(error, users_created) {
 				if(error) {
 					console.log("Error while creating users...");
+					console.log(error);
+					return res.json({was_created: 'false'});
 				}
 
 				console.log("User created successfully..");
@@ -69,7 +114,7 @@ module.exports = {
 			})
 		}
 		else
-			return res.send("Error creating user!");
+			return res.json({was_created: 'missing fields'});
 	},
 
 	create_user_debug: function(req, res) {
