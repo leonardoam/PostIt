@@ -26,7 +26,7 @@
 			}).
 			when('/profile',{
 			  	templateUrl: 'templates/profile.html',
-			  	controller: 'c2'
+			  	controller: 'profile-controller'
 			}).
 			when('/statistic',{
 			  	templateUrl: 'templates/statistic.html',
@@ -67,12 +67,13 @@
 	});
 
 	//CONTROLADOR PARA CRIACAO DE USUARIOS
-	myApp.controller('signup-controller', function ($scope, Service) {
+	myApp.controller('signup-controller', function ($scope, Service, $location) {
 		$scope.master = {};
 
 		$scope.createUser = function(user) {
         	$scope.master = angular.copy(user);
         	Service.post('user','create_user',$scope.master);
+        	alert("Usuário " + $scope.master.user + " criado com sucesso!");
         	$location.path('/#');
         };
 	});
@@ -274,8 +275,9 @@
     									 return parseFloat(b.hour) - parseFloat(a.hour);
     								else return parseFloat(b.minute) - parseFloat(a.minute);
 								});
+								
 							},
-							function(respon){}
+							function(respon) {}
 						);
 					}
 				},
@@ -291,3 +293,72 @@
         	Service.post('tweet','create_tweet',$scope.master);
       	};
 	});
+
+	//CONTROLADOR DO PROFILE
+	myApp.controller('profile-controller', function ($scope, Service) {
+
+		/*busca id do usuario logado para popular seus dados no client*/
+		var id_user = {'id_user': Service.get_user()};
+			
+			//busca os dados do proprio usuario
+			Service.post('user','get_data',id_user).then(
+				function(respon){ //SUCESSO
+				
+					/*fix birthday*/
+					respon.data.birthday = respon.data.birthday.split("-");
+					respon.data.birthday = respon.data.birthday[2][0] + respon.data.birthday[2][1] + '/' 
+						+ respon.data.birthday[1] + '/' + respon.data.birthday[0];
+				
+					if(respon.data.gender = 'm')
+						respon.data.gender = 'masculino';
+					else 
+						respon.data.gender = 'feminino';
+
+					$scope.user = respon.data
+					//$scope.login = respon.data.login;
+				},
+
+				function(respon){ //FALHA
+					console.log('erro ao procurar usuario');
+				}
+			);
+
+			$scope.get_userTweets = function(){
+				$scope.tweetsList = [];
+					
+					
+				Service.post('tweet','get_tweets', id_user).then(
+					function(respon){
+						//$scope.tweetsList = respon.data;
+						//console.log("tweet list: " + $scope.tweetsList);	
+
+						/*fix date*/
+						for(j=0; j < respon.data.length; j++) {
+							console.log(respon.data[j].timestamp);
+							time = respon.data[j].timestamp.split(' ');
+							respon.data[j].day = time[2];
+							respon.data[j].month = time[1];
+							respon.data[j].year = time[3];
+							time = time[4].split(':');
+							respon.data[j].minute = time[1];
+							respon.data[j].hour = time[0];
+							//adiciona cada tweet na lista
+							$scope.tweetsList.push( respon.data[j] );
+						}//for
+
+						//ordena os tweets colocando o mais recente na frente
+						$scope.tweetsList.sort(function(a, b) {
+							if(parseFloat(b.hour) - parseFloat(a.hour) != 0)
+    							 return parseFloat(b.hour) - parseFloat(a.hour);
+    						else return parseFloat(b.minute) - parseFloat(a.minute);
+						});
+					},
+					//falha
+					function(respon) {
+						console.log("falha ao listar tweets!");
+					}					
+				);
+						
+			}///get_userTweets
+		
+		});
