@@ -9,10 +9,30 @@ module.exports = {
 
 	create_users: function(req, res) {
 		var users = [
-		{'nome': 'Emanuel Valente', 'login': 'emanuel', 'password': 'emapass', 'birthday': '1900-12-27T00:00:00Z', 'bio': "ema bio", 'email': 'emanuelvalente@gmail.com'},
-		{'nome': 'Leonardo Miguel', 'login': 'leonardo', 'password': 'leopass', 'birthday': '1920-12-27T00:00:00Z', 'bio': "leo bio", 'email': 'leonardomiguel@gmail.com'},
-		{'nome': 'Cláudio Domene', 'login': 'claudio', 'password': 'claudiopass', 'birthday': '1950-12-27T00:00:00Z', 'bio': "claudio bio", 'email': 'claudiodomene@gmail.com'}
-
+			{
+				'name': 'Emanuel Valente',
+				'login': 'emanuel',
+				'password': 'emapass',
+				'birthday': '1900-12-27T00:00:00Z',
+				'bio': "ema bio",
+				'email': 'emanuelvalente@gmail.com'
+			},
+			{
+				'name': 'Leonardo Miguel',
+				'login': 'leonardo',
+				'password': 'leopass',
+				'birthday': '1920-12-27T00:00:00Z',
+				'bio': "leo bio",
+				'email': 'leonardomiguel@gmail.com'
+			},
+			{
+				'name': 'Cláudio Domene',
+				'login': 'claudio',
+				'password': 'claudiopass',
+				'birthday': '1950-12-27T00:00:00Z',
+				'bio': "claudio bio",
+				'email': 'claudiodomene@gmail.com'
+			}
 		];
 
 		User.create(users).exec(function callback(error, users_created) {
@@ -25,49 +45,35 @@ module.exports = {
 			return res.json(users_created);
 		})
 	},
-
+	
 	login: function(req, res) {
 		var user = req.param('user') || undefined;
 		var pass = req.param('password') || undefined;
 
-		sails.log("user and pass " + user + pass);
+		sails.log("user and pass " + user + ' '+ pass);
 	
 		if(user && pass) {
-		User.findOne({
-  			login:user
-			}).exec(function (err, found_user){
+		User.findOne({login:user})
+			.exec(function (err, found_user){
   				if (err) {
     				return res.negotiate(err);
   				}
- 				 if (!found_user) {
- 				 	sails.log('Could not find user ' +  user + ' sorry.');
-    				//return res.badRequest('Could not find user ' +  user + ' sorry.');
-    				return res.json({is_authenticated: 'false'});
-    				//return res.redirect('/signup');
-  				}
 
-  				sails.log('Found "%s"', found_user);
-  				if(found_user.password == pass) {
-  					sails.log("user " + user + " is authenticated");
-  					//res.send("user " + user + " is authenticated");
-  					return res.json({is_authenticated: 'true'});
-  					
-  				}
+ 				if (!found_user)
+    				return res.negotiate('Could not find user ' +  user + ' sorry.');
   				else {
-  					sails.log("password incorrect for user " + user);
-  					//res.send("password incorrect for user " + user);
-  					return res.json({is_authenticated: 'false'});
-  					
+  					if(found_user.password == pass) {
+	  					sails.log("user " + user + " is authenticated");
+	  					return res.json(found_user);
+  					}
+  					else
+  						return res.negotiate("password incorrect for user " + user);
   				}
 			});
 		} else {
-			//return res.badRequest("Invalid Request!");
-			return res.json({is_authenticated: 'false'});
-
+			return res.negotiate();
 		}
 	},
-
-		
 
 	create_user: function(req, res) {
 		//var params = req.params.all();
@@ -140,8 +146,34 @@ module.exports = {
 		console.log("birthday: " + user_content['birthday']);
 		console.log("bio: " + user_content['bio']);
 		console.log("email: " + user_content['email']);
+	},
+
+	get_data: function(req,res){
+		var id_user = req.param('id_user')  || undefined;
+
+		User.findOne({'id':id_user}).exec(function (err, found_user){
+			if (err) {
+    			return res.negotiate(err);
+  			}
+  			else {
+  				return res.json(found_user);
+  			}
+		});
+	},
+
+
+	get_groups: function(req,res){
+		var id_user = req.param('id_user');
+
+		User.findOne({'id':id_user}).populate('groups').exec(function callback(err, found_user){
+			if (err) {
+    			return res.negotiate(err);
+  			}
+  			else {
+  				return res.json(found_user.groups);
+  			}
+		});
 	}
 
-	
 };
 

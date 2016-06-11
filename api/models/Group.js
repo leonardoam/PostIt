@@ -18,15 +18,15 @@
 module.exports = {
 
   attributes: {
-    relativeId: {
-      model: 'user',
-      required: true,
-      notNull: true
-    },
-    id: {
+    relativeId: { 
       type: 'integer',
       primaryKey: true,
       autoIncrement: true
+    },
+    id: { 
+      model: 'user',
+      required: true,
+      notNull: true
     },
     name: {
       type: 'string',

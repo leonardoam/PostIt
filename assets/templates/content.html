@@ -1,89 +1,126 @@
-<!-- Barra de navegacao -->
-<div class="container-fluid">
-    <div class="row">
-        <div id="navbar" class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header"><a class="navbar-brand" href=""><img src="images/postit-icon.png" height="20px" width="20px"></a></div>
-                <div id="navbar" class="navbar-collapse collapse">
 
-                    <ul class="nav navbar-nav">
-                        <li><a href=""> Início </a></li>
-                        <li><a href=""> Perfil </a></li>
-                        <li><a href=""> Estatísticas </a></li>
-                    </ul>
+<div ng-controller="login-controller">
+	<!--VERIFICA SE O USUARIO ESTA LOGADO-->
+	<div ng-if="auth == 'false'" ng-init="goPage('#')"></div>
 
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href=""> Sair </a></li>
-                    </ul>
+	<!-- BARRA DE NAVEGACAO -->
+	<div class="container-fluid">
+	    <div class="row">
+	        <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+	            <div class="container">
+	                <div class="navbar-header"><a class="navbar-brand" href=""><img src="images/postit-icon.png" height="20px" width="20px"></a></div>
+	                <div id="navbar" class="navbar-collapse collapse">
 
-                    <form class="navbar-form navbar-right" >
-                        <input type="text" class="form-control" placeholder="Buscar...">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+	                    <ul class="nav navbar-nav">
+	                        <li><a href=""> Início </a></li>
+	                        <li><a href=""> Perfil </a></li>
+	                        <li><a href=""> Estatísticas </a></li>
+	                    </ul>
+
+	                    <ul class="nav navbar-nav navbar-right">
+	                        <li><a href="" ng-click="logout()"> Sair </a></li>
+	                    </ul>
+
+	                    <form class="navbar-form navbar-right" >
+	                        <input type="text" class="form-control" placeholder="Buscar...">
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
 </div>
 
 
-<div ng-controller="contentcontroller"> 
-
 <div class="container">
 	<div class="row">
+		<div ng-controller="userData-controller" ng-init="getUserData()">
+			<!-- COLUNA DA ESQUERDA-->
+			<div class="col-md-3">
 
-		<!-- COLUNA DA ESQUERDA-->
-		<div class="col-md-3">
+				<!--CAMPO DE DADOS PESSOAIS-->
+				<div class="row row-top" id="persdata-summarized">
+					<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
+					<p align="left"><strong>{{name}}</strong></br></p>
+					<p align="left" style=""><a href="">@{{login}}</a></br></p>
+					<table>
+						<tr>
+							<td align="left" >SEGUINDO: </td>
+							<td align="right">{{followers}} </td>
+						</tr>
+						<tr>
+							<td align="left" >SEGUIDORES: </td>
+							<td align="right">{{follows}}</td>
+						</tr>
+						<tr>
+							<td align="left" >PUBLICAÇÕES: </td>
+							<td align="right">{{tweets}}</td>
+						</tr>
+					</table>
+				</div>
 
-			<!--CAMPO DE DADOS PESSOAIS-->
-			<div class="row row-top" id="persdata-summarized">
-				<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
-				<p align="left"><strong>Madruga</strong></br></p>
-				<p align="left" style=""><a href="">@seumadruga</a></br></p>
-				<table>
-					<tr>
-						<td align="left" >SEGUINDO: </td>
-						<td align="right">67 </td>
-					</tr>
-					<tr>
-						<td align="left" >SEGUIDORES: </td>
-						<td align="right">32</td>
-					</tr>
-					<tr>
-						<td align="left" >PUBLICAÇÕES: </td>
-						<td align="right">27</td>
-					</tr>
-				</table>
+				<!--CAMPO COM OS GRUPOS QUE PARTICIPA-->
+				<div class="row row-bottom" id="groups">
+					<p align="left"><strong>GRUPOS</strong></p>
+					<div ng-repeat="g in groupsList">
+						<p align="left"><a href="/#/groups"> @{{g.name}} </a></br></p>
+					</div>
+
+					<hr>
+					
+					<div ng-controller="group-controller">
+						<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
+				            <div style="margin: 0px"><textarea placeholder="Nome" rows="1" ng-model="groupName" style="margin: 0px"></textarea></div>
+
+				            <button class="btn btn-info" ng-click="createGroup()"> Criar grupo </button>
+			            </form>
+		            </div>
+				</div>
 			</div>
 
-			<!--CAMPO COM OS GRUPOS QUE PARTICIPA-->
-			<div class="row row-bottom" id="groups">
-				<p align="left"><strong>GRUPOS</strong></p>
-				<p align="left"><a href="/#/groups"> @Vila </a></br></p>
-				<p align="left"><a href="/#/groups"> @CAASO </a></br></p>
-				<p align="left"><a href="/#/groups"> @Comp012 </a></br></p>
+			<!-- COLUNA DO MEIO-->
+			<div ng-controller="tweet-controller" ng-init="get_tweets()">
+				<div class="col-md-6">
+					<div class="row row-top">
+			            <form accept-charset="UTF-8" novalidate>
+			            	<div><textarea placeholder="Título" rows="1" ng-model="tweetToPost.title"></textarea></div>
 
-				<hr>
-				
-				<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
-		            <div style="margin: 0px"><textarea placeholder="Nome" rows="1" style="margin: 0px"></textarea></div>
+			            	<div><textarea placeholder="O que está acontecendo?" rows="3" ng-model="tweetToPost.tweet"></textarea></div>
 
-		            <button class="btn btn-info" type="submit"> Criar grupo </button>
-	            </form>
+			                <button class="btn btn-info"  ng-click="createTweet(tweetToPost); get_tweets(); getUserData()";>Postar</button>
+			            </form>
+					</div>
+
+
+					<div ng-repeat="t in tweetsList">
+						<div class="row row-middle">
+						<div class="row">
+							<div class="col-md-6">
+								<img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
+								<p align="left"><strong><a href="">@{{t.login}}</a></strong></p>
+								<p align="left"> {{t.day}}/{{t.month}}/{{t.year}} - {{t.hour}}:{{t.minute}}h </p>
+							</div>
+							<div class="col-md-6">
+								<button class="btn btn-default" type="submit"> Republicar</button>
+							</div>
+						</div>
+						<div class="row">
+							<p align="left">{{t.title}}</a></p>
+						</div>
+						<div class="row">
+							<p align="left"> {{t.text}}</p>
+						</div>
+
+						<div class="row">
+							<button type="submit"></button>
+							<p>233</p>
+							<button type="submit"></button>
+							<p>0</p>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
-
-		<!-- COLUNA DO MEIO -->
-		<div class="col-md-6">
-			<div class="row row-top">
-	            <form accept-charset="UTF-8" novalidate>
-	            	<div><textarea placeholder="Título" rows="1" ng-model="tweetToPost.title"></textarea></div>
-
-	            	<div><textarea placeholder="O que está acontecendo?" rows="3" ng-model="tweetToPost.tweet"></textarea></div>
-
-	                <button class="btn btn-info"  ng-click="createTweet(tweetToPost)">Postar</button>
-	            </form>
-			</div>
-
+			<!--
 			<div class="row row-middle">
 				<div class="row">
 					<div class="col-md-6">
@@ -106,11 +143,11 @@
 					</div>
 
 					<div class="row">
-						<p align="left"> Muito bom!</a></p>
+						<p align="left"> {{t.title}}</a></p>
 					</div>
 
 					<div class="row">
-						<p align="left"> <a href="">@Kiko</a> Estou tomando um suco de tamarindo. Muito bom! <a href="">#sucodetamarindo</a> <a href="">#cordelimao</a> <a href="">#gostodegroselha</a></p>
+						<p align="left"> {{t.text}}</p>
 					</div>
 
 					<div class="row">
@@ -236,8 +273,7 @@
 				<form action="" method="POST">
 					<button class="btn btn-link" type="submit">Carregar mais postagens</button>
 				</form>
-			</div>
+			</div>-->
 		</div>
 	</div>
-</div>
 </div>

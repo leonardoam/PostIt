@@ -6,32 +6,91 @@
  */
  
 module.exports = {
-	
+
+	create_tweets: function(req, res) {
+		var tweets = [
+			{
+				'user': 1,
+				'title': 'a',
+				'text': 'aaa',
+				'timestamp': '2016-06-11T20:43:17.463Z'
+			},
+			{
+				'user': 2,
+				'title': 'b',
+				'text': 'bbb',
+				'timestamp': '2016-06-11T20:45:17.463Z'
+			},
+			{
+				'user': 2,
+				'title': 'c',
+				'text': 'ccc',
+				'timestamp': '2016-06-11T20:50:17.463Z'
+			},
+			{
+				'user': 2,
+				'title': 'd',
+				'text': 'ddd',
+				'timestamp': '2016-06-11T20:55:17.463Z'
+			},
+			{
+				'user': 1,
+				'title': 'e',
+				'text': 'eee',
+				'timestamp': '2016-06-11T21:00:17.463Z'
+			},
+			{
+				'user': 2,
+				'title': 'f',
+				'text': 'fff',
+				'timestamp': '2016-06-11T21:05:17.463Z'
+			},
+			{
+				'user': 2,
+				'title': 'g',
+				'text': 'ggg',
+				'timestamp': '2016-06-11T21:10:17.463Z'
+			}
+		];
+
+		Tweet.create(tweets).exec(function callback(error, users_created) {
+			if(error) {
+				console.log(error);
+			}
+			else
+				console.log("Tweets created successfully..");
+
+			return res.json(users_created);
+		})
+	},
+
+
+
 	create_tweet: function(req, res) {
 		var tweetToBD = {};
 
-		var user_id = req.param('user_id') || undefined;
+		var id_user = req.param('id_user') || undefined;
 		var tweet = req.param('tweet') || undefined;
 		var title = req.param('title') || undefined;
 		var timestamp =  new Date();
 
-		sails.log("user and tweet " + user_id + tweet);
+		sails.log("user and tweet " + id_user + tweet);
 	
-		if(user_id && tweet && title) {
+		if(id_user && tweet && title) {
 		User.findOne({
-  			id:user_id
+  			id:id_user
 			}).exec(function (err, found_user){
   				if (err) {
     				return res.negotiate(err);
   				}
  				 if (!found_user) {
- 				 	sails.log('Could not find user ' +  user_id + ' sorry.');
-    				return res.json({reponse_msg: 'User ' + user_id + ' does not exist'});
+ 				 	sails.log('Could not find user ' +  id_user + ' sorry.');
+    				return res.json({reponse_msg: 'User ' + id_user + ' does not exist'});
   				};
 
   				sails.log('Found "%s"', found_user);
 
-  				tweetToBD = {'user': user_id, 'title': title, 'text': tweet, 'timestamp': timestamp};
+  				tweetToBD = {'user': id_user, 'title': title, 'text': tweet, 'timestamp': timestamp};
 
   				Tweet.create(tweetToBD).exec(function callback(error, tweets_created) {
 					if(error) {
@@ -53,22 +112,19 @@ module.exports = {
 
 	get_tweets: function(req, res) {
 
-		var user_id = req.param('user_id') || undefined;
+		var id_user = req.param('id_user') || undefined;
 
-	
-		if(user_id) {
-		Tweet.find({
-  			user:user_id
-			}).exec(function (err, found_tweets){
+		if(id_user) {
+		Tweet.find({'user':id_user}).exec( function callback(err, found_tweets){
   				if (err) {
     				return res.negotiate(err);
   				}
- 				 if (!found_tweets) {
- 				 	sails.log('Could not find user ' +  user_id + ' sorry.');
+ 				if (!found_tweets) {
+ 				 	sails.log('Could not find user ' +  id_user + ' sorry.');
     				return res.json({reponse_msg: 'there is no tweets for this user'});
   				};
 
-  				sails.log('Found "%s"', found_tweets);
+  				//sails.log('Found "%s"', found_tweets);
 
   				return res.json(found_tweets);
 

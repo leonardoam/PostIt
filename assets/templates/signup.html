@@ -1,45 +1,43 @@
 <!--<div ng-app="my-App" ng-controller="Postit-Controller"> -->
-<div ng-controller="usercontroller"> 
+
+<script src="/js/validateSignup.js"></script>
+
+<div ng-controller="login-controller">
+	<div ng-if="auth == 'true'" ng-init="goPage('content')"></div>
+</div>
+
+<div ng-controller="signup-controller"> 
 		<div class="site-wrapper">
     		<div class="site-wrapper-inner">
         		<div class="cover-container background-box">
-					<div class="masthead clearfix">
-            			<div class="inner">
-              				<h3 class="masthead-brand">PostIt</h3>
-              				<nav>
-                				<ul class="nav masthead-nav">
-                  					<li class="active"><a href="#/">Home</a></li>
-					                <li><a href="#">Saiba Mais</a></li>
-					                <li><a href="#">Contato</a></li>
-                				</ul>
-              				</nav>
-            			</div>
-          			</div>
 
           			<div class="inner cover">
-          				<form  novalidate  accept-charset="utf-8" class="form" role="form">
+          				<form  novalidate  accept-charset="utf-8" class="form" role="form" onsubmit="validateSingup(this)">
           					<legend>Cadastre-se</legend>
             				<h4>É grátis e sempre será grátis!</h4>
+
             				<div class="row">
               					<div class="col-xs-6 col-md-6">
-               						<input type="text"  ng-model="user.firstname" value="" min="3" max="32" class="form-control input-lg" placeholder="Nome" required />
+               						<input name="firstname" type="text"  ng-model="user.firstname" value="" min="3" max="32" class="form-control input-lg" placeholder="Nome" required />
               					</div>
+
               					<div class="col-xs-6 col-md-6">
-                					<input type="text" ng-model="user.lastname" min="3" max="128" value="" class="form-control input-lg" placeholder="Sobrenome" required />
+                					<input name="lastname" type="text" ng-model="user.lastname" min="3" max="128" value="" class="form-control input-lg" placeholder="Sobrenome" required />
               					</div>
             				</div>
-            				<input type="email" ng-model="user.email" value="" class="form-control input-lg" placeholder="Seu Email" required />
+
+            				<input name="email" type="email" ng-model="user.email" value="" class="form-control input-lg" placeholder="example@example.com" required />
               				
 
              				<div class="row">
                 				<div class="col-md-6">
-                					<input type="text" ng-model="user.user"  min="3" max="15" value="" class="form-control input-lg" placeholder="@Usuário" required />
+                					<input name="user" type="text" ng-model="user.user"  min="3" max="15" value="" class="form-control input-lg" placeholder="@Usuário" required />
                 				</div>
                 				<div class="col-md-2">
                 					<label>Sexo:</label>
                 				</div>
                 				<div class="col-md-4">
-	                				<select name="Sexo" class = "form-control input-lg" ng-model="user.gender">
+	                				<select name="sexo" class = "form-control input-lg" ng-model="user.gender">
 										<option value="m">masculino</option>
 										<option value="f">feminino</option>
 									</select>    
@@ -48,10 +46,10 @@
 
               				<div class="row">
                 				<div class="col-xs-6 col-md-6">
-                					<input type="password" ng-model="user.password" value="" class="form-control input-lg" placeholder="Senha" required />
+                					<input name="password" type="password" ng-model="user.password" value="" class="form-control input-lg" placeholder="Senha" required />
                 				</div>
                 				<div class="col-xs-6 col-md-6">
-                					<input type="password" name="confirm_password" value="" class="form-control input-lg" placeholder="Confirme sua senha" required />                    
+                					<input name="passwordConfirm" type="password" name="confirm_password" value="" class="form-control input-lg" placeholder="Confirme sua senha" required />                    
                 				</div>
               				</div>
 
@@ -196,7 +194,7 @@
                 				</div>
             				</div>
             				
-            				<input type="textarea" rows="5" ng-model="user.description"  min="3" max="200" rows="5" value="" class="form-control input-lg" placeholder="Descrição"  required />
+            				<input name="descricao" type="textarea" rows="5" ng-model="user.description"  min="3" max="200" rows="5" value="" class="form-control input-lg" placeholder="Descrição"  required />
 
             				<div class="row">
             					<div class="col-md-4">
@@ -212,15 +210,10 @@
               				<br/>
               				<br/>
               				<p class="lead">
-                				 <input type="submit" class="btn btn-lg btn-primary btn-block signup-btn" ng-click="sendNewUser(user)" value="Cadastrar" />
+                				 <input type="submit" class="btn btn-lg btn-primary btn-block signup-btn" ng-click="createUser(user)" value="Cadastrar" />
               				</p>
            				</form>
            			</div>
-				<div class="mastfoot">
-          			<div class="inner">
-             			<p>Trabalho da Disciplina <a href="#">SCC0219</a>, by <a href="#">@Grupo 02</a>.</p>
-           			</div>
-          		</div>
         	</div>
 			</div>
 		</div>

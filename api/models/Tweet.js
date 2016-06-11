@@ -38,7 +38,7 @@ module.exports = {
       notNull: true
     },
     timestamp: {
-      type: 'datetime',
+      type: 'string',
       required: true,
       notNull: true
     }
