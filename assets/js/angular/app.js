@@ -335,11 +335,12 @@
 						/*fix date*/
 						for(j=0; j < respon.data.length; j++) {
 							console.log(respon.data[j].timestamp);
-							time = respon.data[j].timestamp.split(' ');
-							respon.data[j].day = time[2];
+							time = respon.data[j].timestamp.split('-');
 							respon.data[j].month = time[1];
-							respon.data[j].year = time[3];
-							time = time[4].split(':');
+							respon.data[j].year = time[0];
+							time = time[2].split('T');
+							respon.data[j].day = time[0];
+							time = time[1].split(':');
 							respon.data[j].minute = time[1];
 							respon.data[j].hour = time[0];
 							//adiciona cada tweet na lista

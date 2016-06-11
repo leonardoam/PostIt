@@ -72,7 +72,9 @@ module.exports = {
 		var id_user = req.param('id_user') || undefined;
 		var tweet = req.param('tweet') || undefined;
 		var title = req.param('title') || undefined;
-		var timestamp =  new Date();
+		//var timestamp =  new Date();
+		var d = new Date();
+		var timestamp = d.toJSON();
 
 		sails.log("user and tweet " + id_user + tweet);
 	
