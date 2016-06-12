@@ -230,15 +230,15 @@ body {
 	margin: 10px 0px 15px 10px;
 }
 
-#group-members > div:nth-child(1n+1)  {
+#group-members > div > div:nth-child(1n+1)  {
 	padding-left: 10px;
 }
 
-#group-members > div:nth-child(1n+1) > p {
+#group-members > div > div:nth-child(1n+1) > p {
 	float: left;
 }
 
-#group-members > div > img {
+#group-members > div > div > img {
 	float: left;
 	margin: 0px 5px 5px 25px;
 }

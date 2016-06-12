@@ -20,9 +20,9 @@
 			  	templateUrl: 'templates/content.html',
 			  	controller: 'login-controller'
 			}).
-		    when('/groups',{
+		    when('/groups:groupParam',{
 			  	templateUrl: 'templates/groups.html',
-			  	controller: 'c2'
+			  	controller: 'login-controller',
 			}).
 			when('/profile',{
 			  	templateUrl: 'templates/profile.html',
@@ -82,6 +82,7 @@
 	myApp.controller('login-controller', function ($scope, $location, Service) {
 
 		$scope.auth = Service.get_auth();
+		$scope.userId = Service.get_user();
 
 		$scope.login = function(login_data) {
         	var auth_data = angular.copy(login_data);
@@ -111,9 +112,9 @@
 	});
 
 	//CONTROLADOR PARA GRUPOS
-	myApp.controller('group-controller', function ($scope, Service) {
-		$scope.master = {};
+	myApp.controller('group-controller', function ($scope, Service,$location,$routeParams) {
 
+<<<<<<< HEAD
 		$scope.createGroup = function(user) {
 			var group_data = {'id_user': Service.get_user(), 'group_name': $scope.groupName};
 			var ret = false;
@@ -126,21 +127,95 @@
 					if(ret) {
 						Service.post('group','join_group', group_data);
 					}
-				},
+=======
+		$scope.group_data = function(){
+			var x = $routeParams.groupParam.split(':');
+			var id_group = x[1];
+			$scope.name_group = x[2];
 
+
+
+			Service.post('group','get_members',{'id_group': id_group}).then(
+				function(respon){
+					$scope.members = respon.data;
+					$scope.membersNumber = respon.data.length; 
+				},
+				function(respon){}
+			);
+
+			Service.post('group','get_master',{'id_group': id_group}).then(
+				function(respon){
+					$scope.master = respon.data;
+>>>>>>> 7c6995277fba31c8be1a651df259419d7712ca1c
+				},
+				function(respon){}
+			);
+		}
+
+<<<<<<< HEAD
 				function(respon){	//FALHA
 					alert("falha ao tentar criar um grupo!");
 				}
 			);//then
 
     	}
+=======
+		$scope.createGroup = function(user) {
+			var group_data = {'id_user': Service.get_user(), 'group_name': $scope.groupName};
+
+			Service.post('group','create_group',group_data).then(
+				function(respon){
+					Service.post('group','join_member',{'id_user': Service.get_user(), 'group_name': respon.data.relativeId});
+				},
+				function(respon){}
+			);
+
+        }
+
+        $scope.addMember = function(){
+			var x = $routeParams.groupParam.split(':');
+			var id_group = x[1];
+			var name_group = x[2];
+
+
+        	//primeiro verifica se o usuario existe
+        	Service.post('user','find_user',{'login_user': $scope.addMember}).then(
+        		function(respon){
+        			
+		        	var user_data = {
+		        		'id_user': respon.data.id,
+		        		'group_id': id_group
+		        	};
+
+        			Service.post('group','join_member',user_data);
+
+        		},
+        		function(respon){ alert("Usuario não existe!"); }
+        	);
+        }
+
+        $scope.deleteMember = function(){
+
+        }
+
+        $scope.deleteGroup = function(){
+
+        }
+
+        $scope.leaveGroup = function(){
+
+        }
+
+        $scope.groupSelected = function(group) {
+        	$location.path('/groups:' + group.relativeId + ':' + group.name);
+        }
+>>>>>>> 7c6995277fba31c8be1a651df259419d7712ca1c
 	});
 	
 	//CONTROLADOR PARA BUSCAR OS DADOS DO USUARIO LOGADO
 	myApp.controller('userData-controller', function($scope,Service) {
 
 		$scope.getUserData = function(){
-			console.log("rodando!");
 			var id_user = {'id_user': Service.get_user()};
 			
 			//busca os dados do proprio usuario
@@ -179,7 +254,6 @@
 			//o numero de postagens feitas pelo usuario
 			Service.post('tweet','get_tweets',id_user).then(
 				function(respon){
-					console.log("tweets :" + respon.data.length);
 					$scope.tweets = respon.data.length;
 				},
 				function(respon){
@@ -204,74 +278,37 @@
 		$scope.master = {};
 		$scope.tweetsList = [];
 
+
 		//encontrar os tweets para a timeline
 		$scope.get_tweets = function(){
 			var id_user = {'id_user': Service.get_user()};
 
-			//procura quem o usuario logado segue
-			Service.post('follow','get_followers',id_user).then(
+			Service.post('tweet','timeline',id_user).then(
 				function(respon){
+					$scope.tweetsList = respon.data;
 
-					//encontrando quem segue, entao busca os dados de todos, inclusive do proprio usuario
-					for(i = 0; i <= respon.data.length; i++){
-						if(i == respon.data.length)
-							id_user = {'id_user': Service.get_user()};
-						else
-							id_user = {'id_user': respon.data[i].follows};
-
-						//primeiro busca o nick deles
-						//OBS:
-						//	O CODIGO DESSE JEITO TA DANDO INCONSISTENCIA DO DADO $scope.nick PQ O
-						//	JAVASCRIPT TENTA FAZER ESSES DOIS METODOS POST AQUI EMBAIXO PARALELAMENTE
-						Service.post('user','get_data', id_user).then(
-							function(respon){
-								$scope.nick = respon.data.login;
-							},
-							function(respon){}
-						);
-
-						//depois procura as postagens que fizeram
-						Service.post('tweet','get_tweets', id_user).then(
-							function(respon){
-								for(j = 0; j < respon.data.length; j++){
-									respon.data[j].login = $scope.nick;
-
-									//Separar a string de tempo timestamp
-									//'2016-06-11T20:55:17.463Z'
-									time = respon.data[j].timestamp.split("-");
-									respon.data[j].month = time[1];
-									respon.data[j].year = time[0];
-									time = time[2].split("T");
-									respon.data[j].day = time[0];
-									time = time[1].split(":");
-									respon.data[j].hour = time[0];
-									respon.data[j].minute = time[1];
-
-									$scope.tweetsList.push( respon.data[j] );
-								}
-
-								//ordena os tweets colocando o mais recente na frente
-								$scope.tweetsList.sort(function(a, b) {
-									if(parseFloat(b.hour) - parseFloat(a.hour) != 0)
-    									 return parseFloat(b.hour) - parseFloat(a.hour);
-    								else return parseFloat(b.minute) - parseFloat(a.minute);
-								});
-								
-							},
-							function(respon) {}
-						);
-					}
+					//ordena a lista
+					$scope.tweetsList.sort(function(a,b) { 
+    					return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime() 
+					});
 				},
-				function(respon){}
+				function(respon){
+					console.log('erro ao carregar a timeline');
+				}
 			);
-
 		};
 
 		$scope.createTweet = function(tweetToPost) {
         	$scope.master = angular.copy(tweetToPost);
         	$scope.master['id_user'] = Service.get_user();
 
-        	Service.post('tweet','create_tweet',$scope.master);
+        	Service.post('tweet','create_tweet',$scope.master).then(
+        		function(err){
+        			$scope.get_tweets();
+        			$scope.getUserData();
+        		},
+        		function(err){}
+        	);
       	};
 	});
 
