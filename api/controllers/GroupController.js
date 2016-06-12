@@ -112,14 +112,42 @@ module.exports = {
 						console.log(error);
 					else{
 						console.log("Groups created successfully..");
-						return res.json(group_created);
+						return res.json({was_created: true} );
 					}
 				});
 			}
 		});
 	},
 
-	join_group: function(req,res){
+
+
+	join_group: function(req, res) { 
+		var id_user = req.param('id_user');
+		var group_name = req.param('group_name');
+		var group_id;
+
+		//busca id do grupo pelo nome
+		Group.query('select "group"."relativeId" from "group" where "group"."name" = \'' + group_name + '\';',
+			 function(err, results) {
+  			if (err) return res.serverError(err);
+  				group_id = results.rows[0]['relativeId'];
+  				//console.log("vou inserir no grupo com id: " + group_id);
+  				//insere usuario no grupo pelo id do grupo que acabou de buscar
+  				Group.query('insert into "group_users__user_groups" (group_users, user_groups) values (\'' + group_id + '\', \'' + id_user + '\');',
+  					function(err, results) {
+  						if(err) return res.serverError(err);
+  						console.log("usuario inserido no grupo com sucesso!");
+  						res.json({was_inserted: true});
+  					});
+		});
+
+	
+	},
+
+
+
+     //ANTIGA
+	/*join_group: function(req,res){
 		var id_master = req.param('id_master');
 		var id_user = req.param('id_user');
 		var group_name = req.param('group_name');
@@ -145,6 +173,6 @@ module.exports = {
 				});
 			}
 		});
-	},
+	},*/
 };
 

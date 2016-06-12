@@ -116,43 +116,24 @@
 
 		$scope.createGroup = function(user) {
 			var group_data = {'id_user': Service.get_user(), 'group_name': $scope.groupName};
-			/*
-			async.series([
-				function(callback){
-					Service.post('group','create_group',group_data);
-				},
-				function(callback){
-					group_data = {
-		        		'id_user': Service.get_user(),
-		        		'group_name': $scope.groupName,
-		        		'id_master': Service.get_user()
-        			};
-
-        			Service.post('group','join_group',group_data);
-				},
-			]);*/
+			var ret = false;
 			
 			//cria o grupo
         	Service.post('group','create_group',group_data).then(
 				function(respon){	//SUCESSO
 					//se der tudo certo entao coloca o usuario no grupo q acabou se ser criado
-					group_data = {
-		        		'id_user': Service.get_user(),
-		        		'group_name': $scope.groupName,
-		        		'id_master': Service.get_user()
-        			};
+					ret = respon.data.was_created; 
+					if(ret) {
+						Service.post('group','join_group', group_data);
+					}
 				},
 
 				function(respon){	//FALHA
 					alert("falha ao tentar criar um grupo!");
 				}
-			).then(
-				function(respon){
-					Service.post('group','join_group',group_data);
-				},
-				function(respon){}
-			);
-        };
+			);//then
+
+    	}
 	});
 	
 	//CONTROLADOR PARA BUSCAR OS DADOS DO USUARIO LOGADO
