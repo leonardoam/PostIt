@@ -162,6 +162,10 @@ module.exports = {
 		});
 	},
 
+	find_user: function(req,res){
+		
+	},
+
 
 	get_groups: function(req,res){
 		var id_user = req.param('id_user');
