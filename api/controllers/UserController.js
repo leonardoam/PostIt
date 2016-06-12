@@ -150,6 +150,7 @@ module.exports = {
 
 	get_data: function(req,res){
 		var id_user = req.param('id_user')  || undefined;
+		//console.log("get_data: id_user -> " + id_user );
 
 		User.findOne({'id':id_user}).exec(function (err, found_user){
 			if (err) {
@@ -159,6 +160,10 @@ module.exports = {
   				return res.json(found_user);
   			}
 		});
+	},
+
+	find_user: function(req,res){
+		
 	},
 
 

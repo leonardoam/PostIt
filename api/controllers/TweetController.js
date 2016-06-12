@@ -72,7 +72,8 @@ module.exports = {
 		var id_user = req.param('id_user') || undefined;
 		var tweet = req.param('tweet') || undefined;
 		var title = req.param('title') || undefined;
-		var timestamp =  new Date();
+		var d = new Date();
+		var timestamp = d.toJSON();
 
 		sails.log("user and tweet " + id_user + tweet);
 	
@@ -132,7 +133,59 @@ module.exports = {
 		} //there are missing fields from client
 		 else 
 			return res.json({response_msg: 'invalid request!'});
-	}
+	},
 	
+	timeline: function(req,res){
+		var id_user = req.param('id_user');
+		tweetsList = [];
+
+		select1 = 'SELECT "user".login, "user".id FROM "user" INNER JOIN follow ON "user".id = follow.follows WHERE follow.follower = '+id_user+' UNION ALL SELECT "user".login, "user".id FROM "user" WHERE "user".id = '+id_user;
+
+		//seleciona as pessoas que o usuario segue, inclusive ele mesmo
+		Tweet.query(select1, function(err,follows){
+			if (err) { return res.negotiate("1:" + err); }
+			else{
+				
+				var find_tweets = function(id, cb){
+    				
+					select2 = 'SELECT tweet.title, tweet.text, tweet.timestamp, "user".login FROM tweet INNER JOIN "user" ON "user".id = tweet.user WHERE tweet.user = '+id;
+
+					//agora procura os tweets que as pessoas tem e adiciona numa lista de obj
+					Tweet.query(select2, function (err,tweets){
+						if(err) { return res.negotiate("2:" + err); }
+						else {
+
+							for(j = 0; j < tweets.rows.length; j++){
+								
+								time = tweets.rows[j].timestamp.split('-');
+								tweets.rows[j].year = time[0];
+								tweets.rows[j].month = time[1];
+								time = time[2].split('T');
+								tweets.rows[j].day = time[0];
+								time = time[1].split(':');
+								tweets.rows[j].hour = time[0];
+								tweets.rows[j].minute = time[1];
+
+								tweetsList.push(tweets.rows[j]);
+							}
+
+							cb();
+						}
+					});
+				}
+
+				tweets_ids = [];
+				for(i = 0; i < follows.rows.length; i++)
+					tweets_ids.push(follows.rows[i].id);
+
+				async.forEach(tweets_ids, find_tweets, function(err){
+					if(err) {console.log("1: " + err);}
+					else{
+						return res.json(tweetsList);
+					}
+				});
+			}
+		});
+	}
 };
 

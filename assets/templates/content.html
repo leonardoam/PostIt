@@ -12,9 +12,9 @@
 	                <div id="navbar" class="navbar-collapse collapse">
 
 	                    <ul class="nav navbar-nav">
-	                        <li><a href=""> Início </a></li>
-	                        <li><a href=""> Perfil </a></li>
-	                        <li><a href=""> Estatísticas </a></li>
+	                        <li><a href="" ng-click="goPage('content')"> Início </a></li>
+	                        <li><a href="" ng-click="goPage('profile')"> Perfil </a></li>
+	                        <li><a href="" ng-click="goPage('statistic')"> Estatísticas </a></li>
 	                    </ul>
 
 	                    <ul class="nav navbar-nav navbar-right">
@@ -62,14 +62,16 @@
 				<!--CAMPO COM OS GRUPOS QUE PARTICIPA-->
 				<div class="row row-bottom" id="groups">
 					<p align="left"><strong>GRUPOS</strong></p>
-					<div ng-repeat="g in groupsList">
-						<p align="left"><a href="/#/groups"> @{{g.name}} </a></br></p>
+					<div ng-controller="group-controller">
+						<div ng-repeat="g in groupsList">
+							<p align="left"><a ng-click="groupSelected(g)"> @{{g.name}} </a></br></p>
+						</div>
 					</div>
 
 					<hr>
 					
 					<div ng-controller="group-controller">
-						<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
+						<form accept-charset="UTF-8" style="margin: 0px">
 				            <div style="margin: 0px"><textarea placeholder="Nome" rows="1" ng-model="groupName" style="margin: 0px"></textarea></div>
 
 				            <button class="btn btn-info" ng-click="createGroup()"> Criar grupo </button>
@@ -87,7 +89,7 @@
 
 			            	<div><textarea placeholder="O que está acontecendo?" rows="3" ng-model="tweetToPost.tweet"></textarea></div>
 
-			                <button class="btn btn-info"  ng-click="createTweet(tweetToPost); get_tweets(); getUserData()";>Postar</button>
+			                <button class="btn btn-info" ng-click="createTweet(tweetToPost)">Postar</button>
 			            </form>
 					</div>
 
@@ -113,7 +115,7 @@
 
 						<div class="row">
 							<button type="submit"></button>
-							<p>233</p>
+							<p>0</p>
 							<button type="submit"></button>
 							<p>0</p>
 						</div>

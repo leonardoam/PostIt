@@ -1,184 +1,107 @@
 <!-- Barra de navegacao -->
-<div class="container-fluid">
-    <div class="row">
-        <div id="navbar" class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header"><a class="navbar-brand" href=""><img src="images/postit-icon.png" height="20px" width="20px"></a></div>
-                <div id="navbar" class="navbar-collapse collapse">
+<div ng-controller="login-controller">
+	<!--VERIFICA SE O USUARIO ESTA LOGADO-->
+	<div ng-if="auth == 'false'" ng-init="goPage('#')"></div>
 
-                    <ul class="nav navbar-nav">
-                        <li><a href=""> Início </a></li>
-                        <li><a href=""> Perfil </a></li>
-                        <li><a href=""> Estatísticas </a></li>
-                    </ul>
+	<!-- BARRA DE NAVEGACAO -->
+	<div class="container-fluid">
+	    <div class="row">
+	        <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+	            <div class="container">
+	                <div class="navbar-header"><a class="navbar-brand" href=""><img src="images/postit-icon.png" height="20px" width="20px"></a></div>
+	                <div id="navbar" class="navbar-collapse collapse">
 
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href=""> Sair </a></li>
-                    </ul>
+	                    <ul class="nav navbar-nav">
+	                        <li><a href="" ng-click="goPage('content')"> Início </a></li>
+	                        <li><a href="" ng-click="goPage('profile')"> Perfil </a></li>
+	                        <li><a href="" ng-click="goPage('statistic')"> Estatísticas </a></li>
+	                    </ul>
 
-                    <form class="navbar-form navbar-right" >
-                        <input type="text" class="form-control" placeholder="Buscar...">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+	                    <ul class="nav navbar-nav navbar-right">
+	                        <li><a href="" ng-click="logout()"> Sair </a></li>
+	                    </ul>
+
+	                    <form class="navbar-form navbar-right" >
+	                        <input type="text" class="form-control" placeholder="Buscar...">
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
 </div>
 
-<div ng-controller="c2"> 
 <div class="container">
 	<div class="row">
 
-		<!-- COLUNA DA ESQUERDA-->
-		<div class="col-md-3">
+		<div ng-controller="group-controller" ng-init="group_data()">
+			<div ng-controller="userData-controller" ng-init="getUserData()">
+			<!-- COLUNA DA ESQUERDA-->
+				<div class="col-md-3">
 
-			<!--CAMPO DE DADOS PESSOAIS-->
-			<div class="row row-top" id="persdata-summarized">
-				<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
-				<p align="left"><strong>Madruga</strong></br></p>
-				<p align="left" style=""><a href="">@seumadruga</a></br></p>
-				<table>
-					<tr>
-						<td align="left" >SEGUINDO: </td>
-						<td align="right">67 </td>
-					</tr>
-					<tr>
-						<td align="left" >SEGUIDORES: </td>
-						<td align="right">32</td>
-					</tr>
-					<tr>
-						<td align="left" >PUBLICAÇÕES: </td>
-						<td align="right">27</td>
-					</tr>
-				</table>
-			</div>
-
-			<!--CAMPO COM OS GRUPOS QUE PARTICIPA-->
-			<div class="row row-bottom" id="groups">
-				<p align="left"><strong>GRUPOS</strong></p>
-				<p align="left"><a href="/#/groups"> @Vila </a></br></p>
-				<p align="left"><a href="/#/groups"> @CAASO </a></br></p>
-				<p align="left"><a href="/#/groups"> @Comp012 </a></br></p>
-			</div>
-		</div>
-
-		<!-- Barra de conteudo -->
-		<div class="col-md-6">
-			<div class="row row-top">
-				<h2>@Vila</h2>
-			</div>
-
-			<div class="row row-middle">
-				<form action="" method="POST">
-					<button class="btn btn-link" type="submit" style="">Carregar mais</button>
-				</form>
-			</div>
-
-
-			<div class="row row-middle">
-				<div class="row">
-					<div class="col-md-6">
-						<img class="img-rounded" src="images/girafales.jpg" width="40" height="40">
-						<p align="left"><strong><a href="">@Girafales</a></strong></p>
-						<p align="left"> 09/04/201 - 15:57h </p>
+					<!--CAMPO DE DADOS PESSOAIS-->
+					<div class="row row-top" id="persdata-summarized">
+						<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
+						<p align="left"><strong>{{name}}</strong></br></p>
+						<p align="left" style=""><a href="">@{{login}}</a></br></p>
+						<table>
+							<tr>
+								<td align="left" >SEGUINDO: </td>
+								<td align="right">{{followers}} </td>
+							</tr>
+							<tr>
+								<td align="left" >SEGUIDORES: </td>
+								<td align="right">{{follows}}</td>
+							</tr>
+							<tr>
+								<td align="left" >PUBLICAÇÕES: </td>
+								<td align="right">{{tweets}}</td>
+							</tr>
+						</table>
 					</div>
-					<div class="col-md-6">
-						<button class="btn btn-default" type="submit"> Republicar</button>
+
+					<!--CAMPO COM OS GRUPOS QUE PARTICIPA-->
+					<div class="row row-bottom" id="groups">
+						<p align="left"><strong>GRUPOS</strong></p>
+						<div ng-controller="group-controller">
+							<div ng-repeat="g in groupsList">
+								<p align="left"><a ng-click="groupSelected(g)"> @{{g.name}} </a></br></p>
+							</div>
+						</div>
+
+						<hr>
+						
+							<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
+					            <div style="margin: 0px"><textarea placeholder="Nome" rows="1" ng-model="groupName" style="margin: 0px"></textarea></div>
+
+					            <button class="btn btn-info" ng-click="createGroup()"> Criar grupo </button>
+				            </form>
 					</div>
 				</div>
-				<div class="row">
-					<p align="left"> cd a Chiquinha?</a></p>
-				</div>
-				<div class="row">
-					<p align="left"> A <a href="">@Chiquinha</a> não foi a aula hoje. Sabe dizer o motivo <a href="">@seumadruga</a>?</p>
-				</div>
-
-				<div class="row">
-					<button type="submit"></button>
-					<p>0</p>
-					<button type="submit"></button>
-					<p>0</p>
-				</div>
 			</div>
-
-			<div class="row row-middle">
-				<div class="row">
-					<div class="col-md-6">
-						<img class="img-rounded" src="images/madruga.jpg" width="40" height="40">
-						<p align="left"><strong><a href="">@seumadruga</a></strong></p>
-						<p align="left"> 09/04/2016 - 15:59h </p>
-					</div>
-					<div class="col-md-6">
-						<button class="btn btn-default" type="submit"> Republicar</button>
-					</div>
-				</div>
-				<div class="row">
-					<p align="left"> ?</a></p>
-				</div>
-				<div class="row">
-					<p align="left"> Como não mestre linguiça? Ela saiu de casa para ir a aula...</p>
+			<!-- Barra de conteudo -->
+			<div class="col-md-6">
+				<div class="row row-top">
+					<h2>@{{name_group}}</h2>
 				</div>
 
-				<div class="row">
-					<button type="submit"></button>
-					<p>0</p>
-					<button type="submit"></button>
-					<p>0</p>
-				</div>
-			</div>
-
-
-			<div class="row row-middle">
-				<div class="row">
-					<div class="col-md-6">
-						<img class="img-rounded" src="images/girafales.jpg" width="40" height="40">
-						<p align="left"><strong><a href="">@Girafales</a></strong></p>
-						<p align="left"> 09/04/201 - 16:04h </p>
-					</div>
-					<div class="col-md-6">
-						<button class="btn btn-default" type="submit"> Republicar</button>
-					</div>
-				</div>
-				<div class="row">
-					<p align="left"> af</a></p>
-				</div>
-				<div class="row">
-					<p align="left"> TÁ TÁ TÁ TÁ TÁ TÁ TÁ TÁAAA! Meu nome não é mestre linguiça. Meu nome é Professor Girafales!</p>
-				</div>
-
-				<div class="row">
-					<button type="submit"></button>
-					<p>0</p>
-					<button type="submit"></button>
-					<p>0</p>
-				</div>
-			</div>
-
-			<div class="row row-middle">
-				<div class="row">
-					<div class="col-md-6">
-						<img class="img-rounded" src="images/kiko.jpg" width="40" height="40">
-						<p align="left"><strong><a href="">@Kiko</a></strong> republicou</p>
-						<p align="left"> 09/04/201 - 16:08h </p>
-					</div>
-				</div>
 
 				<div class="row row-middle">
 					<div class="row">
 						<div class="col-md-6">
 							<img class="img-rounded" src="images/girafales.jpg" width="40" height="40">
 							<p align="left"><strong><a href="">@Girafales</a></strong></p>
-							<p align="left"> 09/04/201 - 16:04h </p>
+							<p align="left"> 09/04/201 - 15:57h </p>
 						</div>
 						<div class="col-md-6">
 							<button class="btn btn-default" type="submit"> Republicar</button>
 						</div>
 					</div>
 					<div class="row">
-						<p align="left"> af</a></p>
+						<p align="left"> cd a Chiquinha?</a></p>
 					</div>
 					<div class="row">
-						<p align="left"> TÁ TÁ TÁ TÁ TÁ TÁ TÁ TÁAAA! Meu nome não é mestre linguiça. Meu nome é Professor Girafales!</p>
+						<p align="left"> A <a href="">@Chiquinha</a> não foi a aula hoje. Sabe dizer o motivo <a href="">@seumadruga</a>?</p>
 					</div>
 
 					<div class="row">
@@ -188,102 +111,51 @@
 						<p>0</p>
 					</div>
 				</div>
-			</div>
 
-			<div class="row row-middle">
-				<div class="row">
-					<div class="col-md-6">
-						<img class="img-rounded" src="images/kiko.jpg" width="40" height="40">
-						<p align="left"><strong><a href="">@Kiko</a></strong></p>
-						<p align="left"> 09/04/201 - 16:08h </p>
-					</div>
-					<div class="col-md-6">
-						<button class="btn btn-default" type="submit"> Republicar</button>
-					</div>
-				</div>
-				<div class="row">
-					<p align="left"> KKKKKK</a></p>
-				</div>
-				<div class="row">
-					<p align="left">KKKKKKKKKKKKKKKKKKKKKKKK</p>
-				</div>
-
-				<div class="row">
-					<button type="submit"></button>
-					<p>0</p>
-					<button type="submit"></button>
-					<p>0</p>
-				</div>
-			</div>
-
-
-			<div class="row row-bottom">
-	            <form accept-charset="UTF-8" action="" method="POST">
-	            	<div><textarea placeholder="Título" rows="1"></textarea></div>
-
-	            	<div><textarea placeholder="Escreva uma resposta..." rows="3"></textarea></div>
-
-	                <button class="btn btn-info" type="submit">Postar</button>
-	            </form>
-			</div>
-
-		</div>
-
-		<div class="col-md-3">
-			<div class="row row-unique" id="group-members">
-
-				<form accept-charset="UTF-8" action="" method="POST" style="margin-top: 15px">
-		            <div style="margin: 0px"><textarea placeholder="Nome" rows="1" style="margin: 0px"></textarea></div>
-
-		            <button class="btn btn-info" type="submit"> Adicionar </button>
-	            </form>
-
-	            <hr>
-				<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
-		            <div style="margin: 0px"><textarea placeholder="Nome" rows="1" style="margin: 0px"></textarea></div>
-
-		            <button class="btn btn-info" type="submit"> Remover </button>
-	            </form>
-
-	            <hr>
-				<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
-		            <button class="btn btn-info" type="submit"> Deletar grupo </button>
-	            </form>
-
-	            <hr>
-
-				<div class="row"><p><strong>Membros: 6</strong></p></div>
-
-				<div class="row">
-					<img class="img-rounded" src="images/madruga.jpg" width="20" height="20">
-					<p ><a href=""> @seumadruga </a></p>
-				</div>
-
-				<div class="row">
-					<img  class="img-rounded" src="images/kiko.jpg" width="20" height="20">
-					<p ><a href=""> @kiko </a></p>
-				</div>
-
-				<div class="row">
-					<img  class="img-rounded" src="images/girafales.jpg" width="20" height="20">
-					<p ><a href=""> @girafales </a></p>
-				</div>
-
-				<div class="row">
-					<img class="img-rounded" src="images/nhonho.jpeg" width="20" height="20">
-					<p ><a href=""> @nhonho </a></p>
-				</div>
 				
-				<div class="row">
-					<img class="img-rounded" src="images/barriga.jpg" width="20" height="20">
-					<p ><a href=""> @barriga </a></p>
-				</div>
 
-				<div class="row">
-					<img class="img-rounded" src="images/chaves.jpeg" width="20" height="20">
-					<p ><a href=""> @chaves </a></p>
-				</div>
 
+			</div>
+
+			<div class="col-md-3">
+				<div class="row row-unique" id="group-members">
+
+					<div ng-if="master == userId">	
+						<form accept-charset="UTF-8" action="" method="POST" style="margin-top: 15px">
+				            <div style="margin: 0px"><textarea ng-model="addMember" placeholder="Login" rows="1" style="margin: 0px"></textarea></div>
+
+				            <button class="btn btn-info" ng-click="addMember()"> Adicionar </button>
+			            </form>
+
+			            <hr>
+						<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
+				            <div style="margin: 0px"><textarea ng-model="delMember" placeholder="Login" rows="1" style="margin: 0px"></textarea></div>
+
+				            <button class="btn btn-info" ng-click="deleteMember()"> Remover </button>
+			            </form>
+
+			            <hr>
+						<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
+				            <button class="btn btn-info" type="deleteGroup()"> Deletar grupo </button>
+			            </form>
+		            </div>
+		            <div ng-if="master != userId">
+		            	<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
+				            <button class="btn btn-info" ng-click="leaveGroup()"> Sair do grupo </button>
+			            </form>
+		            </div>
+
+		            <hr>
+
+					<div class="row"><p><strong>Membros: {{membersNumber}}</strong></p></div>
+
+					<div ng-repeat="m in members">
+						<div class="row">
+							<img class="img-rounded" src="images/kiko.jpg" width="20" height="20">
+							<p ><a href=""> @{{m.login}} </a></p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

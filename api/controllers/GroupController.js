@@ -96,6 +96,45 @@ module.exports = {
 		return 0;
 	},
 
+	get_members: function(req,res){
+		var id_group = req.param('id_group');
+
+
+		var select = 'SELECT "user".login, "user".id FROM "user" INNER JOIN group_users__user_groups ON group_users__user_groups.group_users = "user".id WHERE group_users__user_groups.user_groups = '+id_group;
+		/*
+		SELECT "user".login, "user".id
+		FROM "user"
+		INNER JOIN group_users__user_groups
+			ON group_users__user_groups.group_users = "user".id
+		WHERE group_users__user_groups.user_groups = '+id_group
+		*/
+
+		console.log("(1)id_group: " + id_group);
+		console.log(select);
+
+		Group.query(select, function(err,members){
+			if (err) return res.negotiate("1:" + err);
+			else{
+				console.log(members.rows);
+				return res.json(members.rows);
+			}
+		});
+	},
+
+	get_master: function(req,res){
+		var id_group = req.param('id_group');
+
+		console.log("(2)id_group: " + id_group);
+		Group.findOne({'relativeId': id_group}).exec(function callback(err, found){
+			if(err)
+				return res.negotiate(err);
+			if (!found)
+				return res.negotiate("Nao achou o grupo");
+			else
+				return res.json(found.id);
+		});
+	},
+
 	create_group: function(req, res){
 		var id_user = req.param('id_user');
 		var group_name = req.param('group_name');
@@ -103,38 +142,67 @@ module.exports = {
 		//procura para saber se o usuario jah possui um grupo com esse nome
 		Group.findOne({'id':id_user, 'name': group_name}).exec(function callback(err, found_user){
 			if (err) return res.negotiate(err);
-
   			if (!found_user){ //se nao tiver entao cria um grupo novo
-  				group = {'id': id_user,'name': group_name};
-
-    			Group.create(group).exec(function callback(error, group_created) {
-					if(error) 
-						console.log(error);
+  				Group.create({'id':id_user, 'name': group_name}).exec(function callback(error, group_created) {
+					if(error) console.log(error);
 					else{
+<<<<<<< HEAD
 						console.log("Groups created successfully..");
+						return res.json({was_created: true} );
+=======
+						console.log("banco criado com sucesso");
 						return res.json(group_created);
+>>>>>>> 7c6995277fba31c8be1a651df259419d7712ca1c
 					}
 				});
 			}
 		});
 	},
 
-	join_group: function(req,res){
-		var id_master = req.param('id_master');
+<<<<<<< HEAD
+
+
+	join_group: function(req, res) { 
 		var id_user = req.param('id_user');
 		var group_name = req.param('group_name');
+		var group_id;
 
-		group = {'id':id_master, 'name': group_name};
+		//busca id do grupo pelo nome
+		Group.query('select "group"."relativeId" from "group" where "group"."name" = \'' + group_name + '\';',
+			 function(err, results) {
+  			if (err) return res.serverError(err);
+  				group_id = results.rows[0]['relativeId'];
+  				//console.log("vou inserir no grupo com id: " + group_id);
+  				//insere usuario no grupo pelo id do grupo que acabou de buscar
+  				Group.query('insert into "group_users__user_groups" (group_users, user_groups) values (\'' + group_id + '\', \'' + id_user + '\');',
+  					function(err, results) {
+  						if(err) return res.serverError(err);
+  						console.log("usuario inserido no grupo com sucesso!");
+  						res.json({was_inserted: true});
+  					});
+		});
+
+	
+	},
+
+
+
+     //ANTIGA
+	/*join_group: function(req,res){
+		var id_master = req.param('id_master');
+=======
+	join_member: function(req,res){
+>>>>>>> 7c6995277fba31c8be1a651df259419d7712ca1c
+		var id_user = req.param('id_user');
+		var group_id = req.param('group_id');
+
+		group = {'relativeId': group_id};
 
 		Group.findOne(group).populate('users').exec(function callback(err, found_group){
-			if(err){
-				return res.negotiate(err);
-			}
-			if (!found_group){
-				return res.negotiate("Nao achou o grupo");
-			}
+			if(err) return res.negotiate(err);
+			if (!found_group) return res.negotiate("Nao achou o grupo");
 			else{
-				found_group.users.add(group.id);
+				found_group.users.add(id_user);
 
 				found_group.save(function callback(err){
 					if(err){
@@ -145,6 +213,6 @@ module.exports = {
 				});
 			}
 		});
-	},
+	},*/
 };
 
