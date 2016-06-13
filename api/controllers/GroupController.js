@@ -146,53 +146,15 @@ module.exports = {
   				Group.create({'id':id_user, 'name': group_name}).exec(function callback(error, group_created) {
 					if(error) console.log(error);
 					else{
-<<<<<<< HEAD
-						console.log("Groups created successfully..");
-						return res.json({was_created: true} );
-=======
 						console.log("banco criado com sucesso");
 						return res.json(group_created);
->>>>>>> 7c6995277fba31c8be1a651df259419d7712ca1c
 					}
 				});
 			}
 		});
 	},
 
-<<<<<<< HEAD
-
-
-	join_group: function(req, res) { 
-		var id_user = req.param('id_user');
-		var group_name = req.param('group_name');
-		var group_id;
-
-		//busca id do grupo pelo nome
-		Group.query('select "group"."relativeId" from "group" where "group"."name" = \'' + group_name + '\';',
-			 function(err, results) {
-  			if (err) return res.serverError(err);
-  				group_id = results.rows[0]['relativeId'];
-  				//console.log("vou inserir no grupo com id: " + group_id);
-  				//insere usuario no grupo pelo id do grupo que acabou de buscar
-  				Group.query('insert into "group_users__user_groups" (group_users, user_groups) values (\'' + group_id + '\', \'' + id_user + '\');',
-  					function(err, results) {
-  						if(err) return res.serverError(err);
-  						console.log("usuario inserido no grupo com sucesso!");
-  						res.json({was_inserted: true});
-  					});
-		});
-
-	
-	},
-
-
-
-     //ANTIGA
-	/*join_group: function(req,res){
-		var id_master = req.param('id_master');
-=======
 	join_member: function(req,res){
->>>>>>> 7c6995277fba31c8be1a651df259419d7712ca1c
 		var id_user = req.param('id_user');
 		var group_id = req.param('group_id');
 
@@ -213,6 +175,5 @@ module.exports = {
 				});
 			}
 		});
-	},*/
+	},
 };
-
