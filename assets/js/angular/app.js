@@ -114,20 +114,6 @@
 	//CONTROLADOR PARA GRUPOS
 	myApp.controller('group-controller', function ($scope, Service,$location,$routeParams) {
 
-<<<<<<< HEAD
-		$scope.createGroup = function(user) {
-			var group_data = {'id_user': Service.get_user(), 'group_name': $scope.groupName};
-			var ret = false;
-			
-			//cria o grupo
-        	Service.post('group','create_group',group_data).then(
-				function(respon){	//SUCESSO
-					//se der tudo certo entao coloca o usuario no grupo q acabou se ser criado
-					ret = respon.data.was_created; 
-					if(ret) {
-						Service.post('group','join_group', group_data);
-					}
-=======
 		$scope.group_data = function(){
 			var x = $routeParams.groupParam.split(':');
 			var id_group = x[1];
@@ -146,20 +132,11 @@
 			Service.post('group','get_master',{'id_group': id_group}).then(
 				function(respon){
 					$scope.master = respon.data;
->>>>>>> 7c6995277fba31c8be1a651df259419d7712ca1c
 				},
 				function(respon){}
 			);
 		}
 
-<<<<<<< HEAD
-				function(respon){	//FALHA
-					alert("falha ao tentar criar um grupo!");
-				}
-			);//then
-
-    	}
-=======
 		$scope.createGroup = function(user) {
 			var group_data = {'id_user': Service.get_user(), 'group_name': $scope.groupName};
 
@@ -209,7 +186,6 @@
         $scope.groupSelected = function(group) {
         	$location.path('/groups:' + group.relativeId + ':' + group.name);
         }
->>>>>>> 7c6995277fba31c8be1a651df259419d7712ca1c
 	});
 	
 	//CONTROLADOR PARA BUSCAR OS DADOS DO USUARIO LOGADO
