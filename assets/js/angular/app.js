@@ -118,7 +118,6 @@
 	myApp.controller('group-controller', function ($scope, Service,$location,$routeParams) {
 
 		$scope.dataGroup = function(){
-
 			var x = $routeParams.groupParam.split(':');
 			$scope.id_group = x[1];
 			$scope.name_group = x[2];
