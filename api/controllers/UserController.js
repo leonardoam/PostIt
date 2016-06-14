@@ -163,9 +163,16 @@ module.exports = {
 	},
 
 	find_user: function(req,res){
-		
-	},
+		var login_user = req.param('login_user');
 
+		User.findOne({'login':login_user}).exec(function callback(err, found_user){
+			if (err) return res.negotiate("find_user_1: "+err);
+  			else if(!found_user) return res.negotiate("usuario não existe");
+  			else {
+  				return res.json(found_user);
+  			}
+		});
+	},
 
 	get_groups: function(req,res){
 		var id_user = req.param('id_user');

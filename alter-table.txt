@@ -46,10 +46,10 @@ ON UPDATE CASCADE ON DELETE RESTRICT;
 
 ALTER TABLE group_users__user_groups
 ADD CONSTRAINT user_groups_fkey
-FOREIGN KEY (user_groups) REFERENCES "group" ("relativeId")
+FOREIGN KEY (user_groups) REFERENCES "user" (id)
 ON UPDATE CASCADE ON DELETE RESTRICT;
 
 ALTER TABLE group_users__user_groups
 ADD CONSTRAINT group_users_fkey
-FOREIGN KEY (group_users) REFERENCES "user" (id)
+FOREIGN KEY (group_users) REFERENCES "group" ("relativeId")
 ON UPDATE CASCADE ON DELETE RESTRICT;

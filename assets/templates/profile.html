@@ -32,18 +32,18 @@
     </div>
 </div>
 
-<div ng-controller="profile-controller"> 
+
 <div class="container">
 	<div class="row">
-
-		<!-- Barra lateral esquerda-->
+		<div ng-controller="profile-controller" ng-init="get_userTweets()"> 
+		
+		<!-- COLUNA DA ESQUERDA -->
 		<div class="col-md-3">	
 
 			<!--Espaco com os dados pessoais-->
 			<div class="row row-unique" id="persdata-complete">
 				<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
 
-				<p align="left"><strong>{{user.name}}</strong></br></p>
 				<p align="left"><a href="">@{{user.login}}</a></br></p>
 
 				<hr>
@@ -69,82 +69,39 @@
 			</div>
 		</div>
 
-		<!-- Barra de conteudo -->
 		<!-- COLUNA DO MEIO-->
-	
-			<div ng-controller="profile-controller" ng-init="get_userTweets()">
-				<div class="col-md-6">
-					<div  ng-repeat="t in tweetsList">
-				
-					<div class="row row-middle">
-						<div class="row">
-							<div class="col-md-6">
-								<img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
-								<p align="left"><strong><a href="">@{{user.login}}</a></strong></p>
-								<p align="left"> {{t.day}}/{{t.month}}/{{t.year}} - {{t.hour}}:{{t.minute}}h </p>
-							</div>
-							<div class="col-md-6">
-								<button class="btn btn-default" type="submit"> Republicar</button>
-							</div>
-						</div>
-						<div class="row">
-							<p align="left">{{t.title}}</a></p>
-						</div>
-						<div class="row">
-							<p align="left"> {{t.text}}</p>
-						</div>
+		<div class="col-md-6">
 
-						<div class="row">
-							<button type="submit"></button>
-							<p>233</p>
-							<button type="submit"></button>
-							<p>0</p>
+			<div class="row row-top">
+				<h1><strong>{{user.name}}</strong></h1>
+			</div>
+
+			<div ng-repeat="t in tweetsList">
+				<div class="row row-middle">
+					<div class="row">
+						<div class="col-md-6">
+							<img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
+							<p align="left"><strong><a href="">@{{user.login}}</a></strong></p>
+							<p align="left"> {{t.day}}/{{t.month}}/{{t.year}} - {{t.hour}}:{{t.minute}}h </p>
+						</div>
+						<div class="col-md-6">
+							<button class="btn btn-default" type="submit"> Republicar</button>
 						</div>
 					</div>
-				</div>
-				<div class="row row-bottom">
-				<form action="" method="POST">
-					<button class="btn btn-link" type="submit">Carregar mais postagens</button>
-				</form>
-			</div>
-			</div>
-		</div>
-
-
-
-		<!--fim da barra do conteudo -->
-		<div class="col-md-6" ng-init="get_userTweets()">
-
-			<!-- <div class="row row-top">
-				<div class="row">
-					<div class="col-md-6">
-						<img class="img-rounded" src="images/madruga.jpg" width="40" height="40">
-						<p align="left"><strong><a href="">@seumadruga</a></strong></p>
-						<p align="left"> 09/04/201 - 22:04h </p>
+					<div class="row">
+						<p align="left">{{t.title}}</a></p>
 					</div>
-					<div class="col-md-6">
-						<button class="btn btn-default" type="submit"> Republicar</button>
+					<div class="row">
+						<p align="left"> {{t.text}}</p>
+					</div>
+					<div class="row">
+						<button type="submit"></button>
+						<p>0</p>
+						<button type="submit"></button>
+						<p>0</p>
 					</div>
 				</div>
-				<div class="row">
-					<p align="left"> rsrsrs</a></p>
-				</div>
-				<div class="row">
-					<p align="left">Meu pai deixou o Postit aberto! rsrs aqui é a Chiquinha</p>
-				</div>
-
-				<div class="row">
-					<button type="submit"></button>
-					<p>31</p>
-					<button type="submit"></button>
-					<p>0</p>
-				</div>
 			</div>
-           -->
-
-		
-
-			
 		</div>
 	</div>
 </div>

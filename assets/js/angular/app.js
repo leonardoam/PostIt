@@ -5,6 +5,8 @@
 	// Os dados são definidos no serviço, assim, mais controladores interessados
     //	nos dados tem somente que declarar/registrar o serviço -> modularização.
 
+
+//ROTINAS ------------------------------------------------------------------------------------------
 	myApp.config(['$routeProvider', '$locationProvider',
 	   function($routeProvider, $locationProvider){
 		    $routeProvider.
@@ -37,7 +39,8 @@
 			});
 	    }
 	]);
-	
+
+//SERVICOS ------------------------------------------------------------------------------------------
 	myApp.factory('Service', function ($http) {
 		return { 
 			'post': function(controller, method, data){
@@ -66,7 +69,7 @@
 		}
 	});
 
-	//CONTROLADOR PARA CRIACAO DE USUARIOS
+//SIGNUP ------------------------------------------------------------------------------------------
 	myApp.controller('signup-controller', function ($scope, Service, $location) {
 		$scope.master = {};
 
@@ -78,7 +81,7 @@
         };
 	});
 
-	//CONTROLADOR PARA AUTENTICACAO
+//LOGIN ------------------------------------------------------------------------------------------
 	myApp.controller('login-controller', function ($scope, $location, Service) {
 
 		$scope.auth = Service.get_auth();
@@ -95,10 +98,10 @@
 				},
 
 				function(respon){	//FALHA
-					alert("Nome de usuário ou senha incorreto!");
+					alert("Nome de usuário ou senha incorretos!");
 				}
 			);
-      	};
+      	}
 
       	$scope.logout = function(){
       		Service.set_auth(false);
@@ -111,31 +114,16 @@
       	}
 	});
 
-	//CONTROLADOR PARA GRUPOS
+//GROUP ------------------------------------------------------------------------------------------
 	myApp.controller('group-controller', function ($scope, Service,$location,$routeParams) {
 
-<<<<<<< HEAD
-		$scope.createGroup = function(user) {
-			var group_data = {'id_user': Service.get_user(), 'group_name': $scope.groupName};
-			var ret = false;
-			
-			//cria o grupo
-        	Service.post('group','create_group',group_data).then(
-				function(respon){	//SUCESSO
-					//se der tudo certo entao coloca o usuario no grupo q acabou se ser criado
-					ret = respon.data.was_created; 
-					if(ret) {
-						Service.post('group','join_group', group_data);
-					}
-=======
-		$scope.group_data = function(){
+		$scope.dataGroup = function(){
+
 			var x = $routeParams.groupParam.split(':');
-			var id_group = x[1];
+			$scope.id_group = x[1];
 			$scope.name_group = x[2];
 
-
-
-			Service.post('group','get_members',{'id_group': id_group}).then(
+			Service.post('group','get_members',{'id_group': $scope.id_group}).then(
 				function(respon){
 					$scope.members = respon.data;
 					$scope.membersNumber = respon.data.length; 
@@ -143,63 +131,104 @@
 				function(respon){}
 			);
 
-			Service.post('group','get_master',{'id_group': id_group}).then(
+			Service.post('group','get_master',{'id_group': $scope.id_group}).then(
 				function(respon){
 					$scope.master = respon.data;
->>>>>>> 7c6995277fba31c8be1a651df259419d7712ca1c
 				},
 				function(respon){}
 			);
 		}
 
-<<<<<<< HEAD
+		$scope.createGroup = function(user) {
+			var id_user = Service.get_user();
+			var group_data = {'id_user': id_user, 'name_group': $scope.groupName};
+			
+			$scope.groupName = "";
+
+			//cria o grupo
+        	Service.post('group','create_group',group_data).then(
+				function(respon){	//SUCESSO
+					group_data = {'id_user': id_user, 'id_group': respon.data.relativeId};
+					Service.post('group','join_member', group_data);
+					$scope.getUserData();
+				},
+
 				function(respon){	//FALHA
 					alert("falha ao tentar criar um grupo!");
 				}
 			);//then
-
     	}
-=======
-		$scope.createGroup = function(user) {
-			var group_data = {'id_user': Service.get_user(), 'group_name': $scope.groupName};
 
-			Service.post('group','create_group',group_data).then(
-				function(respon){
-					Service.post('group','join_member',{'id_user': Service.get_user(), 'group_name': respon.data.relativeId});
+    	$scope.deleteGroup = function(){
+    		var id = {'id_group': $scope.id_group};
+
+    		Service.post('group','delete_group',id).then(
+    			function(respon){
+					$location.path('/content');
+					alert("grupo deletado. :(");
+    			},
+    			function(respon){}
+    		);
+        }
+
+        $scope.addMember = function(add_member){
+        	console.log($scope.add_member);
+        	$scope.add_member = "";
+
+        	Service.post('user','find_user',{'login_user': add_member}).then(
+				function(respon){	//SUCESSO
+					group_data = {'id_user': respon.data.id, 'id_group': $scope.id_group};
+
+					Service.post('group','join_member', group_data).then(
+						function(respon){
+							if(respon.data.success){
+								$scope.dataGroup();
+								alert(add_member+" adicionado ao grupo! :D");
+
+							} else
+								alert("Usuário já está no grupo. :/");
+
+						},
+						function(respon){
+							alert("caraio");
+						}
+					);
 				},
-				function(respon){}
-			);
 
+				function(respon){	//FALHA
+					alert("Usuário não encontrado. :/ \n Talvez você tenha digitado o nome errado, certifique-se de não incluir @ quando for procurar.");
+				}
+			);//then
         }
 
-        $scope.addMember = function(){
-			var x = $routeParams.groupParam.split(':');
-			var id_group = x[1];
-			var name_group = x[2];
+        $scope.deleteMember = function(del_member){
+        	$scope.del_member = "";
 
+   			Service.post('user','find_user',{'login_user': del_member}).then(
+				function(respon){	//SUCESSO
 
-        	//primeiro verifica se o usuario existe
-        	Service.post('user','find_user',{'login_user': $scope.addMember}).then(
-        		function(respon){
-        			
-		        	var user_data = {
-		        		'id_user': respon.data.id,
-		        		'group_id': id_group
-		        	};
+					if(respon.data.id == Service.get_user())
+						alert("Cara, você não pode se excluir do grupo.\nSe você quiser você pode deletar o grupo todo.. é uma opção.")
+					else{
+						group_data = {'id_user': respon.data.id, 'id_group': $scope.id_group};
 
-        			Service.post('group','join_member',user_data);
+						Service.post('group','delete_member', group_data).then(
+							function(respon){
+								if(respon.data.success){
+									$scope.dataGroup();
+									alert(del_member+" excluido do grupo com sucesso.");
+								} else
+									alert("Não existe usuário com esse nome aqui.");
+							},
+							function(respon){}
+						);
+					}
+				},
 
-        		},
-        		function(respon){ alert("Usuario não existe!"); }
-        	);
-        }
-
-        $scope.deleteMember = function(){
-
-        }
-
-        $scope.deleteGroup = function(){
-
+				function(respon){	//FALHA
+					alert("Não existe usuário com esse nome aqui.");
+				}
+			);//then
         }
 
         $scope.leaveGroup = function(){
@@ -209,10 +238,9 @@
         $scope.groupSelected = function(group) {
         	$location.path('/groups:' + group.relativeId + ':' + group.name);
         }
->>>>>>> 7c6995277fba31c8be1a651df259419d7712ca1c
 	});
 	
-	//CONTROLADOR PARA BUSCAR OS DADOS DO USUARIO LOGADO
+//USERDATA ------------------------------------------------------------------------------------------
 	myApp.controller('userData-controller', function($scope,Service) {
 
 		$scope.getUserData = function(){
@@ -273,21 +301,22 @@
 		}
 	});
 
-	//CONTROLADOR DAS POSTAGENS (TWEETS)
+//TWEET ------------------------------------------------------------------------------------------
+/* Metodos:
+	getTweets(): retorna os tweets feitos pelo usuario e por quem ele segue em ordem por hora(timeline)
+	createTweets(): cria um novo tweet
+*/
 	myApp.controller('tweet-controller', function ($scope, Service) {
-		$scope.master = {};
-		$scope.tweetsList = [];
 
-
-		//encontrar os tweets para a timeline
-		$scope.get_tweets = function(){
+		$scope.getTweets = function(){
 			var id_user = {'id_user': Service.get_user()};
+			$scope.tweetsList = [];
 
 			Service.post('tweet','timeline',id_user).then(
 				function(respon){
 					$scope.tweetsList = respon.data;
 
-					//ordena a lista
+					//ordena pela hora
 					$scope.tweetsList.sort(function(a,b) { 
     					return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime() 
 					});
@@ -299,20 +328,23 @@
 		};
 
 		$scope.createTweet = function(tweetToPost) {
-        	$scope.master = angular.copy(tweetToPost);
-        	$scope.master['id_user'] = Service.get_user();
+			var data = {};
+        	data = angular.copy(tweetToPost);
+        	data['id_user'] = Service.get_user();
 
-        	Service.post('tweet','create_tweet',$scope.master).then(
+        	Service.post('tweet','create_tweet',data).then(
         		function(err){
-        			$scope.get_tweets();
+        			$scope.getTweets();
         			$scope.getUserData();
         		},
-        		function(err){}
+        		function(err){
+        			alert(" Algum erro ocorreu! Sua mensagem não pode ser enviada! :( ");
+        		}
         	);
       	};
 	});
 
-	//CONTROLADOR DO PROFILE
+//PROFILE ------------------------------------------------------------------------------------------
 	myApp.controller('profile-controller', function ($scope, Service) {
 
 		/*busca id do usuario logado para popular seus dados no client*/
@@ -352,7 +384,6 @@
 
 						/*fix date*/
 						for(j=0; j < respon.data.length; j++) {
-							console.log(respon.data[j].timestamp);
 							time = respon.data[j].timestamp.split('-');
 							respon.data[j].month = time[1];
 							respon.data[j].year = time[0];

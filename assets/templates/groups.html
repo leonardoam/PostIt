@@ -1,5 +1,7 @@
-<!-- Barra de navegacao -->
+
+<!-- inicio do login-controller -->
 <div ng-controller="login-controller">
+
 	<!--VERIFICA SE O USUARIO ESTA LOGADO-->
 	<div ng-if="auth == 'false'" ng-init="goPage('#')"></div>
 
@@ -30,62 +32,72 @@
 	    </div>
 	</div>
 </div>
+<!-- fim do login-controller -->
 
 <div class="container">
 	<div class="row">
 
-		<div ng-controller="group-controller" ng-init="group_data()">
-			<div ng-controller="userData-controller" ng-init="getUserData()">
+		<!-- inicio do userData-controller -->
+		<div ng-controller="userData-controller" ng-init="getUserData()">
+			
 			<!-- COLUNA DA ESQUERDA-->
-				<div class="col-md-3">
+			<div class="col-md-3">
 
-					<!--CAMPO DE DADOS PESSOAIS-->
-					<div class="row row-top" id="persdata-summarized">
-						<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
-						<p align="left"><strong>{{name}}</strong></br></p>
-						<p align="left" style=""><a href="">@{{login}}</a></br></p>
-						<table>
-							<tr>
-								<td align="left" >SEGUINDO: </td>
-								<td align="right">{{followers}} </td>
-							</tr>
-							<tr>
-								<td align="left" >SEGUIDORES: </td>
-								<td align="right">{{follows}}</td>
-							</tr>
-							<tr>
-								<td align="left" >PUBLICAÇÕES: </td>
-								<td align="right">{{tweets}}</td>
-							</tr>
-						</table>
-					</div>
+				<!--CAMPO DE DADOS PESSOAIS-->
+				<div class="row row-top" id="persdata-summarized">
+					<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
+					<p align="left"><strong>{{name}}</strong></br></p>
+					<p align="left" style=""><a href="">@{{login}}</a></br></p>
+					<table>
+						<tr>
+							<td align="left" >SEGUINDO: </td>
+							<td align="right">{{followers}} </td>
+						</tr>
+						<tr>
+							<td align="left" >SEGUIDORES: </td>
+							<td align="right">{{follows}}</td>
+						</tr>
+						<tr>
+							<td align="left" >PUBLICAÇÕES: </td>
+							<td align="right">{{tweets}}</td>
+						</tr>
+					</table>
+				</div>
 
-					<!--CAMPO COM OS GRUPOS QUE PARTICIPA-->
-					<div class="row row-bottom" id="groups">
-						<p align="left"><strong>GRUPOS</strong></p>
-						<div ng-controller="group-controller">
-							<div ng-repeat="g in groupsList">
-								<p align="left"><a ng-click="groupSelected(g)"> @{{g.name}} </a></br></p>
-							</div>
+				<!--CAMPO COM OS GRUPOS QUE PARTICIPA-->
+				<div class="row row-bottom" id="groups" >
+					<p align="left"><strong>GRUPOS</strong></p>
+
+					<!-- inicio do group-controller -->
+					<div ng-controller="group-controller">
+						<div ng-repeat="g in groupsList">
+							<p align="left"><a ng-click="groupSelected(g)"> @{{g.name}} </a></br></p>
 						</div>
-
+					
 						<hr>
-						
-							<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
-					            <div style="margin: 0px"><textarea placeholder="Nome" rows="1" ng-model="groupName" style="margin: 0px"></textarea></div>
 
-					            <button class="btn btn-info" ng-click="createGroup()"> Criar grupo </button>
-				            </form>
-					</div>
+						<form accept-charset="UTF-8">
+				            <div><textarea placeholder="Nome" rows="1" ng-model="groupName""></textarea></div>
+
+				            <button class="btn btn-info" ng-click="createGroup()"> Criar grupo </button>
+			            </form>
+		            </div>
+		            <!-- fim do group-controller -->
 				</div>
 			</div>
-			<!-- Barra de conteudo -->
+		</div>
+		<!-- fim do userData-controller -->
+
+		<!-- inicio do group-controller -->
+		<div ng-controller="group-controller" ng-init="dataGroup()">
+
+			<!-- COLUNA DO MEIO -->
 			<div class="col-md-6">
 				<div class="row row-top">
 					<h2>@{{name_group}}</h2>
 				</div>
 
-
+				<!-- TWEETS DO GRUPO -->
 				<div class="row row-middle">
 					<div class="row">
 						<div class="col-md-6">
@@ -111,36 +123,39 @@
 						<p>0</p>
 					</div>
 				</div>
-
-				
-
-
 			</div>
 
+			<!-- COLUNA DA DIREITA -->
 			<div class="col-md-3">
 				<div class="row row-unique" id="group-members">
 
-					<div ng-if="master == userId">	
-						<form accept-charset="UTF-8" action="" method="POST" style="margin-top: 15px">
-				            <div style="margin: 0px"><textarea ng-model="addMember" placeholder="Login" rows="1" style="margin: 0px"></textarea></div>
+					<!-- verifica se o usuario eh o dono do grupo:
+							se for: mostra as opcoes de adicionar ou remover usuario e de deletar grupo
+							se nao for: mostra a opçcao de sair do grupo -->
+					<div ng-if="master == userId">
+						<form accept-charset="UTF-8">
+				            <div><textarea placeholder="Login" rows="1" ng-model="add_member"></textarea></div>
 
-				            <button class="btn btn-info" ng-click="addMember()"> Adicionar </button>
+				            <button class="btn btn-info" ng-click="addMember(add_member)"> Adicionar alguém </button>
 			            </form>
 
 			            <hr>
-						<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
-				            <div style="margin: 0px"><textarea ng-model="delMember" placeholder="Login" rows="1" style="margin: 0px"></textarea></div>
 
-				            <button class="btn btn-info" ng-click="deleteMember()"> Remover </button>
+						<form accept-charset="UTF-8">
+				            <div><textarea placeholder="Login" rows="1" ng-model="del_member"></textarea></div>
+
+				            <button class="btn btn-info" ng-click="deleteMember(del_member)"> Remover alguém </button>
 			            </form>
 
 			            <hr>
-						<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
-				            <button class="btn btn-info" type="deleteGroup()"> Deletar grupo </button>
+
+						<form accept-charset="UTF-8">
+				            <button class="btn btn-info" ng-click="deleteGroup()"> Deletar grupo </button>
 			            </form>
 		            </div>
+
 		            <div ng-if="master != userId">
-		            	<form accept-charset="UTF-8" action="" method="POST" style="margin: 0px">
+		            	<form accept-charset="UTF-8">
 				            <button class="btn btn-info" ng-click="leaveGroup()"> Sair do grupo </button>
 			            </form>
 		            </div>
@@ -155,9 +170,11 @@
 							<p ><a href=""> @{{m.login}} </a></p>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
+		<!-- fim do group-controller -->
 	</div>
 </div>
 

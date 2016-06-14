@@ -1,5 +1,7 @@
 
+<!-- inicio do login-controller -->
 <div ng-controller="login-controller">
+
 	<!--VERIFICA SE O USUARIO ESTA LOGADO-->
 	<div ng-if="auth == 'false'" ng-init="goPage('#')"></div>
 
@@ -30,11 +32,15 @@
 	    </div>
 	</div>
 </div>
+<!-- fim do login-controller -->
 
 
 <div class="container">
 	<div class="row">
+
+		<!-- inicio do userData-controller -->
 		<div ng-controller="userData-controller" ng-init="getUserData()">
+			
 			<!-- COLUNA DA ESQUERDA-->
 			<div class="col-md-3">
 
@@ -60,42 +66,50 @@
 				</div>
 
 				<!--CAMPO COM OS GRUPOS QUE PARTICIPA-->
-				<div class="row row-bottom" id="groups">
+				<div class="row row-bottom" id="groups" >
 					<p align="left"><strong>GRUPOS</strong></p>
+
+					<!-- inicio do group-controller -->
 					<div ng-controller="group-controller">
 						<div ng-repeat="g in groupsList">
 							<p align="left"><a ng-click="groupSelected(g)"> @{{g.name}} </a></br></p>
 						</div>
-					</div>
-
-					<hr>
 					
-					<div ng-controller="group-controller">
+						<hr>
+
 						<form accept-charset="UTF-8" style="margin: 0px">
 				            <div style="margin: 0px"><textarea placeholder="Nome" rows="1" ng-model="groupName" style="margin: 0px"></textarea></div>
 
 				            <button class="btn btn-info" ng-click="createGroup()"> Criar grupo </button>
 			            </form>
 		            </div>
+		            <!-- fim do group-controller -->
 				</div>
 			</div>
+		</div>
+		<!-- fim do userData-controller -->
+
+			
+		<!-- inicio do tweet-controller -->
+		<div ng-controller="tweet-controller" ng-init="getTweets()">
 
 			<!-- COLUNA DO MEIO-->
-			<div ng-controller="tweet-controller" ng-init="get_tweets()">
-				<div class="col-md-6">
-					<div class="row row-top">
-			            <form accept-charset="UTF-8" novalidate>
-			            	<div><textarea placeholder="Título" rows="1" ng-model="tweetToPost.title"></textarea></div>
+			<div class="col-md-6">
 
-			            	<div><textarea placeholder="O que está acontecendo?" rows="3" ng-model="tweetToPost.tweet"></textarea></div>
+				<!--AREA DE CRIACAO DE POSTAGEM-->
+				<div class="row row-top">
+			        <form accept-charset="UTF-8" novalidate>
+				        <div><textarea placeholder="Título" rows="1" ng-model="tweetToPost.title"></textarea></div>
 
-			                <button class="btn btn-info" ng-click="createTweet(tweetToPost)">Postar</button>
-			            </form>
-					</div>
+				        <div><textarea placeholder="O que está acontecendo?" rows="3" ng-model="tweetToPost.tweet"></textarea></div>
 
+				        <button class="btn btn-info" ng-click="createTweet(tweetToPost)">Postar</button>
+			        </form>
+				</div>
 
-					<div ng-repeat="t in tweetsList">
-						<div class="row row-middle">
+				<!--AREA DA TIMELINE-->
+				<div ng-repeat="t in tweetsList">
+					<div class="row row-middle">
 						<div class="row">
 							<div class="col-md-6">
 								<img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
@@ -106,9 +120,11 @@
 								<button class="btn btn-default" type="submit"> Republicar</button>
 							</div>
 						</div>
+
 						<div class="row">
 							<p align="left">{{t.title}}</a></p>
 						</div>
+
 						<div class="row">
 							<p align="left"> {{t.text}}</p>
 						</div>
@@ -122,160 +138,7 @@
 					</div>
 				</div>
 			</div>
-			<!--
-			<div class="row row-middle">
-				<div class="row">
-					<div class="col-md-6">
-						<img class="img-rounded" src="images/kiko.jpg" width="40" height="40">
-						<p align="left"><strong><a href="">@Kiko</a></strong> republicou</p>
-						<p align="left"> 14/04/201 - 12:23h </p>
-					</div>
-				</div>
-
-				<div class="row row-middle">
-					<div class="row">
-						<div class="col-md-6">
-							<img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
-							<p align="left"><strong><a href="">@Chaves</a></strong></p>
-							<p align="left"> 09/04/201 - 16:04h </p>
-						</div>
-						<div class="col-md-6">
-							<button class="btn btn-default" type="submit"> Republicar</button>
-						</div>
-					</div>
-
-					<div class="row">
-						<p align="left"> {{t.title}}</a></p>
-					</div>
-
-					<div class="row">
-						<p align="left"> {{t.text}}</p>
-					</div>
-
-					<div class="row">
-						<button type="submit"></button>
-						<p>233</p>
-						<button type="submit"></button>
-						<p>0</p>
-					</div>
-				</div>
-			</div>
-
-			<div class="row row-middle">
-				<div class="row">
-					<div class="col-md-6">
-						<img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
-						<p align="left"><strong><a href="">@Chaves</a></strong></p>
-						<p align="left"> 09/04/201 - 16:04h </p>
-					</div>
-					<div class="col-md-6">
-						<button class="btn btn-default" type="submit"> Republicar</button>
-					</div>
-				</div>
-				<div class="row">
-					<p align="left"> Muito bom!</a></p>
-				</div>
-				<div class="row">
-					<p align="left"> <a href="">@Kiko</a> Estou tomando um suco de tamarindo. Muito bom! <a href="">#sucodetamarindo</a> <a href="">#cordelimao</a> <a href="">#gostodegroselha</a></p>
-				</div>
-
-				<div class="row">
-					<button type="submit"></button>
-					<p>233</p>
-					<button type="submit"></button>
-					<p>0</p>
-				</div>
-			</div>
-
-
-
-			<div class="row row-middle">
-				<div class="row">
-					<div class="col-md-6">
-						<img class="img-rounded" src="images/nhonho.jpeg" width="40" height="40">
-						<p align="left"><strong><a href="">@Nhonho</a></strong></p>
-						<p align="left"> 09/04/2016 - 15:59h </p>
-					</div>
-					<div class="col-md-6">
-						<button class="btn btn-default" type="submit"> Republicar</button>
-					</div>
-				</div>
-				<div class="row">
-					<p align="left"> Receita gourmet</a></p>
-				</div>
-				<div class="row">
-					<p align="left"> Queee fomeeeeee!!! <a href="">#sanchuichedepresunto</a> <a href="">#gordice</a> <a href="">#quero</a>  </br><iframe width="448" height="252" src="https://www.youtube.com/embed/lCYS8tKRJMc" frameborder="0" allowfullscreen></iframe> </p>
-				</div>
-
-				<div class="row">
-					<button type="submit"></button>
-					<p>345</p>
-					<button type="submit"></button>
-					<p>23</p>
-				</div>
-			</div>
-
-
-			<div class="row row-middle">
-				<div class="row">
-					<div class="col-md-6">
-						<img class="img-rounded" src="images/barriga.jpg" width="40" height="40">
-						<p align="left"><strong><a href="">@SeuBarriga</a></strong></p>
-						<p align="left"> 09/04/2016 - 15:44h </p>
-					</div>
-					<div class="col-md-6">
-						<button class="btn btn-default" type="submit"> Republicar</button>
-					</div>
-				</div>
-				<div class="row">
-					<p align="left"> Me pague!!!!! >:(</a></p>
-				</div>
-				<div class="row">
-					<p align="left"> <a href="">@seumadruga</a> pague o aluguel. <a href="">#madrugaCalotero</a></p>
-				</div>
-
-				<div class="row">
-					<button type="submit"></button>
-					<p>0</p>
-					<button type="submit"></button>
-					<p>1</p>
-				</div>
-			</div>
-
-
-
-
-			<div class="row row-middle">
-				<div class="row">
-					<div class="col-md-6">
-						<img class="img-rounded" src="images/kiko.jpg" width="40" height="40">
-						<p align="left"><strong><a href="">@Kiko</a></strong></p>
-						<p align="left"> 09/04/2016 - 15:23h </p>
-					</div>
-					<div class="col-md-6">
-						<button class="btn btn-default" type="submit"> Republicar</button>
-					</div>
-				</div>
-				<div class="row">
-					<p align="left"> Bola quadrada</a></p>
-				</div>
-				<div class="row">
-					<p align="left"> Ei <a href="">@chaves</a> vamos brincar com a minha bola quadrada?</p>
-				</div>
-
-				<div class="row">
-					<button type="submit"></button>
-					<p>0</p>
-					<button type="submit"></button>
-					<p>0</p>
-				</div>
-			</div>
-
-			<div class="row row-bottom">
-				<form action="" method="POST">
-					<button class="btn btn-link" type="submit">Carregar mais postagens</button>
-				</form>
-			</div>-->
 		</div>
+		<!-- fim do tweet-controller -->
 	</div>
 </div>

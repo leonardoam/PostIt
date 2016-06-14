@@ -156,15 +156,15 @@ body {
 	border-bottom-left-radius: 10px;
 }
 
-#groups :first-child{
+#groups > p{
 	margin: 10px 0px 5px 10px;
 }
-#groups :nth-child(1n+2) {
+#groups > div > div > p {
 	margin-left: 25px;
 	margin-right:20px;
 }
 
-..img-rounded {
+.img-rounded {
 	float: left;
 	margin: 10px 10px 0px 10px;
 }
@@ -190,7 +190,6 @@ body {
 	font-size: 20px;
 }
 
-
 /*Botoes*/
 .btn-info {
 	border-color: #0084B4;
@@ -208,13 +207,11 @@ body {
 }
 
 #persdata-complete > p:nth-child(n){
+	font-size: 14px;
 	margin: 0px 0px 0px 10px;
 }
-#persdata-complete > p:nth-child(2){
-	font-size: 30px;
-}
-#persdata-complete > p:nth-child(3){
-	font-size: 12px;
+#persdata-complete > p  > a{
+	font-size: 20px;
 }
 #persdata-complete > p:last-child{
 	margin: 10px 10px 10px 10px;
@@ -225,13 +222,8 @@ body {
 	float: left;
 }
 
-#group-members > div:first-child > p {
-	float: left;
-	margin: 10px 0px 15px 10px;
-}
-
-#group-members > div > div:nth-child(1n+1)  {
-	padding-left: 10px;
+#group-members > div > form > div {
+	padding-top: 10px;
 }
 
 #group-members > div > div:nth-child(1n+1) > p {

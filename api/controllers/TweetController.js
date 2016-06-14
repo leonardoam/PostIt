@@ -164,6 +164,15 @@ module.exports = {
 								tweets.rows[j].day = time[0];
 								time = time[1].split(':');
 								tweets.rows[j].hour = time[0];
+
+								//colocando no horario de brasilia (-3 horas)
+								a = Number(tweets.rows[j].hour);
+								if((a-3) >= 0 ) tweets.rows[j].hour = Number(tweets.rows[j].hour) - 3;
+								else{
+									tweets.rows[j].hour = 24 - (3 - a);
+									tweets.rows[j].day = Number(tweets.rows[j].day) - 1;
+								}
+
 								tweets.rows[j].minute = time[1];
 
 								tweetsList.push(tweets.rows[j]);
