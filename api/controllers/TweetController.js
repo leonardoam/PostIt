@@ -97,20 +97,13 @@ module.exports = {
     				})		
 			};
 
-			function urlifyVideos(text) {
-				var urlRegex = /(\$v:https?:\/\/[^\s]+)/g;
-    			return text.replace(urlRegex, function(url) {
-    		  	  //return '<a href="' + url.slice(3) + '"> ' + url.slice(3) + ' </a>';
-    		  	  return '<iframe width="560" height="315" src="https://www.youtube.com/embed/FAyE1ApN8MA" frameborder="0" allowfullscreen></iframe>'
-    				})		
-			};
 
 			function urlifyVideos(text) {
 				var urlRegex = /(\$v:https?:\/\/[^\s]+)/g;
     			return text.replace(urlRegex, function(url) {
     			video = url.split('?');
     			video = video[video.length -1].slice(2)
-    			return '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + video + ' frameborder="0" allowfullscreen></iframe>';
+    			return '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + video + '" frameborder="0" allowfullscreen></iframe>';
     			})
     
 			};
