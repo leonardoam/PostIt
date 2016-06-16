@@ -85,7 +85,7 @@ module.exports = {
     			var urlRegex = /(\$i:https?:\/\/[^\s]+)/g;
    				return text.replace(urlRegex, function(url) {
     		    //slice(3) tira o $i: da url
-        		return '<img src="' + url.slice(3) + '">';
+        		return '<br><img src="' + url.slice(3) + '" width=350 height=350">';
     		 })
     
 			};
@@ -103,7 +103,7 @@ module.exports = {
     			return text.replace(urlRegex, function(url) {
     			video = url.split('?');
     			video = video[video.length -1].slice(2)
-    			return '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + video + '" frameborder="0" allowfullscreen></iframe>';
+    			return '<br><iframe width="560" height="315" src="https://www.youtube.com/embed/' + video + '" frameborder="0" allowfullscreen></iframe>';
     			})
     
 			};

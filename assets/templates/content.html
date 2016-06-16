@@ -126,7 +126,8 @@
 						</div>
 
 						<div class="row">
-							<p align="left"> {{t.text}}</p>
+							<!-- <p align="left"> {{t.text}}</p> -->
+							<p align="left" ng-bind-html="t.text">{{t.text}}</p>	
 						</div>
 
 						<div class="row">

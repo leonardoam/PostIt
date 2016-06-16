@@ -17,8 +17,10 @@
   ],
    "dependencies":{
      "angular": "*",
-   "angular-route": "*",
-   "bootstrap": "*",
-   "jquery": "*"
+     "angular-route": "*",
+     "angular-sanitize": "*",
+     "bootstrap": "*",
+     "ui-bootstrap": "*",
+     "jquery": "*"
   }
 }
