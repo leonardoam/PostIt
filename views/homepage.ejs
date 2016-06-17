@@ -1,3 +1,42 @@
-<!-- Default home page -->
+<!-- inicio do login-controller -->
+<div ng-controller="login-controller">
+
+	<!--VERIFICA SE O USUARIO ESTA LOGADO-->
+	<div ng-if="auth == 'false'" ng-init="goPage('')"></div>
+
+	<!-- BARRA DE NAVEGACAO -->
+	<div ng-if="auth == 'true'">
+		<div class="container-fluid">
+		    <div class="row">
+		        <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+		            <div class="container">
+		                <div class="navbar-header"><a class="navbar-brand" href=""><img src="images/postit-icon.png" height="20px" width="20px"></a></div>
+		                <div id="navbar" class="navbar-collapse collapse">
+
+		                    <ul class="nav navbar-nav">
+		                        <li><a href="" ng-click="goPage('content')"> Início </a></li>
+		                        <li><a href="" ng-click="goPage('profile')"> Perfil </a></li>
+		                        <li><a href="" ng-click="goPage('statistic')"> Estatísticas </a></li>
+		                    </ul>
+
+		                    <ul class="nav navbar-nav navbar-right">
+		                    	<li><a href="" ng-click="goPage('config')"> Configurações </a></li>
+		                        <li><a href="" ng-click="logout()"> Sair </a></li>
+		                    </ul>
+
+		                    <div ng-controller="search-controller">
+			                    <form class="navbar-form navbar-right" >
+			                        <input type="text" class="form-control" ng-model="search" ng-enter="Search()" placeholder="Buscar...">
+			                    </form>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<!-- fim do login-controller -->
+
 <div ng-view></div>
 

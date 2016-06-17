@@ -16,9 +16,11 @@
     "tests"
   ],
    "dependencies":{
-     "angular": "*",
+   "angular": "*",
    "angular-route": "*",
    "bootstrap": "*",
-   "jquery": "*"
+   "jquery": "*",
+   "ui-bootstrap": "*",
+   "angular-sanitize": "*"
   }
 }

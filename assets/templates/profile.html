@@ -1,108 +1,89 @@
-<div ng-controller="login-controller">
-	<!--VERIFICA SE O USUARIO ESTA LOGADO-->
-	<div ng-if="auth == 'false'" ng-init="goPage('#')"></div>
-
-<!-- Barra de navegacao -->
-<div class="container-fluid">
-    <div class="row">
-        <div id="navbar" class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header"><a class="navbar-brand" href=""><img src="images/postit-icon.png" height="20px" width="20px"></a></div>
-                <div id="navbar" class="navbar-collapse collapse">
-
-                    <ul class="nav navbar-nav">
-	                        <li><a href="" ng-click="goPage('content')"> Início </a></li>
-	                        <li><a href="" ng-click="goPage('profile')"> Perfil </a></li>
-	                        <li><a href="" ng-click="goPage('statistic')"> Estatísticas </a></li>
-                    </ul>
-
-                    <!--<div ng-controller="loginController"> -->
-                     <div>
-	                    <ul class="nav navbar-nav navbar-right">
-	                        <li><a ng-click="logout()"> Sair </a></li>
-	                    </ul>
-                    </div>
-
-                    <form class="navbar-form navbar-right" >
-                        <input type="text" class="form-control" placeholder="Buscar...">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <div class="container">
 	<div class="row">
-		<div ng-controller="profile-controller" ng-init="get_userTweets()"> 
+
+		<!-- inicio do profile-controller -->
+		<div ng-controller="profile-controller" ng-init="get_data()"> 
 		
-		<!-- COLUNA DA ESQUERDA -->
-		<div class="col-md-3">	
+			<!-- COLUNA DA ESQUERDA -->
+			<div class="col-md-3">	
 
-			<!--Espaco com os dados pessoais-->
-			<div class="row row-unique" id="persdata-complete">
-				<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
+				<!--Espaco com os dados pessoais-->
+				<div class="row row-unique" id="persdata-complete">
+					<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
 
-				<p align="left"><a href="">@{{user.login}}</a></br></p>
+					<p align="left"><a href="">@{{user.login}}</a></br></p>
 
-				<hr>
+					<hr>
 
-				<p align="left">E-mail: {{user.email}}</br></p>
-				<p align="left">Aniversário: {{user.birthday}}</br></p>
-				<p align="left">Sexo: {{user.gender}}</br></p>
+					<p align="left">E-mail: {{user.email}}</br></p>
+					<p align="left">Aniversário: {{user.birthday}}</br></p>
+					<p align="left">Sexo: {{user.gender}}</br></p>
 
-				<hr>
+					<hr>
 
-				<p align="left">Bio: {{user.bio}}</br></p>
+					<p align="left">Bio: {{user.bio}}</br></p>
 
-				<hr>
-				
-				<!--Se o usuario nao segue entao aparece esse botao:-->
-				<button class="btn btn-info" type="submit"> Seguir </button>
-				
-				<!--Se o usuario ja estiver seguindo aparece esse botao:-->
-				<!--<button class="btn btn-info" type="submit"> Deixar de Seguir </button>-->
+					<hr>
 
-				<!--Se o usuario estiver vendo o proprio perfil aparece esse botao:-->
-				<!--<button class="btn btn-info" type="submit"> Configurações </button>-->
-			</div>
-		</div>
-
-		<!-- COLUNA DO MEIO-->
-		<div class="col-md-6">
-
-			<div class="row row-top">
-				<h1><strong>{{user.name}}</strong></h1>
-			</div>
-
-			<div ng-repeat="t in tweetsList">
-				<div class="row row-middle">
-					<div class="row">
-						<div class="col-md-6">
-							<img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
-							<p align="left"><strong><a href="">@{{user.login}}</a></strong></p>
-							<p align="left"> {{t.day}}/{{t.month}}/{{t.year}} - {{t.hour}}:{{t.minute}}h </p>
+					<div ng-if="userAuth != userProfile">
+						<div ng-if="!follow">
+							<button class="btn btn-info" type="submit" ng-click="follow_user()"> Seguir </button>
 						</div>
-						<div class="col-md-6">
-							<button class="btn btn-default" type="submit"> Republicar</button>
+
+						<div ng-if="follow">
+							<button class="btn btn-info" type="submit" ng-click="unfollow_user()"> Deixar de Seguir </button>
 						</div>
 					</div>
-					<div class="row">
-						<p align="left">{{t.title}}</a></p>
-					</div>
-					<div class="row">
-						<p align="left"> {{t.text}}</p>
-					</div>
-					<div class="row">
-						<button type="submit"></button>
-						<p>0</p>
-						<button type="submit"></button>
-						<p>0</p>
-					</div>
+
+					
+					<!--Se o usuario ja estiver seguindo aparece esse botao:-->
+					<!--<button class="btn btn-info" type="submit"> Deixar de Seguir </button>-->
+
 				</div>
 			</div>
+
+			<!-- COLUNA DO MEIO-->
+			<div class="col-md-6">
+
+				<div class="row row-top">
+					<h1><strong>{{user.name}}</strong></h1>
+				</div>
+
+				<!-- inicio do tweet-controller -->
+				<div ng-controller="tweet-controller" ng-init='get_userTweets()'>
+
+					<div ng-repeat="t in tweetsList">
+						<div class="row row-middle">
+							<div class="row">
+								<div class="col-md-6">
+									<img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
+									<p align="left"><strong><a >@{{user.login}}</a></strong></p>
+									<p align="left"> {{t.day}}/{{t.month}}/{{t.year}} - {{t.hour}}:{{t.minute}}h </p>
+								</div>
+								<div class="col-md-6">
+									<button class="btn btn-default" type="submit"> Republicar</button>
+								</div>
+							</div>
+							<div class="row">
+								<p align="left">{{t.title}}</a></p>
+							</div>
+							<div class="row">
+								<p align="left"> {{t.text}}</p>
+							</div>
+							<div class="row">
+								<button type="submit"></button>
+								<p>0</p>
+								<button type="submit"></button>
+								<p>0</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- fim do tweet-controller -->
+			</div>
 		</div>
+		<!-- fim do profile-controller -->
 	</div>
 </div>
 

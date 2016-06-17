@@ -61,6 +61,46 @@ module.exports = {
   				return res.json(found);
   			}
 		});
+	},
+
+	check_follower: function(req, res){
+		var id_user = req.param('id_user');
+		var id_follow = req.param('id_follow');
+
+		Follow.findOne({'follower': id_user, 'follows': id_follow}).exec(function callback(err, found){
+			if(err) { return res.negotiate(err); }
+			if(!found) return res.json({success: 'false'});
+			return res.json({success: 'true'});
+		});
+	},
+
+	follow_user: function(req, res){
+			var d = new Date();
+		var t = d.toJSON();
+
+		var follow = {
+			follower: req.param('id_user'),
+			follows: req.param('id_follow'),
+			timestamp: t
+		}
+
+		Follow.create(follow).exec(function callback(err, created) {
+			if(err) { return res.negotiate(err); }
+			created.success = 'true';
+			return res.json(created);
+		});
+	},
+
+	unfollow_user: function(req, res){
+		var follow = {
+			follower: req.param('id_user'),
+			follows: req.param('id_follow'),
+		}
+
+		Follow.destroy(follow).exec(function (err) {
+			if(err) { return res.negotiate(err); }
+			return res.json({success: 'true'});
+		});
 	}
 };
 
