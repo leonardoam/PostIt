@@ -7,8 +7,6 @@
 
 module.exports = {
 
-
-
 	get_members: function(req,res){
 		var id_group = req.param('id_group');
 

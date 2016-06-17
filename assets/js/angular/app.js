@@ -6,33 +6,30 @@
     //	nos dados tem somente que declarar/registrar o serviço -> modularização.
 
 
-//ROTINAS ------------------------------------------------------------------------------------------
+//ROTAS ------------------------------------------------------------------------------------------
 	myApp.config(['$routeProvider', '$locationProvider',
 	   function($routeProvider, $locationProvider){
 		    $routeProvider.
 		    when('/',{
 				templateUrl: 'templates/index.html',
-			    controller: 'login-controller'
 			}).
 		    when('/signup',{
 			  	templateUrl: 'templates/signup.html',
-			  	controller: 'signup-controller'
 			}).
 		    when('/content',{
 			  	templateUrl: 'templates/content.html',
-			  	controller: 'login-controller'
 			}).
 		    when('/groups:groupParam',{
 			  	templateUrl: 'templates/groups.html',
-			  	controller: 'login-controller',
 			}).
-			when('/profile',{
+			when('/profile:id_user',{
 			  	templateUrl: 'templates/profile.html',
-			  	controller: 'profile-controller'
 			}).
 			when('/statistic',{
 			  	templateUrl: 'templates/statistic.html',
-			  	controller: 'c2'
+			}).
+			when('/config',{
+			  	templateUrl: 'templates/profileconfig.html',
 			}).
 		    otherwise({
 		   		redirectTo: '/'
@@ -69,15 +66,154 @@
 		}
 	});
 
+//VALIDACAO DE FORMULARIO ------------------------------------------------------------------------------------------
+	myApp.factory('Validacao', function(Service) {
+		var letras = /^[A-Za-z]+$/;
+        var letrasComEspaco = /^[A-Za-z ]+$/;
+    	var numeros = /^[0-9]+$/;
+
+		return {
+			'firstname': function(firstname){
+				if(firstname == undefined || firstname == ""){
+    				alert("Preencha o campo nome!");
+    				return 0;
+    			}
+    			if(firstname.length > 10){
+    				alert("Campo nome deve conter até 10 letras!");
+    				return 0;
+    			}
+    			if(!firstname.match(letrasComEspaco)){
+    				alert("O campo nome deve conter apenas letras.");
+      				return 0;
+    			}
+    			return 1;
+			},
+
+			'lastname': function(lastname){
+				if(lastname == undefined || lastname == ""){
+	    			alert("Preencha o campo sobrenome!");
+	    			return 0;
+	    		}
+	    		if(lastname.length > 10){
+	    			alert("Campo sobrenome deve conter até 10 letras!");
+	    			return 0;
+	    		}
+	    		if(!lastname.match(letrasComEspaco)){
+	    			alert("O campo sobrenome deve conter apenas letras.");
+	      			return 0;
+	    		}
+	    		return 1;
+			},
+
+			'name': function(name){
+				if(name == undefined || name == ""){
+	    			alert("Preencha o campo nome!");
+	    			return 0;
+	    		}
+	    		if(name.length > 20){
+	    			alert("Campo nome deve conter até 20 letras!");
+	    			return 0;
+	    		}
+	    		if(!name.match(letrasComEspaco)){
+	    			alert("O campo nome deve conter apenas letras.");
+	      			return 0;
+	    		}
+	    		return 1;
+			},
+
+			'email': function(email){
+	    		if(email == undefined || email == ""){
+	    			alert("Preencha o campo de e-mail.");
+	    			return false;
+	    		}
+	 			var erro = 0;
+	 			var emailaux = email;
+			    emailaux = emailaux.split("@");
+			    if(emailaux.length != 2 || emailaux[0] < 1){ //verifica se o email exite duas partes, uma antes de @ e outra depois
+			        erro = 1;
+			        alert("Formato de e-mail incorreto. O e-mail deve ter o formato example@example.com");
+			        return false;
+			    }            
+			    else{   //verifica se a segunda parte esta correta
+			    	var a = emailaux[1].split(".");                    
+			    	if(a.length != 2) erro = 1;
+			    	else if( a[0] < 3 || a[1] != "com") erro = 1;
+			    }
+			    if(erro){
+			    	alert("Formato de e-mail incorreto. O e-mail deve ter o formato example@example.com");
+			      	return false;
+			    }
+			    return true;
+			},
+
+			'login': function(login){
+	    		if(login == undefined || login == ""){
+	    			alert("Preencha o campo de login.");
+	    			return false;
+	    		}
+	    		if(!login.match(letras)){
+	    			alert("O login deve ter apenas letras");
+	      			return false;
+	    		}
+	    		Service.post('user','find_user',{'login_user': login}).then(
+	    			function(respon){
+	    				if(respon.data.success == 'true'){
+	    					alert("Login já existe, tente outro...");
+	    					return false;
+	    				}
+	    			}
+	    		);
+	    		return true;
+			},
+			
+			'password': function(password,passwordConfirm){
+	    		if(password == undefined || passwordConfirm == undefined || password == "" || passwordConfirm == ""){
+	    			alert("Preencha os campos de password.");
+	    			return false;
+	    		}
+	    		if(password != passwordConfirm){
+	    			alert("Os campos de senha estão diferentes.");
+	    			return false;
+	    		}
+    			return true;
+			},
+			
+			'bio': function(bio){
+	    		if(bio == undefined || bio == ""){
+	    			alert("Escreva uma descrição.");
+	    			return false;
+	    		}
+	    		if(bio.length > 200){
+	    			alert("Descrição muito grande! Máximo de 200 letras");
+	    			return false;
+	    		}
+	    		return true;
+			},
+		}
+	});
+
 //SIGNUP ------------------------------------------------------------------------------------------
-	myApp.controller('signup-controller', function ($scope, Service, $location) {
-		$scope.master = {};
+	myApp.controller('signup-controller', function ($scope, Service, $location, Validacao) {
+		$scope.user = {};
 
 		$scope.createUser = function(user) {
-        	$scope.master = angular.copy(user);
-        	Service.post('user','create_user',$scope.master);
-        	alert("Usuário " + $scope.master.user + " criado com sucesso!");
-        	$location.path('/#');
+        	$scope.user = angular.copy(user);
+
+        	var letras = /^[A-Za-z]+$/;
+        	var letrasComEspaco = /^[A-Za-z ]+$/;
+    		var numeros = /^[0-9]+$/;
+
+    		//validacao do formulario
+    		if(!Validacao.firstname(user.firstname)) return 0;
+    		if(!Validacao.lastname(user.lastname)) return 0;
+    		if(!Validacao.email(user.email)) return 0;
+    		if(!Validacao.login(user.login)) return 0;
+    		if(!Validacao.password(user.password,user.passwordConfirm)) return 0;
+    		if(!Validacao.bio(user.description)) return 0;
+
+        	Service.post('user','create_user',user);
+        	alert("Usuário " + user.login + " criado com sucesso!");
+        	$location.path('/');
         };
 	});
 
@@ -94,7 +230,7 @@
 				function(respon){	//SUCESSO
 					Service.set_user(respon.data.id);
 					Service.set_auth(true);
-					$location.path('/content');
+					location.reload();
 				},
 
 				function(respon){	//FALHA
@@ -106,11 +242,14 @@
       	$scope.logout = function(){
       		Service.set_auth(false);
       		Service.set_user(0);
-      		$location.path('/');
+      		location.reload();
       	}
 
       	$scope.goPage = function(local){
-      		$location.path('/' + local);
+      		if(local == 'profile')
+      			$location.path('/profile:' + Service.get_user());
+      		else
+      			$location.path('/' + local);
       	}
 	});
 
@@ -133,6 +272,7 @@
 			Service.post('group','get_master',{'id_group': $scope.id_group}).then(
 				function(respon){
 					$scope.master = respon.data;
+					$scope.userId = Service.get_user();
 				},
 				function(respon){}
 			);
@@ -231,7 +371,16 @@
         }
 
         $scope.leaveGroup = function(){
-
+        	Service.post('group','delete_member', {'id_user': Service.get_user(), 'id_group': $scope.id_group}).then(
+        		function(respon){
+					if(respon.data.success){
+						alert("Você saiu do grupo " + $scope.name_group + " com sucesso. :)");
+						$location.path('/content');
+					} else
+						alert("Não existe usuário com esse nome aqui.");
+				},
+				function(respon){}
+        	);
         }
 
         $scope.groupSelected = function(group) {
@@ -240,7 +389,11 @@
 	});
 	
 //USERDATA ------------------------------------------------------------------------------------------
-	myApp.controller('userData-controller', function($scope,Service) {
+	myApp.controller('userData-controller', function($scope,Service,$rootScope,$location) {
+
+		$rootScope.$on("call-getUserDataMethod", function(){
+           $scope.getUserData();
+        });
 
 		$scope.getUserData = function(){
 			var id_user = {'id_user': Service.get_user()};
@@ -298,6 +451,10 @@
 				}
 			);
 		}
+
+		$scope.goToProfile = function(){
+			$location.path('/profile:'+Service.get_user());
+		}
 	});
 
 //TWEET ------------------------------------------------------------------------------------------
@@ -305,14 +462,15 @@
 	getTweets(): retorna os tweets feitos pelo usuario e por quem ele segue em ordem por hora(timeline)
 	createTweets(): cria um novo tweet
 */
-	myApp.controller('tweet-controller', function ($scope, Service) {
+	myApp.controller('tweet-controller', function ($scope, Service,$routeParams,$rootScope) {
 
-		$scope.getTweets = function(){
+		$scope.get_tweets = function(){
 			var id_user = {'id_user': Service.get_user()};
 			$scope.tweetsList = [];
 
 			Service.post('tweet','timeline',id_user).then(
 				function(respon){
+					
 					$scope.tweetsList = respon.data;
 
 					//ordena pela hora
@@ -324,7 +482,30 @@
 					console.log('erro ao carregar a timeline');
 				}
 			);
-		};
+		}
+
+		$scope.get_userTweets = function(){
+			x = $routeParams.id_user.split(':');
+			var id_user = {'id_user': x[1]};
+
+			$scope.tweetsList = [];
+						
+			Service.post('tweet','get_tweets', id_user).then(
+				function(respon){
+					
+					$scope.tweetsList = respon.data;
+
+					//ordena pela hora
+					$scope.tweetsList.sort(function(a,b) { 
+    					return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime() 
+					});
+				},
+				//falha
+				function(respon) {
+					console.log("falha ao listar tweets!");
+				}					
+			);			
+		}
 
 		$scope.createTweet = function(tweetToPost) {
 			var data = {};
@@ -333,81 +514,156 @@
 
         	Service.post('tweet','create_tweet',data).then(
         		function(err){
-        			$scope.getTweets();
-        			$scope.getUserData();
+        			$scope.get_tweets();
+        			$rootScope.$emit("call-getUserDataMethod", {});
         		},
         		function(err){
         			alert(" Algum erro ocorreu! Sua mensagem não pode ser enviada! :( ");
         		}
         	);
-      	};
+      	}
 	});
 
 //PROFILE ------------------------------------------------------------------------------------------
-	myApp.controller('profile-controller', function ($scope, Service) {
+	myApp.controller('profile-controller', function ($scope, Service,$routeParams,$location) {
 
-		/*busca id do usuario logado para popular seus dados no client*/
-		var id_user = {'id_user': Service.get_user()};
-			
-			//busca os dados do proprio usuario
+		$scope.get_data = function(){
+			x = $routeParams.id_user.split(':');
+			var id_user = {'id_user': x[1]};
+
+			$scope.userAuth = Service.get_user();
+			$scope.userProfile = x[1];
+
 			Service.post('user','get_data',id_user).then(
 				function(respon){ //SUCESSO
-				
+
+					if(respon.data.success == 'false'){
+						$location.path('/content');
+						alert('Perfil de usuário não encontrado!');
+					}
+
 					/*fix birthday*/
 					respon.data.birthday = respon.data.birthday.split("-");
 					respon.data.birthday = respon.data.birthday[2][0] + respon.data.birthday[2][1] + '/' 
 						+ respon.data.birthday[1] + '/' + respon.data.birthday[0];
 				
-					if(respon.data.gender = 'm')
-						respon.data.gender = 'masculino';
-					else 
-						respon.data.gender = 'feminino';
+					if(respon.data.gender = 'm') respon.data.gender = 'masculino';
+					else  respon.data.gender = 'feminino';
 
 					$scope.user = respon.data
 					//$scope.login = respon.data.login;
 				},
 
 				function(respon){ //FALHA
-					console.log('erro ao procurar usuario');
+					console.log(respon);
 				}
 			);
 
-			$scope.get_userTweets = function(){
-				$scope.tweetsList = [];
-					
-					
-				Service.post('tweet','get_tweets', id_user).then(
-					function(respon){
-						//$scope.tweetsList = respon.data;
-						//console.log("tweet list: " + $scope.tweetsList);	
+			//ver se o usuario jah segue o dono do perfil
+			Service.post('follow','check_follower',{'id_user': $scope.userAuth, 'id_follow': $scope.userProfile}).then(
+				function(respon){
+					if(respon.data.success == 'true') $scope.follow = true;
+					else $scope.follow = false;
 
-						/*fix date*/
-						for(j=0; j < respon.data.length; j++) {
-							time = respon.data[j].timestamp.split('-');
-							respon.data[j].month = time[1];
-							respon.data[j].year = time[0];
-							time = time[2].split('T');
-							respon.data[j].day = time[0];
-							time = time[1].split(':');
-							respon.data[j].minute = time[1];
-							respon.data[j].hour = time[0];
-							//adiciona cada tweet na lista
-							$scope.tweetsList.push( respon.data[j] );
-						}//for
+				}
+			);
+		}
 
-						//ordena os tweets colocando o mais recente na frente
-						$scope.tweetsList.sort(function(a, b) {
-							if(parseFloat(b.hour) - parseFloat(a.hour) != 0)
-    							 return parseFloat(b.hour) - parseFloat(a.hour);
-    						else return parseFloat(b.minute) - parseFloat(a.minute);
-						});
-					},
-					//falha
-					function(respon) {
-						console.log("falha ao listar tweets!");
-					}					
-				);
-						
-			}///get_userTweets
+		$scope.follow_user = function(){
+			Service.post('follow','follow_user',{'id_user': $scope.userAuth, 'id_follow': $scope.userProfile}).then(
+				function(respon){
+					if(respon.data.success == 'true') location.reload();
+				}
+			);
+		}
+
+		$scope.unfollow_user = function(){
+			Service.post('follow','unfollow_user',{'id_user': $scope.userAuth, 'id_follow': $scope.userProfile}).then(
+				function(respon){
+					if(respon.data.success == 'true') location.reload();
+				}
+			);
+		}
+	});
+
+
+//CONFIG ------------------------------------------------------------------------------------------
+	myApp.controller('config-controller', function ($scope, Service,$location,Validacao) {
 		
-		});
+		$scope.user = {};
+
+		Service.post('user','get_data',{'id_user': Service.get_user()}).then(
+			function(respon){
+				$scope.user = respon.data;
+
+				var birthday = respon.data.birthday.split('-');
+				$scope.user.birthyear = birthday[0];
+				$scope.user.birthmonth = birthday[1];
+				birthday = birthday[2].split('T');
+				$scope.user.birthday = birthday[0];
+			}
+		);
+
+		$scope.alter_data = function(){
+
+			//validacao do formulario
+    		if(!Validacao.name($scope.user.name)) return 0;
+    		if(!Validacao.email($scope.user.email)) return 0;
+    		if(!Validacao.bio($scope.user.bio)) return 0;
+
+			Service.post('user','alter_data',$scope.user).then(
+				function(respon){
+					alert("Alterações salvas.");
+					location.reload();
+				}
+			);
+		}
+
+		$scope.alter_password = function(){
+			//validacao da senha
+			if(!Validacao.password($scope.user.newpassword,$scope.user.newpasswordConfirm)) return 0;
+
+			Service.post('user','alter_password',$scope.user).then(
+				function(respon){
+					alert("Senha alterada com sucesso.");
+					location.reload();
+				}
+			);
+		}
+
+		$scope.delete_user = function(){
+			id_user = Service.get_user();
+
+			Service.post('user','delete_user',{'id_user': id_user}).then(
+				function(respon){
+					alert("Conta deletada com sucesso.");
+					Service.set_auth(false);
+      				Service.set_user(0);
+      				location.reload();
+				}
+			);
+		}
+
+	});
+
+//SEARCH ------------------------------------------------------------------------------------------
+	myApp.controller('search-controller', function ($scope, Service,$location,Validacao) {
+		
+		$scope.Search = function(){
+			var search = $scope.search;
+
+			if(search == "" || search == undefined){
+				$scope.search == "";
+				return 0;
+			}
+
+
+			Service.post('user','alter_data',$scope.user).then(
+				function(respon){
+					alert("Alterações salvas.");
+					location.reload();
+				}
+			);
+		}
+
+	});

@@ -40,7 +40,7 @@ body {
 }
 
 .row-top, .row-unique{
-	margin-top: 60px;
+	margin-top: 65px;
 	border-top-right-radius: 10px;
 	border-top-left-radius: 10px;
 }
@@ -224,6 +224,10 @@ body {
 
 #group-members > div > form > div {
 	padding-top: 10px;
+}
+
+#group-members > div > form > button {
+	margin: 15px 0px 0px 0px;
 }
 
 #group-members > div > div:nth-child(1n+1) > p {

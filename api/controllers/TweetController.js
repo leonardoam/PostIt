@@ -113,6 +113,53 @@ module.exports = {
 			tweet = urlifyVideos(tweet);
 			/*fim do processamento */
 
+
+
+		User.findOne({
+  			id:id_user
+			}).exec(function (err, found_user){
+  				if (err) {
+    				return res.negotiate(err);
+  				}
+ 				 if (!found_user) {
+ 				 	sails.log('Could not find user ' +  id_user + ' sorry.');
+    				return res.json({reponse_msg: 'User ' + id_user + ' does not exist'});
+  				};
+
+			/*processa imagens, videos e links nos tweets
+			/*dada pelo simbolo $i*/
+			function urlifyImages(text) {
+    			var urlRegex = /(\$i:https?:\/\/[^\s]+)/g;
+   				return text.replace(urlRegex, function(url) {
+    		    //slice(3) tira o $i: da url
+        		return '<br><img src="' + url.slice(3) + '" width=350 height=350">';
+    		 })
+    
+			};
+
+			function urlifyLinks(text) {
+				var urlRegex = /(\$l:https?:\/\/[^\s]+)/g;
+    			return text.replace(urlRegex, function(url) {
+    		  	  return '<a href="' + url.slice(3) + '"> ' + url.slice(3) + ' </a>';
+    				})		
+			};
+
+
+			function urlifyVideos(text) {
+				var urlRegex = /(\$v:https?:\/\/[^\s]+)/g;
+    			return text.replace(urlRegex, function(url) {
+    			video = url.split('?');
+    			video = video[video.length -1].slice(2)
+    			return '<br><iframe width="560" height="315" src="https://www.youtube.com/embed/' + video + '" frameborder="0" allowfullscreen></iframe>';
+    			})
+    
+			};
+
+			tweet = urlifyImages(tweet);
+			tweet = urlifyLinks(tweet);
+			tweet = urlifyVideos(tweet);
+			/*fim do processamento */
+
 			User.findOne({
 	  			id:id_user
 				}).exec(function (err, found_user){
@@ -149,30 +196,45 @@ module.exports = {
 	get_tweets: function(req, res) {
 
 		var id_user = req.param('id_user') || undefined;
+		var tweetsList = [];
 
-		if(id_user) {
-		Tweet.find({'user':id_user}).exec( function callback(err, found_tweets){
-  				if (err) {
-    				return res.negotiate(err);
-  				}
- 				if (!found_tweets) {
- 				 	sails.log('Could not find user ' +  id_user + ' sorry.');
-    				return res.json({reponse_msg: 'there is no tweets for this user'});
-  				};
+		select = 'SELECT tweet.title, tweet.text, tweet.timestamp, "user".login FROM tweet INNER JOIN "user" ON "user".id = tweet.user WHERE tweet.user = '+id_user;
+		Tweet.query(select, function (err,tweets){
+			if(err) { return res.negotiate("2:" + err); }
+			else {
+				tweetsList = [];
 
-  				//sails.log('Found "%s"', found_tweets);
+				for(j = 0; j < tweets.rows.length; j++){
+								
+					time = tweets.rows[j].timestamp.split('-');
+					tweets.rows[j].year = time[0];
+					tweets.rows[j].month = time[1];
+					time = time[2].split('T');
+					tweets.rows[j].day = time[0];
+					time = time[1].split(':');
+					tweets.rows[j].hour = time[0];
 
-  				return res.json(found_tweets);
+					//colocando no horario de brasilia (-3 horas)
+					a = Number(tweets.rows[j].hour);
+					if((a-3) >= 0 ) tweets.rows[j].hour = Number(tweets.rows[j].hour) - 3;
+					else{
+						tweets.rows[j].hour = 24 - (3 - a);
+						tweets.rows[j].day = Number(tweets.rows[j].day) - 1;
+					}
+					tweets.rows[j].minute = time[1];
 
-			}); //find user exec
-		} //there are missing fields from client
-		 else 
-			return res.json({response_msg: 'invalid request!'});
+					tweetsList.push(tweets.rows[j]);
+				}
+				return res.json(tweetsList);
+			}
+		});
 	},
+
+
 	
 	timeline: function(req,res){
 		var id_user = req.param('id_user');
-		tweetsList = [];
+		var tweetsList = [];
 
 		select1 = 'SELECT "user".login, "user".id FROM "user" INNER JOIN follow ON "user".id = follow.follows WHERE follow.follower = '+id_user+' UNION ALL SELECT "user".login, "user".id FROM "user" WHERE "user".id = '+id_user;
 
@@ -180,16 +242,13 @@ module.exports = {
 		Tweet.query(select1, function(err,follows){
 			if (err) { return res.negotiate("1:" + err); }
 			else{
-				
 				var find_tweets = function(id, cb){
-    				
 					select2 = 'SELECT tweet.title, tweet.text, tweet.timestamp, "user".login FROM tweet INNER JOIN "user" ON "user".id = tweet.user WHERE tweet.user = '+id;
-
+					
 					//agora procura os tweets que as pessoas tem e adiciona numa lista de obj
 					Tweet.query(select2, function (err,tweets){
 						if(err) { return res.negotiate("2:" + err); }
 						else {
-
 							for(j = 0; j < tweets.rows.length; j++){
 								
 								time = tweets.rows[j].timestamp.split('-');
@@ -219,8 +278,9 @@ module.exports = {
 				}
 
 				tweets_ids = [];
-				for(i = 0; i < follows.rows.length; i++)
+				for(i = 0; i < follows.rows.length; i++){
 					tweets_ids.push(follows.rows[i].id);
+				}
 
 				async.forEach(tweets_ids, find_tweets, function(err){
 					if(err) {console.log("1: " + err);}

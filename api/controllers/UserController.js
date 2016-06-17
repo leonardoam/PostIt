@@ -76,12 +76,12 @@ module.exports = {
 	},
 
 	create_user: function(req, res) {
-		//var params = req.params.all();
-		//var params = req.query;
+		var params = req.params.all();
+		var params = req.query;
 
 		var user_content = {
 		 name: req.param('firstname') || undefined,
-         login: req.param('user')  || undefined,
+         login: req.param('login')  || undefined,
          password: req.param('password') || undefined,
          bio: req.param('description') || undefined,
          email: req.param('email') || undefined,
@@ -91,7 +91,6 @@ module.exports = {
 		var tmpDate = req.param('birthmonth') + "/" + req.param('birthday') + "/" + req.param('birthyear');
 		console.log("tmpDate: " + tmpDate);
 		user_content['birthday'] = new Date(tmpDate);
-		
 		
 		console.log("Printing request");
 		console.log("name: " + user_content['name']);
@@ -136,7 +135,6 @@ module.exports = {
 		};
 
 		var tmpDate = req.param('birthmonth') + "/" + req.param('birthday') + "/" + req.param('birthyear');
-		console.log("tmpDate: " + tmpDate);
 		user_content['birthday'] = new Date(tmpDate);
 		
 		console.log("Printing request");
@@ -148,6 +146,47 @@ module.exports = {
 		console.log("email: " + user_content['email']);
 	},
 
+	delete_user: function(req,res){
+		var id_user = req.param('id_user');
+
+		//deleta os membros de todos os grupos que o usuario eh o master
+
+		//encontra os grupos q o usuario eh master
+		Group.find({id:id_user}).exec(function callback(err, found){
+			if(err) {return res.negotiate('8:'+err);}
+			var i;
+			for(i = 0; i < found.length; i++){
+				select = 'DELETE FROM group_users__user_groups WHERE group_users = '+found[i].relativeId;
+				Group.query(select, function(err,results){
+		  			if(err) return res.serverError(err);
+				});
+			}
+		});
+
+		Follow.destroy({follower:id_user}).exec(function(err){
+			if (err) {return res.negotiate('7:'+err);}
+			Follow.destroy({follows:id_user}).exec(function(err){
+				if (err) {return res.negotiate('6:'+err);}
+				Reaction.destroy({user:id_user}).exec(function(err){
+					if (err) {return res.negotiate('5:'+err);}
+					Share.destroy({user:id_user}).exec(function(err){
+					if (err) {return res.negotiate('4:'+err);}
+						Group.destroy({id:id_user}).exec(function(err){
+						if (err) {return res.negotiate('3:'+err);}
+							Tweet.destroy({user:id_user}).exec(function(err){
+								if (err) {return res.negotiate('2:'+err);}
+								User.destroy({id:id_user}).exec(function (err){
+								  	if (err) {return res.negotiate('1:'+err);}
+									return res.json({success: 'true'});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	},
+
 	get_data: function(req,res){
 		var id_user = req.param('id_user')  || undefined;
 		//console.log("get_data: id_user -> " + id_user );
@@ -156,9 +195,45 @@ module.exports = {
 			if (err) {
     			return res.negotiate(err);
   			}
+  			if(!found_user)
+  				return res.json({success: 'false'});
   			else {
+  				found_user.success = 'true';
   				return res.json(found_user);
   			}
+		});
+	},
+
+	alter_data: function(req,res){
+		var user = {
+			id: req.param('id') || undefined,
+			name: req.param('name') || undefined,
+			gender: req.param('gender') || undefined,
+			email: req.param('email') || undefined,
+			bio: req.param('bio') || undefined,
+		};
+
+		var tmpDate = req.param('birthmonth') + "/" + req.param('birthday') + "/" + req.param('birthyear');
+		user['birthday'] = new Date(tmpDate);
+		var timestamp = user['birthday'].toJSON();
+
+		User.update({id:user.id},{name: user.name, birthday:user.birthday, bio: user.bio, email: user.email, gender:user.gender}).exec(function afterwards(err, updated){
+		  if (err) { return res.genotiate(err);}
+		  else{
+		  	return res.json({success: 'true'});
+		  }
+		});
+	},
+
+	alter_password: function(req,res){
+		var id_user = req.param('id');
+		var password_user = req.param('newpassword');
+
+		User.update({id:id_user}, {password: password_user}).exec(function afterwards(err, updated){
+		  if (err) { return res.genotiate(err);}
+		  else{
+		  	return res.json({success: 'true'});
+		  }
 		});
 	},
 
@@ -167,8 +242,9 @@ module.exports = {
 
 		User.findOne({'login':login_user}).exec(function callback(err, found_user){
 			if (err) return res.negotiate("find_user_1: "+err);
-  			else if(!found_user) return res.negotiate("usuario não existe");
+  			else if(!found_user) return res.json({success: 'false'});
   			else {
+  				found_user.success = 'true';
   				return res.json(found_user);
   			}
 		});

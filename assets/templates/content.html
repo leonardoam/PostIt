@@ -1,40 +1,4 @@
 
-<!-- inicio do login-controller -->
-<div ng-controller="login-controller">
-
-	<!--VERIFICA SE O USUARIO ESTA LOGADO-->
-	<div ng-if="auth == 'false'" ng-init="goPage('#')"></div>
-
-	<!-- BARRA DE NAVEGACAO -->
-	<div class="container-fluid">
-	    <div class="row">
-	        <div id="navbar" class="navbar navbar-default navbar-fixed-top">
-	            <div class="container">
-	                <div class="navbar-header"><a class="navbar-brand" href=""><img src="images/postit-icon.png" height="20px" width="20px"></a></div>
-	                <div id="navbar" class="navbar-collapse collapse">
-
-	                    <ul class="nav navbar-nav">
-	                        <li><a href="" ng-click="goPage('content')"> Início </a></li>
-	                        <li><a href="" ng-click="goPage('profile')"> Perfil </a></li>
-	                        <li><a href="" ng-click="goPage('statistic')"> Estatísticas </a></li>
-	                    </ul>
-
-	                    <ul class="nav navbar-nav navbar-right">
-	                        <li><a href="" ng-click="logout()"> Sair </a></li>
-	                    </ul>
-
-	                    <form class="navbar-form navbar-right" >
-	                        <input type="text" class="form-control" placeholder="Buscar...">
-	                    </form>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	</div>
-</div>
-<!-- fim do login-controller -->
-
-
 <div class="container">
 	<div class="row">
 
@@ -48,7 +12,7 @@
 				<div class="row row-top" id="persdata-summarized">
 					<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
 					<p align="left"><strong>{{name}}</strong></br></p>
-					<p align="left" style=""><a href="">@{{login}}</a></br></p>
+					<p align="left" style=""><a ng-click="goToProfile()">@{{login}}</a></br></p>
 					<table>
 						<tr>
 							<td align="left" >SEGUINDO: </td>
@@ -65,14 +29,13 @@
 					</table>
 				</div>
 
-				<!--CAMPO COM OS GRUPOS QUE PARTICIPA-->
-				<div class="row row-bottom" id="groups" >
+				<div class="row row-bottom" id="groups">
 					<p align="left"><strong>GRUPOS</strong></p>
 
 					<!-- inicio do group-controller -->
 					<div ng-controller="group-controller">
 						<div ng-repeat="g in groupsList">
-							<p align="left"><a ng-click="groupSelected(g)"> @{{g.name}} </a></br></p>
+							<p align="left"><a ng-click="groupSelected(g)"> {{g.name}} </a></br></p>
 						</div>
 					
 						<hr>
@@ -91,7 +54,7 @@
 
 			
 		<!-- inicio do tweet-controller -->
-		<div ng-controller="tweet-controller" ng-init="getTweets()">
+		<div ng-controller="tweet-controller" ng-init="get_tweets()">
 
 			<!-- COLUNA DO MEIO-->
 			<div class="col-md-6">
@@ -126,7 +89,10 @@
 						</div>
 
 						<div class="row">
+<<<<<<< HEAD
 							<!-- <p align="left"> {{t.text}}</p> -->
+=======
+>>>>>>> 31a782cb8204f9ff50841261c0abe13dc4e8ef4f
 							<p align="left" ng-bind-html="t.text">{{t.text}}</p>	
 						</div>
 
