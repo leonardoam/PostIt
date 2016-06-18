@@ -1,5 +1,4 @@
 
-	//var myApp = angular.module('App',  ['ngRoute']);
 	var myApp = angular.module('App',  ['ngRoute', 'ngSanitize']);
 		
 	//retorna um objeto "template" para os controllers e o ng-model trabalharem
