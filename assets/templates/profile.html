@@ -69,13 +69,16 @@
 								<p align="left">{{t.title}}</a></p>
 							</div>
 							<div class="row">
-								<p align="left"> {{t.text}}</p>
+								<p align="left" ng-bind-html="t.text">{{t.text}}</p>	
 							</div>
-							<div class="row">
-								<button type="submit"></button>
-								<p>0</p>
-								<button type="submit"></button>
-								<p>0</p>
+
+							<div ng-controller="reaction-controller" ng-init="atualizeReactions(t)">
+								<div class="row reaction">
+									<button type="submit" ng-click="like(t)"></button>
+									<p>{{likeNumber}}</p>
+									<button type="submit" ng-click="dislike(t)"></button>
+									<p>{{dislikeNumber}}</p>
+								</div>
 							</div>
 						</div>
 					</div>

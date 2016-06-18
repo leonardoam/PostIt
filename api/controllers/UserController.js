@@ -218,7 +218,7 @@ module.exports = {
 		var timestamp = user['birthday'].toJSON();
 
 		User.update({id:user.id},{name: user.name, birthday:user.birthday, bio: user.bio, email: user.email, gender:user.gender}).exec(function afterwards(err, updated){
-		  if (err) { return res.genotiate(err);}
+		  if (err) { return res.negotiate(err);}
 		  else{
 		  	return res.json({success: 'true'});
 		  }
@@ -230,7 +230,7 @@ module.exports = {
 		var password_user = req.param('newpassword');
 
 		User.update({id:id_user}, {password: password_user}).exec(function afterwards(err, updated){
-		  if (err) { return res.genotiate(err);}
+		  if (err) { return res.negotiate(err);}
 		  else{
 		  	return res.json({success: 'true'});
 		  }
@@ -240,6 +240,7 @@ module.exports = {
 	find_user: function(req,res){
 		var login_user = req.param('login_user');
 
+
 		User.findOne({'login':login_user}).exec(function callback(err, found_user){
 			if (err) return res.negotiate("find_user_1: "+err);
   			else if(!found_user) return res.json({success: 'false'});
@@ -247,6 +248,20 @@ module.exports = {
   				found_user.success = 'true';
   				return res.json(found_user);
   			}
+		});
+	},
+
+	find_user_using_string: function(req,res){
+		var name_user = req.param('name_user');
+
+		select = 'SELECT name, id, login FROM "user" WHERE name ILIKE \'%'+name_user+'%\'';
+
+		Group.query(select, function(err,users){
+			if (err) return res.negotiate("1:" + err);
+			else{
+				console.log(users.rows);
+				return res.json(users.rows);
+			}
 		});
 	},
 

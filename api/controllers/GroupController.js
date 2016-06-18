@@ -7,6 +7,24 @@
 
 module.exports = {
 
+	find_groups_and_masters: function(req,res){
+		var name_group = req.param('name_group');
+
+		var select = 'SELECT "group".name, "user".login FROM "group" INNER JOIN "user" ON "user".id = "group".id WHERE "group".name = \''+name_group+'\'';
+		/*
+		SELECT "group".name, "user".login
+		FROM "group"
+		INNER JOIN "user" ON "user".id = "group".id
+		WHERE "group".name = '+name_group+';
+		*/
+		Group.query(select, function(err,groups){
+			if (err) return res.negotiate("1:" + err);
+			else{
+				return res.json(groups.rows);
+			}
+		});
+	},
+
 	get_members: function(req,res){
 		var id_group = req.param('id_group');
 
@@ -32,12 +50,13 @@ module.exports = {
 		var id_group = req.param('id_group');
 
 		Group.findOne({'relativeId': id_group}).exec(function callback(err, found){
-			if(err)
-				return res.negotiate(err);
-			if (!found)
-				return res.negotiate("Nao achou o grupo");
-			else
-				return res.json(found.id);
+			if(err) return res.negotiate(err);
+			if (!found) return res.negotiate("Nao achou o grupo");
+			else{
+				User.findOne({'id': found.id}).exec(function callback(err, found){
+					return res.json({'id': found.id, 'name': found.name})
+				});
+			}
 		});
 	},
 

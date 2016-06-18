@@ -6,6 +6,19 @@
 	// Os dados são definidos no serviço, assim, mais controladores interessados
     //	nos dados tem somente que declarar/registrar o serviço -> modularização.
 
+	myApp.directive('ngEnter', function () {
+	    return function (scope, element, attrs) {
+	        element.bind("keydown keypress", function (event) {
+	            if(event.which === 13) {
+	                scope.$apply(function (){
+	                    scope.$eval(attrs.ngEnter);
+	                });
+	 
+	                event.preventDefault();
+	            }
+	        });
+	    };
+	});
 
 //ROTAS ------------------------------------------------------------------------------------------
 	myApp.config(['$routeProvider', '$locationProvider',
@@ -26,11 +39,14 @@
 			when('/profile:id_user',{
 			  	templateUrl: 'templates/profile.html',
 			}).
-			when('/statistic',{
+			when('/statistic:comando',{
 			  	templateUrl: 'templates/statistic.html',
 			}).
 			when('/config',{
 			  	templateUrl: 'templates/profileconfig.html',
+			}).
+			when('/search',{
+			  	templateUrl: 'templates/search.html',
 			}).
 		    otherwise({
 		   		redirectTo: '/'
@@ -40,7 +56,11 @@
 
 //SERVICOS ------------------------------------------------------------------------------------------
 	myApp.factory('Service', function ($http) {
+
+		var search = "";
+
 		return { 
+			//REQUISICOES
 			'post': function(controller, method, data){
 				return $http.post('/' + controller + '/' + method, data);
 			},
@@ -49,6 +69,7 @@
 				return $http.get('/' + controller + '/' + method, data);
 			},
 
+			//AUTENTICACAO
 			'get_auth': function(){
 				return localStorage.getItem("auth");
 			},
@@ -63,6 +84,15 @@
 				
 			'set_user': function(data){
 				localStorage.setItem("id", data);
+			},
+
+			//BUSCA
+			'set_search': function(data){
+				search = data;
+			},
+
+			'get_search': function(){
+				return search;
 			}
 		}
 	});
@@ -272,7 +302,7 @@
 
 			Service.post('group','get_master',{'id_group': $scope.id_group}).then(
 				function(respon){
-					$scope.master = respon.data;
+					$scope.master = respon.data.id;
 					$scope.userId = Service.get_user();
 				},
 				function(respon){}
@@ -312,7 +342,6 @@
         }
 
         $scope.addMember = function(add_member){
-        	console.log($scope.add_member);
         	$scope.add_member = "";
 
         	Service.post('user','find_user',{'login_user': add_member}).then(
@@ -463,7 +492,7 @@
 	getTweets(): retorna os tweets feitos pelo usuario e por quem ele segue em ordem por hora(timeline)
 	createTweets(): cria um novo tweet
 */
-	myApp.controller('tweet-controller', function ($scope, Service,$routeParams,$rootScope) {
+	myApp.controller('tweet-controller', function ($scope, Service,$routeParams,$rootScope,$location) {
 
 		$scope.get_tweets = function(){
 			var id_user = {'id_user': Service.get_user()};
@@ -523,6 +552,14 @@
         		}
         	);
       	}
+
+      	$scope.redirectTo = function(x){
+			Service.post('user','find_user',{'login_user': x}).then(
+				function(respon){
+					$location.path('/profile:'+ respon.data.id);
+				}
+			);
+		}
 	});
 
 //PROFILE ------------------------------------------------------------------------------------------
@@ -648,23 +685,97 @@
 	});
 
 //SEARCH ------------------------------------------------------------------------------------------
-	myApp.controller('search-controller', function ($scope, Service,$location,Validacao) {
+	myApp.controller('search-controller', function ($scope, Service,$location,$route) {
 		
-		$scope.Search = function(){
-			var search = $scope.search;
+		$scope.find = function(){
+			var search = Service.get_search();
 
 			if(search == "" || search == undefined){
-				$scope.search == "";
+				$location.path('/content');
 				return 0;
 			}
 
+			Service.set_search("");
 
-			Service.post('user','alter_data',$scope.user).then(
+			$scope.users = "";
+			$scope.findusers = 'false';
+
+			Service.post('user','find_user_using_string',{'name_user': search}).then(
 				function(respon){
-					alert("Alterações salvas.");
-					location.reload();
+					if(respon.data.length != 0) $scope.findusers = 'true';
+					$scope.users = respon.data;
+				}
+			);
+
+			$scope.groups = {};
+			$scope.findgroup = 'false';
+			Service.post('group','find_groups_and_masters',{'name_group': search}).then(
+				function(respon){
+					if(respon.data.length != 0) $scope.findgroup = 'true';
+					$scope.groups = respon.data;
 				}
 			);
 		}
 
+		$scope.search = function(){
+			if($scope.busca == "" || $scope.busca == undefined){
+				return 0;
+			}
+
+			Service.set_search($scope.busca);
+			$scope.busca = "";
+
+			x = location.href.split('#/');
+			if(x[1] == 'search')
+				$route.reload();
+			else
+				$location.path('/search');
+		}
+
+		$scope.redirectTo = function(x){
+			Service.post('user','find_user',{'login_user': x}).then(
+				function(respon){
+					$location.path('/profile:'+ respon.data.id);
+				}
+			);
+		}
+	});
+
+
+//REACTION ------------------------------------------------------------------------------------------
+
+	myApp.controller('reaction-controller', function ($scope, Service) {
+		
+		$scope.atualizeReactions = function(tweet){
+			var id_tweet = tweet.id;
+
+			Service.post('reaction', 'find_all_reactions', {'id_tweet': id_tweet}).then(
+				function(respon){
+					$scope.likeNumber = respon.data.likes;
+					$scope.dislikeNumber = respon.data.dislikes;
+				}
+			);
+		}
+
+		$scope.like = function(tweet){
+			var id_user = Service.get_user();
+			var id_tweet = tweet.id;
+
+			Service.post('reaction','set_like',{'id_user': id_user, 'id_tweet': id_tweet}).then(
+				function(respon){
+					$scope.atualizeReactions(tweet);
+				}
+			);
+		}
+
+		$scope.dislike = function(tweet){
+			var id_user = Service.get_user();
+			var id_tweet = tweet.id;
+
+			Service.post('reaction','set_dislike',{'id_user': id_user, 'id_tweet': id_tweet}).then(
+				function(respon){
+					$scope.atualizeReactions(tweet);
+				}
+			);
+		}
 	});

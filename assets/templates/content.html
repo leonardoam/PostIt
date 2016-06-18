@@ -76,7 +76,7 @@
 						<div class="row">
 							<div class="col-md-6">
 								<img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
-								<p align="left"><strong><a href="">@{{t.login}}</a></strong></p>
+								<p align="left"><strong><a ng-click="redirectTo(t.login)">@{{t.login}}</a></strong></p>
 								<p align="left"> {{t.day}}/{{t.month}}/{{t.year}} - {{t.hour}}:{{t.minute}}h </p>
 							</div>
 							<div class="col-md-6">
@@ -92,11 +92,13 @@
 							<p align="left" ng-bind-html="t.text">{{t.text}}</p>	
 						</div>
 
-						<div class="row">
-							<button type="submit"></button>
-							<p>0</p>
-							<button type="submit"></button>
-							<p>0</p>
+						<div ng-controller="reaction-controller" ng-init="atualizeReactions(t)">
+							<div class="row reaction">
+								<button type="submit" ng-click="like(t)"></button>
+								<p>{{likeNumber}}</p>
+								<button type="submit" ng-click="dislike(t)"></button>
+								<p>{{dislikeNumber}}</p>
+							</div>
 						</div>
 					</div>
 				</div>

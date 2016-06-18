@@ -153,7 +153,7 @@ module.exports = {
 		var id_user = req.param('id_user') || undefined;
 		var tweetsList = [];
 
-		select = 'SELECT tweet.title, tweet.text, tweet.timestamp, "user".login FROM tweet INNER JOIN "user" ON "user".id = tweet.user WHERE tweet.user = '+id_user;
+		select = 'SELECT tweet.id, tweet.title, tweet.text, tweet.timestamp, "user".login FROM tweet INNER JOIN "user" ON "user".id = tweet.user WHERE tweet.user = '+id_user;
 		Tweet.query(select, function (err,tweets){
 			if(err) { return res.negotiate("2:" + err); }
 			else {
@@ -198,7 +198,7 @@ module.exports = {
 			if (err) { return res.negotiate("1:" + err); }
 			else{
 				var find_tweets = function(id, cb){
-					select2 = 'SELECT tweet.title, tweet.text, tweet.timestamp, "user".login FROM tweet INNER JOIN "user" ON "user".id = tweet.user WHERE tweet.user = '+id;
+					select2 = 'SELECT tweet.id, tweet.title, tweet.text, tweet.timestamp, "user".login FROM tweet INNER JOIN "user" ON "user".id = tweet.user WHERE tweet.user = '+id;
 					
 					//agora procura os tweets que as pessoas tem e adiciona numa lista de obj
 					Tweet.query(select2, function (err,tweets){
