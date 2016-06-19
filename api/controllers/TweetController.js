@@ -126,54 +126,8 @@ module.exports = {
     				return res.json({reponse_msg: 'User ' + id_user + ' does not exist'});
   				};
 
-			/*processa imagens, videos e links nos tweets
-			/*dada pelo simbolo $i*/
-			function urlifyImages(text) {
-    			var urlRegex = /(\$i:https?:\/\/[^\s]+)/g;
-   				return text.replace(urlRegex, function(url) {
-    		    //slice(3) tira o $i: da url
-        		return '<br><img src="' + url.slice(3) + '" width=350 height=350">';
-    		 })
-    
-			};
 
-			function urlifyLinks(text) {
-				var urlRegex = /(\$l:https?:\/\/[^\s]+)/g;
-    			return text.replace(urlRegex, function(url) {
-    		  	  return '<a href="' + url.slice(3) + '"> ' + url.slice(3) + ' </a>';
-    				})		
-			};
-
-
-			function urlifyVideos(text) {
-				var urlRegex = /(\$v:https?:\/\/[^\s]+)/g;
-    			return text.replace(urlRegex, function(url) {
-    			video = url.split('?');
-    			video = video[video.length -1].slice(2)
-    			return '<br><iframe width="560" height="315" src="https://www.youtube.com/embed/' + video + '" frameborder="0" allowfullscreen></iframe>';
-    			})
-    
-			};
-
-			tweet = urlifyImages(tweet);
-			tweet = urlifyLinks(tweet);
-			tweet = urlifyVideos(tweet);
-			/*fim do processamento */
-
-			User.findOne({
-	  			id:id_user
-				}).exec(function (err, found_user){
-	  				if (err) {
-	    				return res.negotiate(err);
-	  				}
-	 				 if (!found_user) {
-	 				 	sails.log('Could not find user ' +  id_user + ' sorry.');
-	    				return res.json({reponse_msg: 'User ' + id_user + ' does not exist'});
-	  				};
-
-	  				sails.log('Found "%s"', found_user);
-
-	  				tweetToBD = {'user': id_user, 'title': title, 'text': tweet, 'timestamp': timestamp};
+	  			tweetToBD = {'user': id_user, 'title': title, 'text': tweet, 'timestamp': timestamp};
 
   				Tweet.create(tweetToBD).exec(function callback(error, tweets_created) {
 						if(error) {
@@ -188,7 +142,7 @@ module.exports = {
 					}); // create tweet exec
 
 				}); //find user exec
-		} //there are missing fields from client
+		} //first if(id_user && tweet && title) ... there are missing fields from client
 		 else 
 			return res.json({response_msg: 'invalid request!'});
 	}, 
@@ -291,5 +245,5 @@ module.exports = {
 			}
 		});
 	}
-};
 
+};

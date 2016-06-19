@@ -38,7 +38,7 @@
 			when('/profile:id_user',{
 			  	templateUrl: 'templates/profile.html',
 			}).
-			when('/statistic:comando',{
+			when('/statistic',{
 			  	templateUrl: 'templates/statistic.html',
 			}).
 			when('/config',{
@@ -778,3 +778,28 @@
 			);
 		}
 	});
+
+	//ESTATISTICAS ------------------------------------------------------------------------------------------
+	myApp.controller('statistics-controller', function ($scope, Service) {
+		
+		$scope.getStatistics = function() {
+			//var option = $routeParams.show.split('=')[1];
+
+			//get top20users
+			Service.post('statistics','top_users', {id:0}).then(
+			function(respon){
+				$scope.topUsersList = respon.data;
+				//console.log($scope.topUsersList);
+				}
+			);
+			
+			//get top_publications
+			Service.post('statistics','top_publications', {id:0}).then(
+			function(respon){
+				$scope.topPublicationsList = respon.data;
+				//console.log($scope.topUsersList);
+				}
+			);
+		}
+	});
+

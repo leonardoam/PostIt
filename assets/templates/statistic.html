@@ -1,12 +1,12 @@
 
-<div class="container">
+<div class="container" ng-controller="statistics-controller" ng-init="getStatistics()">
     <div class="row">
 
         <!-- COLUNA DA ESQUERDA-->
         <div class="col-md-2" style="padding: 0px">
-            <div class="row row-top">
+            <div class="row row-unique">
                 <ul class="nav navbar-nav" style="margin: 10px 0px 10px 20px;">
-                    <li><a href="#">Top20 usuários</a></li>
+                    <li><a href="/#/statistics:show=top20">Top20 usuários</a></li>
                     <li><a href="#">Top20 publicações</a></li>
                     <li><a href="#">Cálculo de influência</a></li>
                     <li><a href="#">Mais similares</a></li>
@@ -16,10 +16,38 @@
 
         <!-- COLUNA DO MEIO-->
         <div class="col-md-10" style="padding: 0px">
-            <div class="row row-top">
-                oi
+             <div class="row row-unique">
+                <div>
+                    <p>Top20 usuários </p><br>
+
+                    <div ng-repeat="item in topUsersList">
+                      <div> <p> {{item.login}} -  {{item.points}} pontos</p> <div>
+                    </div>
+                </div>
+                    
+            </div>
+        </div>
+
+    </div>
+
+
+     <div class="row row-unique">
+                <div>
+                    <p>Top20 Publicações </p><br>
+
+                    <div ng-repeat="item in topPublicationsList">
+                      <div> <p> Usuário: {{item.login}}</p>
+                        <p>título: {{item.title}}</p> 
+                        <p> {{item.tweet}}</p><br>
+                        <div>
+                    </div>
+                </div>
+                    
             </div>
         </div>
 
     </div>
 </div>
+
+
+

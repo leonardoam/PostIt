@@ -1,5 +1,5 @@
 {
-  "name": "Postit",
+  "name": "PostIt",
   "private": true,
   "version": "0.0.0",
   "description": "a Sails application",
@@ -19,9 +19,14 @@
     "grunt-sails-linker": "~0.10.1",
     "grunt-sync": "0.2.4",
     "include-all": "~0.1.6",
+    "pg-json-data-export": "^0.10.4",
+    "pg-json-schema-export": "^0.13.7",
+    "postgres-import-json": "^1.0.2",
     "rc": "1.0.1",
     "sails": "~0.12.1",
-    "sails-disk": "~0.10.9"
+    "sails-disk": "~0.10.9",
+    "sails-postgresql": "^0.11.4",
+    "waterline-pg-json-import": "^0.11.0"
   },
   "scripts": {
     "debug": "node debug app.js",
@@ -30,8 +35,8 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/anonymous node/sails user/Postit.git"
+    "url": "git://github.com/emanuel/PostIt.git"
   },
-  "author": "anonymous node/sails user",
+  "author": "emanuel",
   "license": ""
 }
