@@ -1,0 +1,480 @@
+{
+  "follow": {
+    "table": "follow",
+    "rows": [
+      {
+        "id": 1,
+        "follower": 1,
+        "follows": 3,
+        "timestamp": "2016-06-18T18:00:31.612Z",
+        "createdAt": "2016-06-18T18:00:31.000Z",
+        "updatedAt": "2016-06-18T18:00:31.000Z"
+      }
+    ]
+  },
+  "group": {
+    "table": "group",
+    "rows": [
+      {
+        "relativeId": 1,
+        "id": 1,
+        "name": "gEmanuel",
+        "createdAt": "2016-06-17T21:37:46.000Z",
+        "updatedAt": "2016-06-17T21:37:46.000Z"
+      },
+      {
+        "relativeId": 2,
+        "id": 1,
+        "name": "g2Emanuel",
+        "createdAt": "2016-06-17T21:43:19.000Z",
+        "updatedAt": "2016-06-17T21:43:19.000Z"
+      },
+      {
+        "relativeId": 3,
+        "id": 2,
+        "name": "gEmanuel2",
+        "createdAt": "2016-06-17T21:48:06.000Z",
+        "updatedAt": "2016-06-17T21:48:06.000Z"
+      },
+      {
+        "relativeId": 4,
+        "id": 1,
+        "name": "g2Emanuel2",
+        "createdAt": "2016-06-17T21:48:06.000Z",
+        "updatedAt": "2016-06-17T21:48:06.000Z"
+      },
+      {
+        "relativeId": 7,
+        "id": 4,
+        "name": "gLeonardo",
+        "createdAt": "2016-06-17T21:48:07.000Z",
+        "updatedAt": "2016-06-17T21:48:07.000Z"
+      },
+      {
+        "relativeId": 8,
+        "id": 4,
+        "name": "g2Leonardo",
+        "createdAt": "2016-06-17T21:48:07.000Z",
+        "updatedAt": "2016-06-17T21:48:07.000Z"
+      },
+      {
+        "relativeId": 9,
+        "id": 5,
+        "name": "gClaudio",
+        "createdAt": "2016-06-17T21:48:07.000Z",
+        "updatedAt": "2016-06-17T21:48:07.000Z"
+      },
+      {
+        "relativeId": 10,
+        "id": 5,
+        "name": "g2Claudio",
+        "createdAt": "2016-06-17T21:48:07.000Z",
+        "updatedAt": "2016-06-17T21:48:07.000Z"
+      },
+      {
+        "relativeId": 5,
+        "id": 3,
+        "name": "gJoao",
+        "createdAt": "2016-06-17T21:48:06.000Z",
+        "updatedAt": "2016-06-17T21:48:06.000Z"
+      },
+      {
+        "relativeId": 6,
+        "id": 3,
+        "name": "g2Joao",
+        "createdAt": "2016-06-17T21:48:06.000Z",
+        "updatedAt": "2016-06-17T21:48:06.000Z"
+      }
+    ]
+  },
+  "group_users__user_groups": {
+    "table": "group_users__user_groups",
+    "rows": [
+      {
+        "id": 1,
+        "group_users": 1,
+        "user_groups": 1
+      },
+      {
+        "id": 2,
+        "group_users": 2,
+        "user_groups": 1
+      },
+      {
+        "id": 3,
+        "group_users": 3,
+        "user_groups": 2
+      },
+      {
+        "id": 4,
+        "group_users": 4,
+        "user_groups": 2
+      },
+      {
+        "id": 5,
+        "group_users": 5,
+        "user_groups": 3
+      },
+      {
+        "id": 6,
+        "group_users": 6,
+        "user_groups": 3
+      },
+      {
+        "id": 8,
+        "group_users": 8,
+        "user_groups": 4
+      },
+      {
+        "id": 10,
+        "group_users": 10,
+        "user_groups": 5
+      },
+      {
+        "id": 9,
+        "group_users": 9,
+        "user_groups": 5
+      },
+      {
+        "id": 7,
+        "group_users": 7,
+        "user_groups": 4
+      },
+      {
+        "id": 11,
+        "group_users": 1,
+        "user_groups": 3
+      }
+    ]
+  },
+  "maintenance": {
+    "table": "maintenance",
+    "rows": []
+  },
+  "reaction": {
+    "table": "reaction",
+    "rows": [
+      {
+        "tweet": 15,
+        "user": 1,
+        "reaction": 1,
+        "timestamp": "2016-06-18T17:58:19.907Z",
+        "id": 2,
+        "createdAt": "2016-06-18T17:58:18.000Z",
+        "updatedAt": "2016-06-18T17:58:19.000Z"
+      },
+      {
+        "tweet": 6,
+        "user": 1,
+        "reaction": 1,
+        "timestamp": "2016-06-18T18:00:42.175Z",
+        "id": 4,
+        "createdAt": "2016-06-18T18:00:42.000Z",
+        "updatedAt": "2016-06-18T18:00:42.000Z"
+      },
+      {
+        "tweet": 5,
+        "user": 1,
+        "reaction": 1,
+        "timestamp": "2016-06-18T18:26:45.797Z",
+        "id": 7,
+        "createdAt": "2016-06-18T18:26:45.000Z",
+        "updatedAt": "2016-06-18T18:26:45.000Z"
+      },
+      {
+        "tweet": 5,
+        "user": 3,
+        "reaction": 1,
+        "timestamp": "2016-06-18T18:27:10.990Z",
+        "id": 8,
+        "createdAt": "2016-06-18T18:27:10.000Z",
+        "updatedAt": "2016-06-18T18:27:10.000Z"
+      },
+      {
+        "tweet": 6,
+        "user": 3,
+        "reaction": 1,
+        "timestamp": "2016-06-18T18:27:13.693Z",
+        "id": 10,
+        "createdAt": "2016-06-18T18:27:13.000Z",
+        "updatedAt": "2016-06-18T18:27:13.000Z"
+      },
+      {
+        "tweet": 14,
+        "user": 1,
+        "reaction": 1,
+        "timestamp": "2016-06-18T19:58:35.740Z",
+        "id": 12,
+        "createdAt": "2016-06-18T19:58:35.000Z",
+        "updatedAt": "2016-06-18T19:58:35.000Z"
+      },
+      {
+        "tweet": 1,
+        "user": 1,
+        "reaction": 1,
+        "timestamp": "2016-06-18T19:58:57.947Z",
+        "id": 6,
+        "createdAt": "2016-06-18T18:17:52.000Z",
+        "updatedAt": "2016-06-18T19:58:57.000Z"
+      },
+      {
+        "tweet": 7,
+        "user": 1,
+        "reaction": 0,
+        "timestamp": "2016-06-18T19:59:31.739Z",
+        "id": 3,
+        "createdAt": "2016-06-18T17:59:30.000Z",
+        "updatedAt": "2016-06-18T19:59:31.000Z"
+      },
+      {
+        "tweet": 2,
+        "user": 1,
+        "reaction": 0,
+        "timestamp": "2016-06-18T19:59:55.179Z",
+        "id": 13,
+        "createdAt": "2016-06-18T19:59:55.000Z",
+        "updatedAt": "2016-06-18T19:59:55.000Z"
+      },
+      {
+        "tweet": 10,
+        "user": 4,
+        "reaction": 1,
+        "timestamp": "2016-06-18T20:08:31.735Z",
+        "id": 14,
+        "createdAt": "2016-06-18T20:08:31.000Z",
+        "updatedAt": "2016-06-18T20:08:31.000Z"
+      },
+      {
+        "tweet": 9,
+        "user": 4,
+        "reaction": 1,
+        "timestamp": "2016-06-18T22:17:11.272Z",
+        "id": 15,
+        "createdAt": "2016-06-18T22:17:11.000Z",
+        "updatedAt": "2016-06-18T22:17:11.000Z"
+      },
+      {
+        "tweet": 8,
+        "user": 4,
+        "reaction": 1,
+        "timestamp": "2016-06-18T23:29:21.726Z",
+        "id": 16,
+        "createdAt": "2016-06-18T23:29:21.000Z",
+        "updatedAt": "2016-06-18T23:29:21.000Z"
+      }
+    ]
+  },
+  "share": {
+    "table": "share",
+    "rows": []
+  },
+  "statistics": {
+    "table": "statistics",
+    "rows": []
+  },
+  "tweet": {
+    "table": "tweet",
+    "rows": [
+      {
+        "id": 1,
+        "user": 1,
+        "title": "t1",
+        "text": "oi",
+        "timestamp": "2016-06-17T21:04:14.636Z",
+        "createdAt": "2016-06-17T21:04:14.000Z",
+        "updatedAt": "2016-06-17T21:04:14.000Z"
+      },
+      {
+        "id": 2,
+        "user": 1,
+        "title": "mytitle",
+        "text": "isso é uma mensagem postada",
+        "timestamp": "2016-06-17T21:28:31.531Z",
+        "createdAt": "2016-06-17T21:28:31.000Z",
+        "updatedAt": "2016-06-17T21:28:31.000Z"
+      },
+      {
+        "id": 12,
+        "user": 5,
+        "title": "mytitle",
+        "text": "isso é uma mensagem postada1",
+        "timestamp": "2016-06-17T21:29:23.371Z",
+        "createdAt": "2016-06-17T21:29:23.000Z",
+        "updatedAt": "2016-06-17T21:29:23.000Z"
+      },
+      {
+        "id": 11,
+        "user": 5,
+        "title": "mytitle",
+        "text": "isso é uma mensagem postada",
+        "timestamp": "2016-06-17T21:29:23.313Z",
+        "createdAt": "2016-06-17T21:29:23.000Z",
+        "updatedAt": "2016-06-17T21:29:23.000Z"
+      },
+      {
+        "id": 10,
+        "user": 4,
+        "title": "mytitle",
+        "text": "isso é uma mensagem postada2",
+        "timestamp": "2016-06-17T21:29:23.260Z",
+        "createdAt": "2016-06-17T21:29:23.000Z",
+        "updatedAt": "2016-06-17T21:29:23.000Z"
+      },
+      {
+        "id": 9,
+        "user": 4,
+        "title": "mytitle",
+        "text": "isso é uma mensagem postada1",
+        "timestamp": "2016-06-17T21:29:23.203Z",
+        "createdAt": "2016-06-17T21:29:23.000Z",
+        "updatedAt": "2016-06-17T21:29:23.000Z"
+      },
+      {
+        "id": 8,
+        "user": 4,
+        "title": "mytitle",
+        "text": "isso é uma mensagem postada",
+        "timestamp": "2016-06-17T21:29:23.147Z",
+        "createdAt": "2016-06-17T21:29:23.000Z",
+        "updatedAt": "2016-06-17T21:29:23.000Z"
+      },
+      {
+        "id": 7,
+        "user": 3,
+        "title": "mytitle",
+        "text": "isso é uma mensagem postada2",
+        "timestamp": "2016-06-17T21:29:23.091Z",
+        "createdAt": "2016-06-17T21:29:23.000Z",
+        "updatedAt": "2016-06-17T21:29:23.000Z"
+      },
+      {
+        "id": 6,
+        "user": 3,
+        "title": "mytitle",
+        "text": "isso é uma mensagem postada1",
+        "timestamp": "2016-06-17T21:29:23.041Z",
+        "createdAt": "2016-06-17T21:29:23.000Z",
+        "updatedAt": "2016-06-17T21:29:23.000Z"
+      },
+      {
+        "id": 5,
+        "user": 3,
+        "title": "mytitle",
+        "text": "isso é uma mensagem postada",
+        "timestamp": "2016-06-17T21:29:22.981Z",
+        "createdAt": "2016-06-17T21:29:22.000Z",
+        "updatedAt": "2016-06-17T21:29:22.000Z"
+      },
+      {
+        "id": 4,
+        "user": 2,
+        "title": "mytitle",
+        "text": "isso é uma mensagem postada2",
+        "timestamp": "2016-06-17T21:28:31.727Z",
+        "createdAt": "2016-06-17T21:28:31.000Z",
+        "updatedAt": "2016-06-17T21:28:31.000Z"
+      },
+      {
+        "id": 3,
+        "user": 2,
+        "title": "mytitle",
+        "text": "isso é uma mensagem postada1",
+        "timestamp": "2016-06-17T21:28:31.657Z",
+        "createdAt": "2016-06-17T21:28:31.000Z",
+        "updatedAt": "2016-06-17T21:28:31.000Z"
+      },
+      {
+        "id": 13,
+        "user": 1,
+        "title": "tweet",
+        "text": "teste2",
+        "timestamp": "2016-06-17T22:48:55.282Z",
+        "createdAt": "2016-06-17T22:48:55.000Z",
+        "updatedAt": "2016-06-17T22:48:55.000Z"
+      },
+      {
+        "id": 14,
+        "user": 1,
+        "title": "tweet2",
+        "text": "teste4",
+        "timestamp": "2016-06-17T22:57:12.483Z",
+        "createdAt": "2016-06-17T22:57:12.000Z",
+        "updatedAt": "2016-06-17T22:57:12.000Z"
+      },
+      {
+        "id": 15,
+        "user": 1,
+        "title": "aa",
+        "text": "aaaa",
+        "timestamp": "2016-06-18T00:00:36.386Z",
+        "createdAt": "2016-06-18T00:00:36.000Z",
+        "updatedAt": "2016-06-18T00:00:36.000Z"
+      }
+    ]
+  },
+  "user": {
+    "table": "user",
+    "rows": [
+      {
+        "id": 1,
+        "name": "Emanuel",
+        "login": "emanuelvalente",
+        "password": "a",
+        "birthday": "1950-10-16T02:00:00.000Z",
+        "bio": "desc",
+        "email": "emanuelvalente@gmail.com",
+        "gender": "m",
+        "createdAt": "2016-06-17T21:00:25.000Z",
+        "updatedAt": "2016-06-17T21:00:25.000Z"
+      },
+      {
+        "id": 2,
+        "name": "Emanuel",
+        "login": "emanuelvalente2",
+        "password": "emapass",
+        "birthday": "1940-02-10T02:00:00.000Z",
+        "bio": "ema description",
+        "email": "emanuelvalente@gmail.com",
+        "gender": "m",
+        "createdAt": "2016-06-17T21:24:31.000Z",
+        "updatedAt": "2016-06-17T21:24:31.000Z"
+      },
+      {
+        "id": 3,
+        "name": "Joao",
+        "login": "joao",
+        "password": "joao",
+        "birthday": "1940-02-10T02:00:00.000Z",
+        "bio": "ema description",
+        "email": "emanuelvalente@gmail.com",
+        "gender": "m",
+        "createdAt": "2016-06-17T21:26:44.000Z",
+        "updatedAt": "2016-06-17T21:26:44.000Z"
+      },
+      {
+        "id": 4,
+        "name": "Leonardo",
+        "login": "leonardo",
+        "password": "leonardo",
+        "birthday": "1940-02-10T02:00:00.000Z",
+        "bio": "ema description",
+        "email": "emanuelvalente@gmail.com",
+        "gender": "m",
+        "createdAt": "2016-06-17T21:26:44.000Z",
+        "updatedAt": "2016-06-17T21:26:44.000Z"
+      },
+      {
+        "id": 5,
+        "name": "Claudio",
+        "login": "claudio",
+        "password": "claudio",
+        "birthday": "1940-02-10T02:00:00.000Z",
+        "bio": "ema description",
+        "email": "emanuelvalente@gmail.com",
+        "gender": "m",
+        "createdAt": "2016-06-17T21:26:44.000Z",
+        "updatedAt": "2016-06-17T21:26:44.000Z"
+      }
+    ]
+  }
+}
