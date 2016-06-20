@@ -9,7 +9,7 @@ module.exports = {
 	
 	find_all_reactions: function(req,res){
 		var id_tweet = req.param('id_tweet');
-		
+
 		sql = 'SELECT t1.likes, t2.dislikes FROM (SELECT count(reaction) AS likes FROM reaction WHERE reaction = 1 AND tweet = '+id_tweet+') t1 CROSS JOIN (SELECT count(reaction) AS dislikes FROM reaction WHERE reaction = 0 AND tweet = '+id_tweet+') t2';
 		/*
 			SELECT t1.likes, t2.dislikes

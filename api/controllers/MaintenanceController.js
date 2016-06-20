@@ -10,7 +10,7 @@ module.exports = {
 		var PostgresSchema = require('pg-json-schema-export');
 		var connection = {	
   		user: 'postgres',
-  		password: 'manelind00',
+  		password: '7486612',
   		host: 'localhost',
   		port: 5432,
   		database: 'postit'
@@ -30,7 +30,7 @@ module.exports = {
 		var exporter = require('pg-json-data-export');
 		var connection = {	
   		user: 'postgres',
-  		password: 'manelind00',
+  		password: '7486612',
   		host: 'localhost',
   		port: 5432,
   		database: 'postit'

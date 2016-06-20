@@ -16,20 +16,11 @@
     "tests"
   ],
    "dependencies":{
-<<<<<<< HEAD
      "angular": "*",
      "angular-route": "*",
      "angular-sanitize": "*",
      "bootstrap": "*",
      "ui-bootstrap": "*",
      "jquery": "*"
-=======
-   "angular": "*",
-   "angular-route": "*",
-   "bootstrap": "*",
-   "jquery": "*",
-   "ui-bootstrap": "*",
-   "angular-sanitize": "*"
->>>>>>> 31a782cb8204f9ff50841261c0abe13dc4e8ef4f
   }
 }

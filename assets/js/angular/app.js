@@ -442,7 +442,8 @@
 			//quem ele segue
 			Service.post('follow','get_followers',id_user).then(
 				function(respon){
-					$scope.followers = respon.data.length;
+					$scope.followersLength = respon.data.length;
+					$scope.followers = respon.data;
 				},
 				function(respon){
 					console.log('erro ao procurar seguidores');
@@ -453,7 +454,9 @@
 			//quem segue ele
 			Service.post('follow','get_follows',id_user).then(
 				function(respon){
-					$scope.follows = respon.data.length;
+					$scope.followsLength = respon.data.length;
+					console.log(respon.data);
+					$scope.follows = respon.data;
 				},
 				function(respon){
 					console.log('erro ao procurar seguidores');
@@ -481,8 +484,11 @@
 			);
 		}
 
-		$scope.goToProfile = function(){
-			$location.path('/profile:'+Service.get_user());
+		$scope.goToProfile = function(id){
+			if(id == "")
+				$location.path('/profile:'+Service.get_user());
+			else
+				$location.path('/profile:'+id);
 		}
 	});
 
@@ -492,6 +498,10 @@
 	createTweets(): cria um novo tweet
 */
 	myApp.controller('tweet-controller', function ($scope, Service,$routeParams,$rootScope,$location) {
+
+		$rootScope.$on("call-get_tweetsMethod", function(){
+           $scope.get_tweets();
+        });
 
 		$scope.get_tweets = function(){
 			var id_user = {'id_user': Service.get_user()};
@@ -779,7 +789,7 @@
 		}
 	});
 
-	//ESTATISTICAS ------------------------------------------------------------------------------------------
+//ESTATISTICAS ------------------------------------------------------------------------------------------
 	myApp.controller('statistics-controller', function ($scope, Service) {
 		
 		$scope.getStatistics = function() {
@@ -788,6 +798,7 @@
 			//get top20users
 			Service.post('statistics','top_users', {id:0}).then(
 			function(respon){
+				console.log(respon.data);
 				$scope.topUsersList = respon.data;
 				//console.log($scope.topUsersList);
 				}
@@ -796,10 +807,30 @@
 			//get top_publications
 			Service.post('statistics','top_publications', {id:0}).then(
 			function(respon){
+				console.log(respon.data);
 				$scope.topPublicationsList = respon.data;
 				//console.log($scope.topUsersList);
 				}
 			);
 		}
 	});
+
+//SHARE ------------------------------------------------------------------------------------------
+	myApp.controller('share-controller', function ($scope, Service, $rootScope) {
+		
+		$scope.share = function(tweet) {
+			var id_user = Service.get_user();
+			var id_tweet = tweet.id;
+
+			Service.post('share', 'add_share', {'id_user': Service.get_user(), 'id_tweet': id_tweet}).then(
+				function(respon){
+					if(respon.data.success == "true")
+						$rootScope.$emit("call-get_tweetsMethod", {});
+					else if(respon.data.success == "false")
+						alert("Você já republicou essa postagem.");
+				}
+			);
+		}
+	});
+
 

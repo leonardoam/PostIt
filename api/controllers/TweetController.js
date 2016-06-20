@@ -7,65 +7,6 @@
  
 module.exports = {
 
-	create_tweets: function(req, res) {
-		var tweets = [
-			{
-				'user': 1,
-				'title': 'a',
-				'text': 'aaa',
-				'timestamp': '2016-06-11T20:43:17.463Z'
-			},
-			{
-				'user': 2,
-				'title': 'b',
-				'text': 'bbb',
-				'timestamp': '2016-06-11T20:45:17.463Z'
-			},
-			{
-				'user': 2,
-				'title': 'c',
-				'text': 'ccc',
-				'timestamp': '2016-06-11T20:50:17.463Z'
-			},
-			{
-				'user': 2,
-				'title': 'd',
-				'text': 'ddd',
-				'timestamp': '2016-06-11T20:55:17.463Z'
-			},
-			{
-				'user': 1,
-				'title': 'e',
-				'text': 'eee',
-				'timestamp': '2016-06-11T21:00:17.463Z'
-			},
-			{
-				'user': 2,
-				'title': 'f',
-				'text': 'fff',
-				'timestamp': '2016-06-11T21:05:17.463Z'
-			},
-			{
-				'user': 2,
-				'title': 'g',
-				'text': 'ggg',
-				'timestamp': '2016-06-11T21:10:17.463Z'
-			}
-		];
-
-		Tweet.create(tweets).exec(function callback(error, users_created) {
-			if(error) {
-				console.log(error);
-			}
-			else
-				console.log("Tweets created successfully..");
-
-			return res.json(users_created);
-		})
-	},
-
-
-
 	create_tweet: function(req, res) {
 		var tweetToBD = {};
 
@@ -148,39 +89,81 @@ module.exports = {
 	}, 
 
 	get_tweets: function(req, res) {
-
 		var id_user = req.param('id_user') || undefined;
 		var tweetsList = [];
+		
+		sql = 'SELECT "user".login, tweet.title, tweet.text, tweet.timestamp, tweet.id FROM "user" INNER JOIN tweet ON tweet.user = "user".id WHERE "user".id = +'+id_user;
+		/*
+			SELECT "user".login, tweet.title, tweet.text, tweet.timestamp, tweet.id
+			FROM "user"
+			INNER JOIN tweet
+			ON tweet.user = "user".id
+			WHERE "user".id = 1
+		*/
 
-		select = 'SELECT tweet.id, tweet.title, tweet.text, tweet.timestamp, "user".login FROM tweet INNER JOIN "user" ON "user".id = tweet.user WHERE tweet.user = '+id_user;
-		Tweet.query(select, function (err,tweets){
-			if(err) { return res.negotiate("2:" + err); }
-			else {
-				tweetsList = [];
+		Tweet.query(sql, function(err,tweets){
+			if (err) { return res.negotiate("get_tweet_1:" + err); }
+			
+			for(i = 0; i < tweets.rowCount; i++){
+				
+				Service.divide_timestamp(tweets.rows[i].timestamp, "", function(result){
+					tweets.rows[i].year = result.year;
+					tweets.rows[i].month = result.month;
+					tweets.rows[i].day = result.day;
+					tweets.rows[i].hour = result.hour;
+					tweets.rows[i].minute = result.minute;
 
-				for(j = 0; j < tweets.rows.length; j++){
-								
-					time = tweets.rows[j].timestamp.split('-');
-					tweets.rows[j].year = time[0];
-					tweets.rows[j].month = time[1];
-					time = time[2].split('T');
-					tweets.rows[j].day = time[0];
-					time = time[1].split(':');
-					tweets.rows[j].hour = time[0];
+					tweetsList.push(tweets.rows[i]);
+				});
+			}
 
-					//colocando no horario de brasilia (-3 horas)
-					a = Number(tweets.rows[j].hour);
-					if((a-3) >= 0 ) tweets.rows[j].hour = Number(tweets.rows[j].hour) - 3;
-					else{
-						tweets.rows[j].hour = 24 - (3 - a);
-						tweets.rows[j].day = Number(tweets.rows[j].day) - 1;
-					}
-					tweets.rows[j].minute = time[1];
+			sql = 'SELECT * FROM ( SELECT "user".login as share_login, tweet.title, tweet.text, tweet.timestamp as share_timestamp, share.timestamp, tweet.id as A FROM "user" INNER JOIN share ON share."user" = "user".id INNER JOIN tweet ON tweet.id = share.tweet WHERE "user".id = '+id_user+' ) t1 INNER JOIN ( SELECT "user".login, tweet.id as id FROM "user" INNER JOIN tweet ON tweet.user = "user".id ) t2 ON t1.A = t2.id';
+			/*
+			SELECT * FROM
+				(
+				SELECT "user".login as share_login, tweet.title, tweet.text, tweet.timestamp as share_timestamp, share.timestamp, tweet.id as A
+				FROM "user"
+				INNER JOIN share
+				ON share."user" = "user".id
+				INNER JOIN tweet
+				ON tweet.id = share.tweet
+				WHERE "user".id = '+id_user+'
+				) t1
 
-					tweetsList.push(tweets.rows[j]);
+			INNER JOIN
+				(
+				SELECT "user".login, tweet.id as id
+				FROM "user"
+				INNER JOIN tweet
+				ON tweet.user = "user".id
+				) t2
+			ON t1.A = t2.id
+			*/
+
+			Tweet.query(sql, function(err,tweets){
+				if (err) { return res.negotiate("get_tweet_2:" + err); }
+
+				for(i = 0; i < tweets.rowCount; i++){
+					tweets.rows[i].share = true;
+
+					Service.divide_timestamp(tweets.rows[i].timestamp, tweets.rows[i].share_timestamp, function(result){
+						tweets.rows[i].year = result.year;
+						tweets.rows[i].month = result.month;
+						tweets.rows[i].day = result.day;
+						tweets.rows[i].hour = result.hour;
+						tweets.rows[i].minute = result.minute;
+
+						tweets.rows[i].syear = result.syear;
+						tweets.rows[i].smonth = result.smonth;
+						tweets.rows[i].sday = result.sday;
+						tweets.rows[i].shour = result.shour;
+						tweets.rows[i].sminute = result.sminute;
+
+						tweetsList.push(tweets.rows[i]);
+					});
 				}
 				return res.json(tweetsList);
-			}
+			});
 		});
 	},
 
@@ -189,61 +172,119 @@ module.exports = {
 	timeline: function(req,res){
 		var id_user = req.param('id_user');
 		var tweetsList = [];
+		/*
+		tweetlist = {
+			login 			-> login do usuario q fez o tweet
+			title			-> titulo do tweet
+			text			-> texto do tweet
+			timestamp 		-> hora que o tweet foi feito
 
-		select1 = 'SELECT "user".login, "user".id FROM "user" INNER JOIN follow ON "user".id = follow.follows WHERE follow.follower = '+id_user+' UNION ALL SELECT "user".login, "user".id FROM "user" WHERE "user".id = '+id_user;
+			share 			-> booleano para indicar se o tweet eh uma republicacao de outro tweet
+			share_login 	-> login de quem republicou
+			share_timestamp -> horario que o usuario republicou
+		}
+		*/
 
-		//seleciona as pessoas que o usuario segue, inclusive ele mesmo
-		Tweet.query(select1, function(err,follows){
-			if (err) { return res.negotiate("1:" + err); }
-			else{
-				var find_tweets = function(id, cb){
-					select2 = 'SELECT tweet.id, tweet.title, tweet.text, tweet.timestamp, "user".login FROM tweet INNER JOIN "user" ON "user".id = tweet.user WHERE tweet.user = '+id;
-					
-					//agora procura os tweets que as pessoas tem e adiciona numa lista de obj
-					Tweet.query(select2, function (err,tweets){
-						if(err) { return res.negotiate("2:" + err); }
-						else {
-							for(j = 0; j < tweets.rows.length; j++){
-								
-								time = tweets.rows[j].timestamp.split('-');
-								tweets.rows[j].year = time[0];
-								tweets.rows[j].month = time[1];
-								time = time[2].split('T');
-								tweets.rows[j].day = time[0];
-								time = time[1].split(':');
-								tweets.rows[j].hour = time[0];
+		sql = 'SELECT "user".login, tweet.title, tweet.text, tweet.timestamp, tweet.id FROM "user" INNER JOIN follow ON "user".id = follow.follows INNER JOIN tweet ON "user".id = tweet.user WHERE follow.follower = '+id_user+' UNION ALL SELECT "user".login, tweet.title, tweet.text, tweet.timestamp, tweet.id FROM "user" INNER JOIN tweet ON "user".id = tweet.user WHERE "user".id = '+id_user;
+		/*
+		SELECT "user".login, tweet.title, tweet.text, tweet.timestamp
+		FROM "user"
+		INNER JOIN follow
+		ON "user".id = follow.follows
+		INNER JOIN tweet
+		ON "user".id = tweet.user
+		WHERE follow.follower = '+id_user+'
 
-								//colocando no horario de brasilia (-3 horas)
-								a = Number(tweets.rows[j].hour);
-								if((a-3) >= 0 ) tweets.rows[j].hour = Number(tweets.rows[j].hour) - 3;
-								else{
-									tweets.rows[j].hour = 24 - (3 - a);
-									tweets.rows[j].day = Number(tweets.rows[j].day) - 1;
-								}
+		UNION ALL
 
-								tweets.rows[j].minute = time[1];
+		SELECT "user".login, tweet.title, tweet.text, tweet.timestamp
+		FROM "user"
+		INNER JOIN tweet
+		ON "user".id = tweet.user
+		WHERE "user".id = '+id_user
+		*/
 
-								tweetsList.push(tweets.rows[j]);
-							}
 
-							cb();
-						}
+		//seleciona os tweets para exibir na timeline
+		Tweet.query(sql, function(err,tweets){
+			if (err) { return res.negotiate("timeline_1:" + err); }
+			
+			for(i = 0; i < tweets.rowCount; i++){
+				
+				Service.divide_timestamp(tweets.rows[i].timestamp, "", function(result){
+					tweets.rows[i].year = result.year;
+					tweets.rows[i].month = result.month;
+					tweets.rows[i].day = result.day;
+					tweets.rows[i].hour = result.hour;
+					tweets.rows[i].minute = result.minute;
+
+					tweetsList.push(tweets.rows[i]);
+				});
+			}
+
+			sql = 'SELECT * FROM ( SELECT "user".login as share_login, tweet.title, tweet.text, tweet.timestamp as share_timestamp, share.timestamp, tweet.id as A FROM "user" INNER JOIN follow ON follow.follows = "user".id INNER JOIN share ON share."user" = "user".id INNER JOIN tweet ON tweet.id = share.tweet WHERE follow.follower = '+id_user+' UNION ALL SELECT "user".login as share_login, tweet.title, tweet.text, tweet.timestamp as share_timestamp, share.timestamp, tweet.id as A FROM "user" INNER JOIN share ON share."user" = "user".id INNER JOIN tweet ON tweet.id = share.tweet WHERE "user".id = '+id_user+' ) t1 INNER JOIN ( SELECT "user".login, tweet.id as id FROM "user" INNER JOIN tweet ON tweet.user = "user".id ) t2 ON t1.A = t2.id';
+			/*
+			SELECT * FROM
+				(
+				SELECT "user".login as share_login, tweet.title, tweet.text, tweet.timestamp as share_timestamp, share.timestamp, tweet.id as A
+				FROM "user"
+				INNER JOIN follow
+				ON follow.follows = "user".id
+				INNER JOIN share
+				ON share."user" = "user".id
+				INNER JOIN tweet
+				ON tweet.id = share.tweet
+				WHERE follow.follower = 1
+
+				UNION ALL
+
+				SELECT "user".login as share_login, tweet.title, tweet.text, tweet.timestamp as share_timestamp, share.timestamp, tweet.id as A
+				FROM "user"
+				INNER JOIN share
+				ON share."user" = "user".id
+				INNER JOIN tweet
+				ON tweet.id = share.tweet
+				WHERE "user".id = 1
+				) t1
+
+			INNER JOIN
+				(
+				SELECT "user".login, tweet.id as id
+				FROM "user"
+				INNER JOIN tweet
+				ON tweet.user = "user".id
+				) t2
+			ON t1.A = t2.id
+			*/
+
+			//seleciona os tweets que foram republicados para exibir na timeline
+			Tweet.query(sql, function(err,tweets){
+				if (err) { return res.negotiate("timeline_2:" + err); }
+
+				for(i = 0; i < tweets.rowCount; i++){
+					tweets.rows[i].share = true;
+
+					Service.divide_timestamp(tweets.rows[i].timestamp, tweets.rows[i].share_timestamp, function(result){
+						tweets.rows[i].year = result.year;
+						tweets.rows[i].month = result.month;
+						tweets.rows[i].day = result.day;
+						tweets.rows[i].hour = result.hour;
+						tweets.rows[i].minute = result.minute;
+
+						tweets.rows[i].syear = result.syear;
+						tweets.rows[i].smonth = result.smonth;
+						tweets.rows[i].sday = result.sday;
+						tweets.rows[i].shour = result.shour;
+						tweets.rows[i].sminute = result.sminute;
+
+						tweetsList.push(tweets.rows[i]);
 					});
 				}
 
-				tweets_ids = [];
-				for(i = 0; i < follows.rows.length; i++){
-					tweets_ids.push(follows.rows[i].id);
-				}
+				return res.json(tweetsList);
+			});
 
-				async.forEach(tweets_ids, find_tweets, function(err){
-					if(err) {console.log("1: " + err);}
-					else{
-						return res.json(tweetsList);
-					}
-				});
-			}
 		});
-	}
+	},
 
 };

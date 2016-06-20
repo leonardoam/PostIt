@@ -66,31 +66,42 @@ module.exports = {
 		top_publications_result = [];
 
 		//tweets com mais likes
-		select_more_liked_tweets = 'select t.id, u.login, t.title, t.text, sum(r.reaction) from tweet t join reaction r on t.id = r.tweet join "user" u on u.id=t.user group by t.id, u.login order by sum(r.reaction) desc limit 20;'
+		select_more_liked_tweets = 'select t.id, u.login, t.title, t.text, t.timestamp, sum(r.reaction) from tweet t join reaction r on t.id = r.tweet join "user" u on u.id=t.user group by t.id, u.login order by sum(r.reaction) desc limit 20;'
 		
 		Statistics.query(select_more_liked_tweets, function(err,results){
-  			if(err) return res.serverError(err);
+  			if(err) return res.serverError('1:'+err);
 
   			rowsTotalTweets = results.rows;
 
-  			for(k = 0; k < rowsTotalTweets.length; k++) {
+  			for(k = 0; k < rowsTotalTweets.length; k++){
   					current_login = rowsTotalTweets[k]['login'];
   					//console.log(rowsTotalTweets[k]);
 
-  					top_publications_result.push({login: current_login,
+            Service.divide_timestamp(rowsTotalTweets[k].timestamp, "", function(result){
+              rowsTotalTweets[k].year = result.year;
+              rowsTotalTweets[k].month = result.month;
+              rowsTotalTweets[k].day = result.day;
+              rowsTotalTweets[k].hour = result.hour;
+              rowsTotalTweets[k].minute = result.minute;
+
+              console.log(top_publications_result);
+              top_publications_result.push(rowsTotalTweets[k]);
+            });
+
+  					/*top_publications_result.push({login: current_login,
   						title: rowsTotalTweets[k]['title'],
   						tweet: rowsTotalTweets[k]['text'],
-  						points: parseInt(rowsTotalTweets[k]['sum'])});
-  				}
+  						points: parseInt(rowsTotalTweets[k]['sum'])});*/
+  			}
 
   				/*ordena o resultado para influencia*/
   				top_publications_result.sort(function(a, b){
     				if(a['points'] > b['points']) return -1;
     				if(a['points'] < b['points']) return 1;
     				return 0;
-				});
+				  });
 
-				return res.json(top_publications_result);  		
+				  return res.json(top_publications_result);  		
   			
 		});
 

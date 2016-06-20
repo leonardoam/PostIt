@@ -40,26 +40,34 @@ module.exports = {
 	get_followers: function(req, res){
 		var id_user = req.param('id_user');
 
-		Follow.find({'follower':id_user}).exec(function callback(err, found){
-			if (err) {
-    			return res.negotiate(err);
-  			}
-  			else {
-				return res.json(found);
-  			}
+		sql = 'SELECT "user".login, "user".id FROM "user" INNER JOIN follow ON follow.follows = "user".id WHERE follow.follower = '+id_user;
+		/*
+			SELECT "user".login
+			FROM "user"
+			INNER JOIN follow
+			ON follow.follows = "user".id
+			WHERE follow.follower = '+id_user
+		*/
+		Follow.query(sql, function(err,tweets){
+			if (err) { return res.negotiate("get_followers_1:" + err); }
+			return res.json(tweets.rows);
 		});
 	},
 
 	get_follows: function(req, res){
 		var id_user = req.param('id_user');
 
-		Follow.find({'follows':id_user}).exec(function callback(err, found){
-			if (err) {
-    			return res.negotiate(err);
-  			}
-  			else {
-  				return res.json(found);
-  			}
+		sql = 'SELECT "user".login, "user".id FROM "user" INNER JOIN follow ON follow.follower = "user".id WHERE follow.follows = '+id_user;
+		/*
+			SELECT "user".login
+			FROM "user"
+			INNER JOIN follow
+			ON follow.follower = "user".id
+			WHERE follow.follows = 1
+		*/
+		Follow.query(sql, function(err,tweets){
+			if (err) { return res.negotiate("get_follows_1:" + err); }
+			return res.json(tweets.rows);
 		});
 	},
 

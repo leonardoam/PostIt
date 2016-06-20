@@ -68,30 +68,29 @@ body {
 	font-size: 14px;
 }
 
-.row-middle > .row-middle {
-	border: 1px solid;
-	border-color: #c3c3c3;
-	margin: 0px 25px 10px 25px;
-}
 
 .row-middle > .row > .col-md-6 > .img-rounded,
+.row-middle > div > .row > .col-md-6 > .img-rounded,
 .row-top > .row > .col-md-6 > .img-rounded {
 	float: left;
 	margin: 10px 10px 0px 10px;
 }
 
 .row-middle > .row > .col-md-6 > p:nth-of-type(1),
+.row-middle > div > .row > .col-md-6 > p:nth-of-type(1),
 .row-top > .row > .col-md-6 > p:nth-of-type(1) {
 	margin: 10px 0px 0px 10px;
 }
 
 .row-middle > .row > .col-md-6 > p:nth-of-type(1) > strong > a,
+.row-middle > div > .row > .col-md-6 > p:nth-of-type(1) > strong > a,
 .row-top > .row > .col-md-6 > p:nth-of-type(1) > strong > a{
 	color: black;
 }
 
-.row-middle > .row > .col-md-6 > p:nth-of-type(2),
-.row-top > .row > .col-md-6 > p:nth-of-type(2) {
+.row-middle > .row > .col-md-6 > div > p,
+.row-middle > div > .row > .col-md-6 > p:nth-of-type(2),
+.row-top > .row > .col-md-6 > div > p {
 	margin: 0px 0px 10px 10px;
 	font-size: 12px;
 }
@@ -102,8 +101,8 @@ body {
 	padding: 5px;
 }
 
-.row-middle > .row > .col-md-6 > button,
-.row-top > .row > .col-md-6 > button {
+.row-middle > .row > div > .col-md-6 > button,
+.row-top > .row > div > .col-md-6 > button {
 	float: right;
 }
 

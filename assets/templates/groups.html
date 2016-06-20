@@ -13,15 +13,15 @@
 				<div class="row row-top" id="persdata-summarized">
 					<img class="img-thumbnail" src="images/madruga.jpg" data-holder-rendered="true">
 					<p align="left"><strong>{{name}}</strong></br></p>
-					<p align="left" style=""><a ng-click="goToProfile()">@{{login}}</a></br></p>
+					<p align="left" style=""><a ng-click="goToProfile("")">@{{login}}</a></br></p>
 					<table>
 						<tr>
 							<td align="left" >SEGUINDO: </td>
-							<td align="right">{{followers}} </td>
+							<td align="right">{{followersLength}} </td>
 						</tr>
 						<tr>
 							<td align="left" >SEGUIDORES: </td>
-							<td align="right">{{follows}}</td>
+							<td align="right">{{followsLength}}</td>
 						</tr>
 						<tr>
 							<td align="left" >PUBLICAÇÕES: </td>
@@ -64,29 +64,55 @@
 				</div>
 
 				<!-- TWEETS DO GRUPO -->
-				<div class="row row-middle">
-					<div class="row">
-						<div class="col-md-6">
-							<img class="img-rounded" src="images/girafales.jpg" width="40" height="40">
-							<p align="left"><strong><a href="">@Girafales</a></strong></p>
-							<p align="left"> 09/04/201 - 15:57h </p>
-						</div>
-						<div class="col-md-6">
-							<button class="btn btn-default" type="submit"> Republicar</button>
-						</div>
-					</div>
-					<div class="row">
-						<p align="left"> cd a Chiquinha?</a></p>
-					</div>
-					<div class="row">
-						<p align="left"> A <a href="">@Chiquinha</a> não foi a aula hoje. Sabe dizer o motivo <a href="">@seumadruga</a>?</p>
-					</div>
+				<div ng-repeat="t in tweetsList">
+					<div class="row row-middle">
+						<div ng-if="t.share">
+							<div class="row">
+			 					<div class="col-md-6">
+			 						<img class="img-rounded" src="images/kiko.jpg" width="40" height="40">
+			 						<p align="left"><strong><a href="">@{{t.share_login}}</a></strong> REPUBLICOU </p>
+			 						<p align="left"> {{t.day}}/{{t.month}}/{{t.year}} - {{t.hour}}:{{t.minute}}h </p>
+			 					</div>
+			 				</div>
+		 				</div>
 
-					<div class="row">
-						<button type="submit"></button>
-						<p>0</p>
-						<button type="submit"></button>
-						<p>0</p>
+						<div class="row row-middle">
+		 					<div class="row">
+		 						<div class="col-md-6">
+									<img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
+									<p align="left"><strong><a ng-click="redirectTo(t.login)">@{{t.login}}</a></strong></p>
+									<div ng-if="!t.share">
+										<p align="left"> {{t.day}}/{{t.month}}/{{t.year}} - {{t.hour}}:{{t.minute}}h </p>
+									</div>
+									<div ng-if="t.share">
+										<p align="left"> {{t.sday}}/{{t.smonth}}/{{t.syear}} - {{t.shour}}:{{t.sminute}}h </p>
+									</div>
+								</div>
+
+								<div ng-controller="share-controller">
+									<div class="col-md-6">
+										<button class="btn btn-default" ng-click="share(t)"> Republicar</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<p align="left">{{t.title}}</a></p>
+							</div>
+
+							<div class="row">
+								<p align="left" ng-bind-html="t.text">{{t.text}}</p>	
+							</div>
+
+							<div ng-controller="reaction-controller" ng-init="atualizeReactions(t)">
+								<div class="row reaction">
+									<button type="submit" ng-click="like(t)"></button>
+									<p>{{likeNumber}}</p>
+									<button type="submit" ng-click="dislike(t)"></button>
+									<p>{{dislikeNumber}}</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
