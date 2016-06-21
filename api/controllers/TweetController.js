@@ -1,9 +1,13 @@
-/**
- * TweetController
- *
- * @description :: Server-side logic for managing tweets
- * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
- */
+/*
+-------------------- TWEET CONTROLLER --------------------
+Controlador das publicacoes
+
+Metodos:
+    create_tweet: cria um tweet, verificando as tags $i, $v, etc
+    get_tweets: busca as publicacoes de um usuario especifico
+    delete_tweet: deleta uma publicacao
+    timeline: busca todos as publicacoes e republicacoes feitas pelo usuario e por quem ele segue
+*/
  
 module.exports = {
 
@@ -49,11 +53,22 @@ module.exports = {
     
 			};
 
+			function urlifyGroups(text) {
+				var urlRegex = /(\@[^\s]+)/g;
+				return text.replace(urlRegex, function(url) {
+    			return '<a href="">' + url + '</a>';
+    			})
+
+			};
+
 			tweet = urlifyImages(tweet);
 			tweet = urlifyLinks(tweet);
 			tweet = urlifyVideos(tweet);
+			//tweet = urlifyGroups(tweet);
 			/*fim do processamento */
 
+			console.log("tweet final:");
+			console.log(tweet);
 
 
 		User.findOne({
@@ -106,7 +121,7 @@ module.exports = {
 			
 			for(i = 0; i < tweets.rowCount; i++){
 				
-				Service.divide_timestamp(tweets.rows[i].timestamp, "", function(result){
+				serverService.divide_timestamp(tweets.rows[i].timestamp, "", function(result){
 					tweets.rows[i].year = result.year;
 					tweets.rows[i].month = result.month;
 					tweets.rows[i].day = result.day;
@@ -146,7 +161,7 @@ module.exports = {
 				for(i = 0; i < tweets.rowCount; i++){
 					tweets.rows[i].share = true;
 
-					Service.divide_timestamp(tweets.rows[i].timestamp, tweets.rows[i].share_timestamp, function(result){
+					serverService.divide_timestamp(tweets.rows[i].timestamp, tweets.rows[i].share_timestamp, function(result){
 						tweets.rows[i].year = result.year;
 						tweets.rows[i].month = result.month;
 						tweets.rows[i].day = result.day;
@@ -167,7 +182,20 @@ module.exports = {
 		});
 	},
 
+	delete_tweet: function(req,res){
+		var id_tweet = req.param('id_tweet') || undefined;
 
+		Reaction.destroy({'tweet':id_tweet}).exec(function(err){
+			if (err) {return res.negotiate('5:'+err);}
+			Share.destroy({'tweet':id_tweet}).exec(function(err){
+					if (err) {return res.negotiate('4:'+err);}
+					Tweet.destroy({'id':id_tweet}).exec(function(err){
+						if (err) {return res.negotiate('2:'+err);}
+						return res.json({success: "true"});
+				});
+			});
+		});
+	},
 	
 	timeline: function(req,res){
 		var id_user = req.param('id_user');
@@ -211,7 +239,7 @@ module.exports = {
 			
 			for(i = 0; i < tweets.rowCount; i++){
 				
-				Service.divide_timestamp(tweets.rows[i].timestamp, "", function(result){
+				serverService.divide_timestamp(tweets.rows[i].timestamp, "", function(result){
 					tweets.rows[i].year = result.year;
 					tweets.rows[i].month = result.month;
 					tweets.rows[i].day = result.day;
@@ -264,7 +292,7 @@ module.exports = {
 				for(i = 0; i < tweets.rowCount; i++){
 					tweets.rows[i].share = true;
 
-					Service.divide_timestamp(tweets.rows[i].timestamp, tweets.rows[i].share_timestamp, function(result){
+					serverService.divide_timestamp(tweets.rows[i].timestamp, tweets.rows[i].share_timestamp, function(result){
 						tweets.rows[i].year = result.year;
 						tweets.rows[i].month = result.month;
 						tweets.rows[i].day = result.day;

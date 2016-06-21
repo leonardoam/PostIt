@@ -1,9 +1,15 @@
-/**
- * MaintenanceController
- *
- * @description :: Server-side logic for managing maintenances
- * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
- */
+/*
+-------------------- MAINTENANCE CONTROLLER --------------------
+Controlador para export e import de dados
+
+OBS: Nao esquecer de mudar os dados para acesso no postgres (user, passowrd, host,port,database)
+
+Metodos:
+    export_schema: exportar o esquema json utilizado para o banco
+    export_data: exporta os dados mantidos no banco
+    import_data: importa os dados a partir de um json e adiciona no banco
+    create_fk: cria todoas as chaves estrangeiras do banco
+*/
 
 module.exports = {
 	export_schema: function(req, res) {
@@ -54,14 +60,22 @@ module.exports = {
 		var group_table = req.param('group');
 		var group_users_table = req.param('group_users__user_groups');
 		var reaction_table = req.param('reaction');
-
+		var share_table = req.param('share');
+		var follow_table = req.param('follow');
 		var result = {};
 	
 		console.log("==> IMPORTING USERS: ");
-		//user table loop
 		for(var i = 0; i < user_table.rows.length; i++) {
-			console.log(user_table.rows[i]);
-			User.create(user_table.rows[i]).exec(function callback(error, user_created) {
+			var data = {
+				'name': user_table.rows[i].name,
+				'login': user_table.rows[i].login,
+				'password': user_table.rows[i].password,
+				'birthday': user_table.rows[i].birthday,
+				'bio': user_table.rows[i].bio,
+				'email': user_table.rows[i].email
+			};
+
+			User.create(data).exec(function callback(error, user_created) {
 				if(error) {
 					console.log("Error while creating user...");
 					console.log(error);
@@ -69,17 +83,18 @@ module.exports = {
 				}
 
 				console.log("User created successfully..");
-
 			});
-
 		}
 
-
 		console.log("==> IMPORTING TWEETS: ");
-		//tweet table loop
 		for(var i = 0; i < tweet_table.rows.length; i++) {
-			//console.log(tweet_table.rows[i]);
-			Tweet.create(tweet_table.rows[i]).exec(function callback(error, tweet_created) {
+			var data = {
+				'user': tweet_table.rows[i].user,
+				'title': tweet_table.rows[i].title,
+				'text': tweet_table.rows[i].text,
+				'timestamp': tweet_table.rows[i].timestamp
+			};
+			Tweet.create(data).exec(function callback(error, tweet_created) {
 				if(error) {
 					console.log("Error while importing tweets...");
 					console.log(error);
@@ -87,16 +102,15 @@ module.exports = {
 				}
 				
 			}); 
-
 		}
 
-		
-
 		console.log("==> IMPORTING GROUPS: ");
-		//group table loop
 		for(var i = 0; i < group_table.rows.length; i++) {
-			//console.log(group_table.rows[i]);
-			Group.create(group_table.rows[i]).exec(function callback(error, group_created) {
+			var data = {
+				'name': group_table.rows[i].name,
+				'id': group_table.rows[i].id
+			};
+			Group.create(data).exec(function callback(error, group_created) {
 					if(error) {
 						console.log(error);
 						return res.json({response_msg: 'error while importing groups!'});
@@ -105,18 +119,15 @@ module.exports = {
 						console.log("Group created successfully..");
 						//return res.json(group_created);
 					}
-
-				});
+			});
 		}
 
 		console.log("==> IMPORTING GROUPS-USERS : ");
-		//group-users (mxn) table loop => insert users into grous
 		for(var i = 0; i < group_users_table.rows.length; i++) {
 
 			id_group = group_users_table.rows[i]['group_users'];
 			id_user = group_users_table.rows[i]['user_groups'];
 			select = 'INSERT INTO "group_users__user_groups" (group_users, user_groups) values (\'' + id_group + '\', \'' + id_user + '\');';
-			//console.log(select);
 			Group.query(select, function(err,results){
   					if(err) {
   						console.log("Error importing groups-users"+ err);
@@ -130,10 +141,14 @@ module.exports = {
 
 
 		console.log("==> IMPORTING REACTION : ");
-		//group-users (mxn) table loop
 		for(var i = 0; i < reaction_table.rows.length; i++) {
-			//console.log(reaction_table.rows[i]);
-			Reaction.create(reaction_table.rows[i]).exec(function callback(err, reaction_created) {
+			var data = {
+				'tweet': reaction_table.rows[i].tweet,
+				'user': reaction_table.rows[i].user,
+				'reaction': reaction_table.rows[i].reaction,
+				'timestamp': reaction_table.rows[i].timestamp
+			};
+			Reaction.create(data).exec(function callback(err, reaction_created) {
 					if(err) {
 						console.log('2:'+err);
 						return res.json({response_msg: 'error while importing reactions!'});
@@ -143,16 +158,58 @@ module.exports = {
 
 		}
 
+		console.log("==> IMPORTING SHARE : ");
+		for(var i = 0; i < share_table.rows.length; i++) {
+			var data = {
+				'tweet': share_table.rows[i].tweet,
+				'user': share_table.rows[i].user,
+				'timestamp': share_table.rows[i].timestamp
+			};
+			Share.create(data).exec(function callback(err, reaction_created) {
+					if(err) {
+						console.log('2:'+err);
+						return res.json({response_msg: 'error while importing reactions!'});
+					}
+					console.log("share created ");
+				});
+		}
+
+		console.log("==> IMPORTING FOLLOW : ");
+		for(var i = 0; i < follow_table.rows.length; i++) {
+			var data = {
+				'follower': follow_table.rows[i].follower,
+				'follows': follow_table.rows[i].follows,
+				'timestamp': follow_table.rows[i].timestamp
+			};
+			Follow.create(data).exec(function callback(err, reaction_created) {
+					if(err) {
+						console.log('2:'+err);
+						return res.json({response_msg: 'error while importing reactions!'});
+					}
+					console.log("share created ");
+				});
+		}
+
 		result = {created_users: user_table.rows.length,
 				  created_tweets: tweet_table.rows.length,
 				  created_groups: group_table.rows.length,
 				  created_groups_users: group_users_table.rows.length,
-				  created_reactions: reaction_table.rows.length
+				  created_reactions: reaction_table.rows.length,
+				  created_shares: share_table.rows.length,
+				  created_shares: follow_table.rows.length
 		};
 
-		res.json(result);
+		return res.json(result);
 
 	},
 	
+	create_fk: function(req, res) {
+
+		sql = 'ALTER TABLE tweet ADD CONSTRAINT user_fkey FOREIGN KEY ("user") REFERENCES "user" (id) ON UPDATE CASCADE ON DELETE RESTRICT; ALTER TABLE follow ADD CONSTRAINT follower_fkey FOREIGN KEY (follower) REFERENCES "user" (id) ON UPDATE CASCADE ON DELETE RESTRICT; ALTER TABLE follow ADD CONSTRAINT follow_fkey FOREIGN KEY (follows) REFERENCES "user" (id) ON UPDATE CASCADE ON DELETE RESTRICT; ALTER TABLE "group" ADD CONSTRAINT user_fkey FOREIGN KEY ("id") REFERENCES "user" (id) ON UPDATE CASCADE ON DELETE RESTRICT; ALTER TABLE reaction ADD CONSTRAINT user_fkey FOREIGN KEY ("user") REFERENCES "user" (id) ON UPDATE CASCADE ON DELETE RESTRICT; ALTER TABLE reaction ADD CONSTRAINT tweet_fkey FOREIGN KEY (tweet) REFERENCES tweet (id) ON UPDATE CASCADE ON DELETE RESTRICT; ALTER TABLE reaction DROP COLUMN id; ALTER TABLE reaction ADD CONSTRAINT pk_user PRIMARY KEY ("user",tweet); ALTER TABLE share ADD CONSTRAINT tweet_fkey FOREIGN KEY (tweet) REFERENCES tweet (id) ON UPDATE CASCADE ON DELETE RESTRICT; ALTER TABLE share ADD CONSTRAINT user_fkey FOREIGN KEY ("user") REFERENCES "user" (id) ON UPDATE CASCADE ON DELETE RESTRICT; ALTER TABLE group_users__user_groups ADD CONSTRAINT user_groups_fkey FOREIGN KEY (user_groups) REFERENCES "user" (id) ON UPDATE CASCADE ON DELETE RESTRICT; ALTER TABLE group_users__user_groups ADD CONSTRAINT group_users_fkey FOREIGN KEY (group_users) REFERENCES "group" ("relativeId") ON UPDATE CASCADE ON DELETE RESTRICT;';
+		User.query(sql, function(err,tweets){
+			if (err) { return res.negotiate("create_fk_1:" + err); }
+			else return res.json({success: 'true'});
+		});
+	}
 };
 

@@ -1,4 +1,5 @@
 
+<!-- inicio do statistics-controller -->
 <div class="container" ng-controller="statistics-controller" ng-init="getStatistics()">
     <div class="row">
 
@@ -9,7 +10,7 @@
             </div>
              <div class="row row-bottom">
                 <div ng-repeat="item in topUsersList">
-                    <div> <p> {{item.login}} -  {{item.points}} pontos</p> </div>
+                    <div> <p> <a ng-click="redirectTo(item.login)">@{{item.login}}</a> -  {{item.points}} pontos</p> </div>
                 </div>
             </div>
         </div>
@@ -21,7 +22,7 @@
             </div>
             <div class="row row-bottom">
                 <div ng-repeat="item in topUsersList">
-                    <div> <p> {{item.login}} -  {{item.points}} pontos</p> </div>
+                    <div> <p> <a ng-click="redirectTo(item.login)">@{{item.login}}</a> -  {{item.points}} pontos</p> </div>
                 </div>
             </div>
         </div>
@@ -36,7 +37,7 @@
                         <div ng-if="t.share">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <img class="img-rounded" src="images/kiko.jpg" width="40" height="40">
+                                    <img class="img-rounded" src="images/madruga.jpg" width="40" height="40">
                                     <p align="left"><strong><a href="">@{{t.share_login}}</a></strong> REPUBLICOU </p>
                                     <p align="left"> {{t.day}}/{{t.month}}/{{t.year}} - {{t.hour}}:{{t.minute}}h </p>
                                 </div>
@@ -46,7 +47,7 @@
                         <div class="row row-middle">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <img class="img-rounded" src="images/chaves.jpeg" width="40" height="40">
+                                    <img class="img-rounded" src="images/madruga.jpg" width="40" height="40">
                                     <p align="left"><strong><a ng-click="redirectTo(t.login)">@{{t.login}}</a></strong></p>
                                     <div ng-if="!t.share">
                                         <p align="left"> {{t.day}}/{{t.month}}/{{t.year}} - {{t.hour}}:{{t.minute}}h </p>
@@ -80,6 +81,6 @@
         </div>
     </div>
 </div>
-
+<!-- fim do statistics-controller -->
 
 

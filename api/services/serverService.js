@@ -1,3 +1,9 @@
+/*
+-------------------- SERVICO DO SERVIDOR -------------------- 
+Servico feito para auxiliar na implementacao do servidor, no caso, possui uma funcao para separar a data do banco
+em partes exibiveis pela visao
+*/
+
 module.exports = {
 	divide_timestamp: function(timestamp, share_timestamp, callback){
 		var time;

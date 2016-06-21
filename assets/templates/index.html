@@ -1,6 +1,8 @@
-    <!--<div ng-app="my-App" ng-controller="Postit-Controller"> -->
-    <div ng-controller="login-controller">
-        <div ng-if="auth == 'true'" ng-init="goPage('content')"></div>
+
+
+<!-- inicio do login-controller -->
+<div ng-controller="login-controller">
+    <div ng-if="auth == 'true'" ng-init="goPage('content')"></div>
 
         <div class="site-wrapper">
             <div class="site-wrapper-inner">
@@ -8,7 +10,7 @@
                     <div class="inner cover">
 
                         <h1 class="cover-heading">PostIt!</h1>
-                        <p class="lead">A mais nova Rede Social imitadora do Twitter!</p>
+                        <p class="lead">A mais nova Rede Social!</p>
                         <div class="panel-heading">
                             <h3 class="panel-title">Seja bem-vindo! Faça seu login abaixo!</h3>
                         </div>
@@ -41,11 +43,34 @@
                             <p class="lead">
                                 <a href="#/signup" class="btn btn-lg btn-primary btn-block signup-btn">Crie sua conta!</a>
                             </p>
+
+                            <hr/>
+
+                            <form name="upload" class="form" data-ng-submit="addFile()" enctype='application/json'>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Importar JSON:</label>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <input type="file" name="file" multiple onchange="angular.element(this).scope().uploadedFile(this)" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p>Obs: não esquecer de alterar os arquivos <strong>api/controllers/MaintenanceController.js</strong>, <strong>config/models.js</strong>, <strong>config/connections.js</strong> e configurar o banco postgres assim como está escrito no Manual </p>
+                                    <div class="col-md-6">
+                                        <p class="lead">
+                                            <button type="submit" class="btn btn-info">Importar</button>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-info" ng-click="exportBD()">Exportar</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </div>
-                    <div class="mastfoot">
-                        <div class="inner">
-                            <p>Trabalho da Disciplina <a href="#">SCC0219</a>, by <a href="#">@Grupo 02</a>.</p>
+                        <div class="row">
+                            <p>Trabalho da Disciplina <strong>SCC0219</strong>, by <strong>@Grupo 02</strong>.</p>
                         </div>
                     </div>
                 </div>
@@ -53,3 +78,4 @@
         </div>
     </div>
 </div>
+<!-- fim do config-controller -->

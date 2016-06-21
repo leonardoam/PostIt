@@ -1,10 +1,16 @@
-/**
- * ReactionController
- *
- * @description :: Server-side logic for managing reactions
- * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
- */
+/*
+-------------------- REACTION CONTROLLER --------------------
+Controlador das reacoes (like/dislike)
 
+Metodos:
+    find_all_reactions: busca todas as reacoes de uma publicacao
+    set_like: se o usuario ainda n reagiu a uma determinada publicacao, entao adiciona o 'like', se
+    		  o usuario ja tiver dado 'like' entao cancela a reacao, mas se o usuario ja tiver dado 'dislike'
+    		  entao altera a reacao dele para 'like'
+    set_dislike: se o usuario ainda n reagiu a uma determinada publicacao, entao adiciona o 'dislkie', se
+    		  	 o usuario ja tiver dado 'dislike' entao cancela a reacao, mas se o usuario ja tiver dado 'like'
+    		     entao altera a reacao dele para 'dislike'
+*/
 module.exports = {
 	
 	find_all_reactions: function(req,res){

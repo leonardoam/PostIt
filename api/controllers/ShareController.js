@@ -1,10 +1,11 @@
-/**
- * ShareController
- *
- * @description :: Server-side logic for managing shares
- * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
- */
+/*
+-------------------- SHARE CONTROLLER --------------------
+Controlador das republicacoes
 
+Metodos:
+    add_share: adiciona uma republicacao
+    delete_share: delete uma republicacao
+*/
 module.exports = {
 	
 	add_share: function(req,res){
@@ -29,6 +30,16 @@ module.exports = {
 			else{
 				return res.json({success: "false"});
 			}
+		});
+	},
+
+	delete_share: function(req,res){
+		var id_tweet = req.param('id_tweet') || undefined;
+
+		console.log(id_tweet);
+		Share.destroy({'tweet':id_tweet}).exec(function(err){
+			if (err) {return res.negotiate('1:'+err);}
+			return res.json({success: "true"});
 		});
 	},
 

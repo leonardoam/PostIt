@@ -1,9 +1,11 @@
-/**
- * StatisticsController
- *
- * @description :: Server-side logic for managing statistics
- * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
- */
+/*
+-------------------- STATISTICS CONTROLLER --------------------
+Controlador das estatisticas
+
+Metodos:
+    top_users: busca os top usuarios, fazendo a conta da pontuacao
+    top_publications: busca as top publicacoes, fazendo a conta da pontuacao
+*/
 
 module.exports = {
 	top_users: function(req, res) { 
@@ -13,9 +15,9 @@ module.exports = {
 		influence = [];
 
 		//total de tweets * 2
-		select_total_tweets = 'select u.login, count(t.text)*2 from "user" u join tweet t on u.id = t.user group by u.login;'
+		select_total_tweets = 'select * from (select u.login, count(s.user)*2 from "user" u join share s on u.id = s.user group by u.login) t1 JOIN (select u.login, u.id from "user" u) t2 ON t1.login = t2.login'
 		//total de likes 
-		select_total_likes = 'select u.login, sum(r.reaction)  from tweet t join reaction r on t.id = r.tweet join "user" u on u.id = t.user group by u.login;';
+    select_total_likes = 'select * from (select u.login, sum(r.reaction)  from tweet t join reaction r on t.id = r.tweet join "user" u on u.id = t.user group by u.login) t1 join (select u.login, u.id from "user" u) t2 on t1.login = t2.login';
 		
 		Statistics.query(select_total_tweets, function(err,results){
   			if(err) return res.serverError(err);
@@ -39,7 +41,7 @@ module.exports = {
   				for(i = 0; i < rowsTotalLikes.length; i++) {
   					current_login = rowsTotalLikes[i]['login'];
 
-  					influence.push({login: current_login, 
+  					influence.push({login: current_login, id: rowsTotalLikes[i]['id'],
   						points: parseInt(rowsTotalLikes[i]['sum']) + parseInt(get_sum(rowsTotalTweetsTimes2, current_login))});
   				}
 
@@ -77,14 +79,13 @@ module.exports = {
   					current_login = rowsTotalTweets[k]['login'];
   					//console.log(rowsTotalTweets[k]);
 
-            Service.divide_timestamp(rowsTotalTweets[k].timestamp, "", function(result){
+            serverService.divide_timestamp(rowsTotalTweets[k].timestamp, "", function(result){
               rowsTotalTweets[k].year = result.year;
               rowsTotalTweets[k].month = result.month;
               rowsTotalTweets[k].day = result.day;
               rowsTotalTweets[k].hour = result.hour;
               rowsTotalTweets[k].minute = result.minute;
 
-              console.log(top_publications_result);
               top_publications_result.push(rowsTotalTweets[k]);
             });
 

@@ -1,41 +1,16 @@
-/**
- * FollowController
- *
- * @description :: Server-side logic for managing follows
- * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
- */
+/*
+-------------------- FOLLOWS CONTROLLER --------------------
+Controlador para follow
+
+Metodos:
+    get_followers: busca por quem esta seguindo
+    get_follows: busca pelos seguidores
+    check_follower: verifica se um usuario segue o outro
+    follow_user: seguir um usuario
+    unfollow_user: deixar de seguir um usuario
+*/
 
 module.exports = {
-
-	create_follow: function(req, res) {
-		var follow = [
-			{
-				"follower": 1,
-				"follows": 2,
-				"timestamp": "2016-05-18T20:43:17.463Z"
-			},
-			{
-				"follower": 1,
-				"follows": 3,
-				"timestamp": "2017-05-18T20:43:17.463Z"
-			},
-			{
-				"follower": 2,
-				"follows": 1,
-				"timestamp": "2018-05-18T20:43:17.463Z"
-			}
-		];
-
-		Follow.create(follow).exec(function callback(error, users_created) {
-			if(error) {
-				console.log(error);
-			}
-
-			console.log("Follows created successfully..");
-
-			return res.json(users_created);
-		})
-	},
 
 	get_followers: function(req, res){
 		var id_user = req.param('id_user');
@@ -83,7 +58,7 @@ module.exports = {
 	},
 
 	follow_user: function(req, res){
-			var d = new Date();
+		var d = new Date();
 		var t = d.toJSON();
 
 		var follow = {

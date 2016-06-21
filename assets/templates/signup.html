@@ -1,12 +1,13 @@
-<!--<div ng-app="my-App" ng-controller="Postit-Controller"> -->
 
-<div ng-controller="signup-controller"> 
+	<!-- inicio do signup-controller -->
+	<div ng-controller="signup-controller"> 
 		<div class="site-wrapper">
     		<div class="site-wrapper-inner">
         		<div class="cover-container background-box">
 
           			<div class="inner cover">
-          				<form  novalidate  accept-charset="utf-8" class="form" role="form" onsubmit="validateSingup(this)">
+          				<!-- FORM PARA CADASTRO -->
+          				<form  novalidate  accept-charset="utf-8" class="form" role="form" onsubmit="">
           					<legend>Cadastre-se</legend>
             				<h4>É grátis e sempre será grátis!</h4>
 
@@ -189,26 +190,16 @@
             				</div>
             				
             				<input name="descricao" type="textarea" rows="5" ng-model="user.description"  min="3" max="200" rows="5" value="" class="form-control input-lg" placeholder="Descrição"  required />
-
-            				<div class="row">
-            					<div class="col-md-4">
-            						<label>Imagem de perfil:</label>
-            					</div>
-
-            					<div class="col-md-8">
-            						<input type="file" id="imgInp">
-            					</div>
-            				</div>
-            				
-
               				<br/>
               				<br/>
+              				<!-- BOTAO PARA CRIAR O USUARIO-->
               				<p class="lead">
                 				 <input type="submit" class="btn btn-lg btn-primary btn-block signup-btn" ng-click="createUser(user)" value="Cadastrar" />
               				</p>
            				</form>
            			</div>
-        	</div>
+        		</div>
 			</div>
 		</div>
-		</div>
+	</div>
+	<!-- fim do signup-controller -->

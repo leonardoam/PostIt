@@ -1,9 +1,17 @@
-/**
- * GroupController
- *
- * @description :: Server-side logic for managing groups
- * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
- */
+/*
+-------------------- GROUP CONTROLLER --------------------
+Controlador para grupos
+
+Metodos:
+    find_groups_and_masters: busca os grupos com o mesmo no e os seus respectivos dono (usado para buscas)
+    get_members: busca os membros do grupo
+    get_master: busca o dono do grupo
+    create_group: cria um grupo
+    join_member: invita um membro no grupo
+    delete_member: deleta um membro
+    delete_group: deleta o grupo
+	get_tweets: busca os tweets para o grupo
+*/
 
 module.exports = {
 
@@ -71,11 +79,10 @@ module.exports = {
   			if (!found_user){ //se nao tiver entao cria um grupo novo
   				group = {'id': id_user,'name': name_group};
 
-    			Group.create(group).exec(function callback(error, group_created) {
-					if(error) 
-						console.log(error);
+    			Group.create(group).exec(function callback(err, group_created) {
+					if (err) return res.negotiate(err);
 					else{
-						console.log("Groups created successfully..");
+						console.log("Grupo criado com sucesso.");
 						return res.json(group_created);
 					}
 				});
@@ -132,7 +139,6 @@ module.exports = {
 		*/
 
 		//verifica se o usuario esta no grupo
-
 		Group.query(select,function(err,results){
 
 			//erro
@@ -171,4 +177,47 @@ module.exports = {
   			});
 		});
 	},
+
+	get_tweets: function(req,res){
+		id_group = '9';
+		name_group = 'gClaudio';
+		//id_group = req.param('id_group');
+		//name_group = req.param('name_group');
+
+		tweetsList = [];
+
+		sql = 'SELECT "user".name, tweet.id, tweet.title, tweet.text, tweet.timestamp FROM tweet INNER JOIN "user" ON "user".id = tweet.user';
+		Group.query(sql, function(err,tweets){
+			if(err) return res.serverError("get_tweets_1: "+err);
+
+			for(i = 0; i < tweets.rowCount; i++){
+				text = tweets.rows[i].text;
+
+				function urlifyGroups(text) {
+					var urlRegex = /(\@[^\s]+)/g;
+					return text.replace(urlRegex, function(url) {
+						if(url == ('@'+name_group)){
+							
+							serverService.divide_timestamp(tweets.rows[i].timestamp, "", function(result){
+								tweets.rows[i].year = result.year;
+								tweets.rows[i].month = result.month;
+								tweets.rows[i].day = result.day;
+								tweets.rows[i].hour = result.hour;
+								tweets.rows[i].minute = result.minute;
+
+								tweetsList.push(tweets.rows[i]);
+							});
+
+							tweetsList.push(tweets.rows[i]);
+						}
+			    		//return url;
+		    		})
+				};
+
+				urlifyGroups(text);
+			}
+
+			return res.json(tweetsList);
+		});
+	}
 };
